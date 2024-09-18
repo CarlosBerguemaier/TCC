@@ -1,0 +1,11 @@
+.removerLink{
+    color:white;
+    text-decoration: none;
+}
+.removerLink:hover{
+    color:white;
+    text-decoration: none;
+}
+.navbarPrincipal{
+    font-size: 35px;
+}
