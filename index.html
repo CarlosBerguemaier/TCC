@@ -10,27 +10,22 @@
 <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper orange lighten-4">
-          <a href="#" class="center brand-logo removerlinkLogo" style="font-size:35px; color: #ef6c00 ;">Gestão de Oficina</a>
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-          <ul class="left hide-on-med-and-down">
-            <li><a href="#" class="removerLink">Serviços</a></li>
-            <li><a href="#" class="removerLink">Clientes</a></li>
-            <li><a href="#" class="removerLink">Carros</a></li>
-            <li><a href="#" class="removerLink">Funcionários</a></li>
-          </ul>
-        </div>
-      </nav>
-    
-      <ul class="sidenav" id="mobile-demo">
-        <li><a href="#">Serviços</a></li>
-        <li><a href="#">Clientes</a></li>
-        <li><a href="#">Carros</a></li>
-        <li><a href="#">Funcionários</a></li>
+      <ul id="slide-out" class="sidenav sidenav-fixed">
+        <li><a>Bem Vindo</a></li>
+        <li><div class="divider"></div></li>
+        <li><a href="#!" class="removerLink"><i class="material-icons">add</i>Cadastrar</a></li>
+        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+        <ul id='dropdown1' class='dropdown-content'>
+          <li><a href="#!">First</a></li>
+          <li><a href="#!">Second</a></li>
+          <li><a href="#!">Third</a></li>
+          <li><a href="#!">Fourth</a></li>
+        </ul>
+  
+        <li><a href="#!" class="removerLink"><i class="material-icons">search</i>Buscar</a></li>
+        <li><a href="#!" class="removerLink"><i class="material-icons">library_books</i>Relatório</a></li>
       </ul>
 
-    
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
