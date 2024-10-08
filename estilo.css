@@ -1,4 +1,14 @@
 
 .removerLink:hover{
     text-decoration: none;
+    color: rgb(110, 110, 110);
+}
+
+.principal{
+  padding-left: 28%;
+  padding-right: 28%;
+  padding-top: 5%;
+  padding-bottom: 2%;
+  background-color: antiquewhite;
+  height: 1900px;
 }
