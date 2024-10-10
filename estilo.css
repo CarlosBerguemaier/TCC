@@ -9,6 +9,11 @@
   padding-right: 28%;
   padding-top: 5%;
   padding-bottom: 2%;
-  background-color: antiquewhite;
   height: 1900px;
+}
+
+.texto-principal{
+  margin-left: 35%;
+  font-size: 5vmin;
+  font-size-adjust: 0.54;
 }
