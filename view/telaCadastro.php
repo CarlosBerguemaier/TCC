@@ -12,7 +12,16 @@
 
 </head>
 <body>
-<?php include_once '../sidebar.php';?>
+<?php include_once '../sidebar.php';
+  if(isset($_GET['msg'])){
+    $msg=$_GET['msg'];
+    if($msg == "sucesso"){
+      echo '<div class="alert alert-success" role="alert">
+      <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
+    </div>';
+    }
+  }
+?>
 
 <div class="principal">
 <div>
@@ -34,7 +43,7 @@
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active bg-white border" id="servico" role="tabpanel" aria-labelledby="servico-tab"> 
        <div class="card-body">
-      <form action="">
+      <form action="" method="post">
         Placa do Carro: <input type="text">
         CPF do Cliente: <input type="text">
         CPF do Funcionário: <input type="text">
@@ -46,27 +55,31 @@
 </div></div>
 
   <div class="tab-pane fade bg-white border" id="cliente" role="tabpanel" aria-labelledby="cliente-tab">
-  <form action="">
-        Nome: <input type="text">
-        CPF: <input type="text">
-        Telefone: <input type="text">
+  <div class="card-body">
+  <form action="../control/ClienteControle.php" method="post">
+        Nome: <input type="text" name="nome">
+        CPF: <input type="text" name="cpf">
+        Telefone: <input class="" type="text" name="telefone">
+        <button class="btn btn-primary" type="submit" id="bt_cadastro_cliente" name="bt_cadastro_cliente">Cadastrar</button>
     </form>
-  </div>
+  </div></div>
   <div class="tab-pane fade bg-white border" id="carro" role="tabpanel" aria-labelledby="carro-tab">
+  <div class="card-body">
   <form action="">
         Placa: <input type="text">
         Marca: <input type="text">
         Modelo: <input type="text">
         Ano: <input type="text">
     </form>
-  </div>
+  </div>  </div>
     <div class="tab-pane fade bg-white border" id="funcionario" role="tabpanel" aria-labelledby="funcionario-tab">
+    <div class="card-body">
     <form action="">
         Nome: <input type="text">
         CPF: <input type="text">
         Telefone: <input type="text">
     </form>
-    </div>
+    </div>  </div>
 </div>
 
 

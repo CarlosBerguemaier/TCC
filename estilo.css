@@ -7,7 +7,7 @@
 .principal{
   padding-left: 28%;
   padding-right: 28%;
-  padding-top: 5%;
+  padding-top: 2%;
   padding-bottom: 2%;
   height: 1900px;
 }
@@ -16,4 +16,8 @@
   margin-left: 33%;
   font-size: 5vmin;
   font-size-adjust: 0.54;
+}
+
+.texto-alertas{
+  margin-left: 40%;
 }
