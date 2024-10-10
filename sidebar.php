@@ -8,7 +8,7 @@
 <body>
   <div>
   <ul id="slide-out" class="sidenav sidenav-fixed">
-    <li><a>Bem Vindo</a></li>
+    <li><a href="index.php">Bem Vindo</a></li>
     <li><div class="divider"></div></li>
     <li><a href="../view/telaCadastro.php" data-activates="slide-2" class="removerLink"><i class="material-icons">add</i>Cadastrar</a></li>
     <li><a href="../view/telaBusca.php" class="removerLink"><i class="material-icons">search</i>Buscar</a></li>
