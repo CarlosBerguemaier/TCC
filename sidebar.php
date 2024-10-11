@@ -1,23 +1,25 @@
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
 <link rel="stylesheet" href="estilo.css">
 
 </head>
 <body>
   <div>
-  <ul id="slide-out" class="sidenav sidenav-fixed">
-    <li><a href="index.php">Bem Vindo</a></li>
-    <li><div class="divider"></div></li>
-    <li><a href="../view/telaCadastro.php" data-activates="slide-2" class="removerLink"><i class="material-icons">add</i>Cadastrar</a></li>
-    <li><a href="../view/telaBusca.php" class="removerLink"><i class="material-icons">search</i>Buscar</a></li>
-    <li><a href="../view/telaRelatorio.php" class="removerLink"><i class="material-icons">library_books</i>Relatório</a></li>
-  </ul>
-  <nav class="black"><a href="#" data-target="slide-out" class="sidenav-trigger removerLink">
+  <nav class="white navbar"><a href="#" data-target="slide-out" class="sidenav-trigger removerLink">
     <i class="material-icons">menu</i></a>
-    <span href="#" class=" center texto-principal">Gerenciamento da Oficina</span>
+    <span href="#" class="center texto-principal">Gerenciamento da Oficina</span>
   </nav>
+  <ul id="slide-out" class="sidenav sidenav-fixed  ">
+    <li><a href="index.php" class="sidebar-item">Bem Vindo</a></li>
+    <li><div class="divider" ></div></li>
+    <li><a href="../view/telaCadastro.php" data-activates="slide-2" class="removerLink sidebar-item "><i class="material-icons">add</i>Cadastrar</a></li>
+    <li><a href="../view/telaBusca.php" class="removerLink sidebar-item"><i class="material-icons">search</i>Buscar</a></li>
+    <li><a href="../view/telaRelatorio.php" class="removerLink sidebar-item"><i class="material-icons">library_books</i>Relatório</a></li>
+  </ul>
+ 
   </div>
 </body>
 

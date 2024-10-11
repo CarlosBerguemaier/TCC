@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tela de serviços</title>
  <!-- Última versão CSS compilada e minificada -->
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="../estilo.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
@@ -60,7 +61,7 @@
         Nome: <input type="text" name="nome">
         CPF: <input type="text" name="cpf">
         Telefone: <input class="" type="text" name="telefone">
-        <button class="btn btn-primary" type="submit" id="bt_cadastro_cliente" name="bt_cadastro_cliente">Cadastrar</button>
+        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_cliente" name="bt_cadastro_cliente">Cadastrar</button>
     </form>
   </div></div>
   <div class="tab-pane fade bg-white border" id="carro" role="tabpanel" aria-labelledby="carro-tab">
