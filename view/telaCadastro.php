@@ -44,14 +44,15 @@
 <div class="tab-content" id="myTabContent">
   <div class="tab-pane fade show active bg-white border" id="servico" role="tabpanel" aria-labelledby="servico-tab"> 
        <div class="card-body">
-      <form action="" method="post">
-        Placa do Carro: <input type="text">
-        CPF do Cliente: <input type="text">
-        CPF do Funcionário: <input type="text">
-        Descrição: <input type="text">
-        Valor: <input type="text">
-        Quilometragem Inicial: <input type="text">
-        Quilometragem Final: <input type="text">
+       <form action="../control/OrdemServicoControle.php" method="post">
+        Placa do Carro: <input type="text" name="placa">
+        CPF do Cliente: <input type="text" name="cpf_cliente">
+        CPF do Funcionário: <input type="text" name="cpf_funcionario">
+        Descrição: <input type="text" name="descricao">
+        Valor: <input type="text" name="valor">
+        Quilometragem Inicial: <input type="text" name="kminicial">
+        Quilometragem Final: <input type="text" name="kmfinal">
+        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_ordemservico" name="bt_cadastro_ordemservico">Cadastrar</button>
     </form>
 </div></div>
 
@@ -66,19 +67,21 @@
   </div></div>
   <div class="tab-pane fade bg-white border" id="carro" role="tabpanel" aria-labelledby="carro-tab">
   <div class="card-body">
-  <form action="">
-        Placa: <input type="text">
-        Marca: <input type="text">
-        Modelo: <input type="text">
-        Ano: <input type="text">
+  <form action="../control/CarroControle.php" method="post">
+        Placa: <input type="text" name="placa">
+        Marca: <input type="text" name="marca">
+        Modelo: <input type="text" name="modelo">
+        Ano: <input type="text" name="ano">
+        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_carro" name="bt_cadastro_carro">Cadastrar</button>
     </form>
   </div>  </div>
     <div class="tab-pane fade bg-white border" id="funcionario" role="tabpanel" aria-labelledby="funcionario-tab">
     <div class="card-body">
-    <form action="">
-        Nome: <input type="text">
-        CPF: <input type="text">
-        Telefone: <input type="text">
+    <form action="../control/FuncionarioControle.php" method="post">
+        Nome: <input type="text" name="nome">
+        CPF: <input type="text" name="cpf">
+        Telefone: <input type="text" name="telefone">
+        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_funcionario" name="bt_cadastro_funcionario">Cadastrar</button>
     </form>
     </div>  </div>
 </div>

@@ -8,7 +8,7 @@
 </head>
 <body>
   <div>
-  <nav class="white navbar"><a href="#" data-target="slide-out" class="sidenav-trigger removerLink">
+  <nav class="grey navbar"><a href="#" data-target="slide-out" class="sidenav-trigger removerLink">
     <i class="material-icons">menu</i></a>
     <span href="#" class="center texto-principal">Gerenciamento da Oficina</span>
   </nav>
