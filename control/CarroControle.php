@@ -33,4 +33,21 @@ function inserirCarro($placa, $marca, $modelo, $ano){
     $stmt = null;    
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
+
+function buscarCarro($placa){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `carro` WHERE `placa` like :placa");
+    $stmt->bindParam(':placa', $placa);
+    $stmt->execute();
+    $carro = new Carro();
+       while( $result = $stmt->fetch()){
+        $carro->setID($result["id"]);
+        $carro->setPlaca($result["placa"]);
+        $carro->setMarca($result["marca"]);
+        $carro->setModelo($result["modelo"]);
+        $carro->setAno($result["ano"]);
+       }
+       return $carro;    
+}
 ?>

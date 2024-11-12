@@ -31,4 +31,19 @@ function inserirCliente($nome,$telefone,$cpf){
     $stmt = null;    
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
+function buscarCliente($cpf){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE `cpf` like :cpf");
+    $stmt->bindParam(':cpf', $cpf);
+    $stmt->execute();
+    $cliente = new Cliente();
+       while( $result = $stmt->fetch()){
+        $cliente->setID($result["id"]);
+        $cliente->setNome($result["nome"]);
+        $cliente->setCpf($result["cpf"]);
+        $cliente->setTelefone($result["telefone"]);
+       }
+       return $cliente;    
+}
 ?>

@@ -31,4 +31,20 @@ function inserirFuncionario($nome,$telefone,$cpf){
     $stmt = null;    
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
+
+function buscarFuncionario($cpf){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE `cpf` like :cpf");
+    $stmt->bindParam(':cpf', $cpf);
+    $stmt->execute();
+    $funcionario = new Funcionario();
+       while( $result = $stmt->fetch()){
+        $funcionario->setID($result["id"]);
+        $funcionario->setNome($result["nome"]);
+        $funcionario->setCpf($result["cpf"]);
+        $funcionario->setTelefone($result["telefone"]);
+       }
+       return $funcionario;    
+}
 ?>

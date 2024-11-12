@@ -31,6 +31,13 @@ if(isset($_POST['bt_cadastro_ordemservico'])){
     }else{
         header('Location: ../view/telaCadastro.php?msg=dadosinvalidos'); 
     }
+}
+
+if(isset("bt_busca_ordemservico")){
+    if(!isset($_POST["busca"]) or empty($_POST["busca"])){
+        header ('Location: ..ERRO');
+    }
+    
 
 }
 
@@ -52,54 +59,13 @@ function inserirOrdemServico($id_carro,$id_cliente,$id_funcionario,$valor,$descr
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
 
-function buscarCliente($cpf){
-    $conn = new Conexao();
-    $conn = $conn->conexao();
-    $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE `cpf` like :cpf");
-    $stmt->bindParam(':cpf', $cpf);
-    $stmt->execute();
-    $cliente = new Cliente();
-       while( $result = $stmt->fetch()){
-        $cliente->setID($result["id"]);
-        $cliente->setNome($result["nome"]);
-        $cliente->setCpf($result["cpf"]);
-        $cliente->setTelefone($result["telefone"]);
-       }
-       return $cliente;    
-}
-
-function buscarFuncionario($cpf){
-    $conn = new Conexao();
-    $conn = $conn->conexao();
-    $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE `cpf` like :cpf");
-    $stmt->bindParam(':cpf', $cpf);
-    $stmt->execute();
-    $funcionario = new Funcionario();
-       while( $result = $stmt->fetch()){
-        $funcionario->setID($result["id"]);
-        $funcionario->setNome($result["nome"]);
-        $funcionario->setCpf($result["cpf"]);
-        $funcionario->setTelefone($result["telefone"]);
-       }
-       return $funcionario;    
+function buscarOrdemServico($valor_busca , $coluna){
+    fsfs TERMINAR
 }
 
 
-function buscarCarro($placa){
-    $conn = new Conexao();
-    $conn = $conn->conexao();
-    $stmt = $conn->prepare("SELECT * FROM `carro` WHERE `placa` like :placa");
-    $stmt->bindParam(':placa', $placa);
-    $stmt->execute();
-    $carro = new Carro();
-       while( $result = $stmt->fetch()){
-        $carro->setID($result["id"]);
-        $carro->setPlaca($result["placa"]);
-        $carro->setMarca($result["marca"]);
-        $carro->setModelo($result["modelo"]);
-        $carro->setAno($result["ano"]);
-       }
-       return $carro;    
-}
+
+
+
 
 ?>

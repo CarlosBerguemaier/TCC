@@ -45,7 +45,7 @@
            Escolha o parametro para buscar
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=placa">Placa do Carro</a>
+          <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=placa">Placa do Veículo</a>
           <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=cpf_c">CPF do cliente</a>
           <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=cpf_f">CPF do Funcionário</a>
           <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=descricao">Descrição</a>
@@ -53,9 +53,26 @@
          </div>
           </div>
        <form action="../control/OrdemServicoControle.php" method="post">
-        <?php ?>
-       Digite o valor a buscar:<input type="text" name="busca">
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_ordemservico" name="bt_cadastro_ordemservico">Cadastrar</button>
+        <?php if(isset($_GET["sv_busca"])){
+          if($_GET["sv_busca"] == "cpf_c"){
+            echo "Digite o CPF do cliente:<input type='text' name='busca'>";
+          }
+          if($_GET["sv_busca"] == "cpf_f"){
+            echo "Digite o CPF do funcionário:<input type='text' name='busca'>";
+          }
+          if($_GET["sv_busca"] == "placa"){
+            echo "Digite a placa do veículo:<input type='text' name='busca'>";
+          }
+          if($_GET["sv_busca"] == "valor"){
+            echo "Digite o valor do serviço:<input type='text' name='busca'>";
+          }
+          if($_GET["sv_busca"] == "descricao"){
+            echo "Digite a descrição do serviço:<input type='text' name='busca'>";
+          }
+        }
+          ?>
+  
+        <button class="btn btn-success botao-enviar" type="submit" id="bt_buscar_ordemservico" name="bt_buscar_ordemservico">Buscar</button>
     </form>
 </div></div>
 
