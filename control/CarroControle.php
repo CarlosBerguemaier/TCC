@@ -13,8 +13,8 @@ if(isset($_POST['modelo'])){$modelo = $_POST['modelo'];}
 if(isset($_POST['ano'])){$ano = $_POST['ano'];}
 
 if(isset($_POST['bt_cadastro_carro'])){
-    if(!isset($placa) or !isset($marca) or !isset($modelo) or !isset($ano)){
-        header('Location: ../view/telaCadastro.php?erro=dadosinvalidos'); 
+    if(!isset($placa) or !isset($marca) or !isset($modelo) or !isset($ano) or empty($placa) or empty($marca) or empty($modelo) or empty($ano)){
+        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
     }else{
         inserirCarro($placa, $marca, $modelo, $ano);
     }

@@ -4,6 +4,11 @@
     color: rgb(110, 110, 110);
 }
 
+.custom {
+  width: 100px;  
+  margin: 0 auto;
+}
+
 .principal{
   padding-left: 28%;
   padding-right: 28%;
@@ -36,3 +41,8 @@
   margin-left: 27% ;
   width: 50%;
 }
+
+.navbar-link{
+  font-size: 2em;
+}
+

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="../estilo.css">
 </head>
 <body>
-<?php include_once '../sidebar.php';?>
+
 <div class="principal">
     <h1>aqui é a tela de relatorios</h1>
 </div>

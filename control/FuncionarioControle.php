@@ -12,8 +12,8 @@ if(isset($_POST['telefone'])){$telefone = $_POST['telefone'];}
 if(isset($_POST['cpf'])){$cpf = $_POST['cpf'];}
 
 if(isset($_POST['bt_cadastro_funcionario'])){
-    if(!isset($nome) or !isset($telefone) or !isset($cpf)){
-        header('Location: ../view/telaCadastro.php?erro=dadosinvalidos'); 
+    if(!isset($nome) or !isset($telefone) or !isset($cpf) or empty($nome) or empty($telefone) or empty($cpf)){
+        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
     }else{
         inserirFuncionario($nome, $telefone, $cpf);
     }

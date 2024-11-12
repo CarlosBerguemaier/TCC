@@ -6,14 +6,28 @@
     <title>tela de serviços</title>
  <!-- Última versão CSS compilada e minificada -->
 
- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 <link rel="stylesheet" href="../estilo.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body>
-<?php include_once '../sidebar.php';
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">
+
+
+    <ul class="navbar-nav">
+      <li class="nav-item custom">
+        <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
+      </li>
+ 
+
+
+    </ul>
+
+</nav>
+<?php 
   if(isset($_GET['msg'])){
     $msg=$_GET['msg'];
     if($msg == "sucesso"){
@@ -21,7 +35,12 @@
       <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
     </div>';
     }
-  }
+    if($msg == "dadosinvalidos"){
+      echo '<div class="alert alert-danger" role="alert">
+      <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
+    </div>';
+    }
+  } 
 ?>
 
 <div class="principal">
