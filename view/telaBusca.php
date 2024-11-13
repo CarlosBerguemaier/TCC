@@ -20,6 +20,22 @@
     </ul>
 </nav>
 
+<?php 
+  if(isset($_GET['msg'])){
+    $msg=$_GET['msg'];
+    if($msg == "sucesso"){
+      echo '<div class="alert alert-success" role="alert">
+      <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
+    </div>';
+    }
+    if($msg == "naoencontrado"){
+      echo '<div class="alert alert-danger" role="alert">
+      <h6 class="texto-alertas">Não foi encontrado nenhum registro com o dado informado!</h6>
+    </div>';
+    }
+  } 
+?>
+
 <div class="principal">
 <div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -52,27 +68,47 @@
           <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=valor">Valor</a>
          </div>
           </div>
-       <form action="../control/OrdemServicoControle.php" method="post">
+      
         <?php if(isset($_GET["sv_busca"])){
           if($_GET["sv_busca"] == "cpf_c"){
-            echo "Digite o CPF do cliente:<input type='text' name='busca'>";
+            $coluna = "cpf_c";
+             echo '<form action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
+             echo "Digite o CPF do cliente:<input type='text' name='busca'>";
+             echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
+
           }
           if($_GET["sv_busca"] == "cpf_f"){
-            echo "Digite o CPF do funcionário:<input type='text' name='busca'>";
+            $coluna = "cpf_f";
+            echo '<form action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
+            echo "Digite o CPF do Funcionário:<input type='text' name='busca'>";
+            echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
+
           }
           if($_GET["sv_busca"] == "placa"){
+            $coluna = "placa";
+            echo '<form action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
             echo "Digite a placa do veículo:<input type='text' name='busca'>";
+            echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
+
           }
           if($_GET["sv_busca"] == "valor"){
+            $coluna = "valor";
+            echo '<form action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
             echo "Digite o valor do serviço:<input type='text' name='busca'>";
+            echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
+
           }
           if($_GET["sv_busca"] == "descricao"){
+            $coluna = "descricao";
+            echo '<form action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
             echo "Digite a descrição do serviço:<input type='text' name='busca'>";
+            echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
+
           }
         }
           ?>
   
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_buscar_ordemservico" name="bt_buscar_ordemservico">Buscar</button>
+       
     </form>
 </div></div>
 

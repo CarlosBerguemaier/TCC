@@ -5,6 +5,9 @@ include_once '../model/Carro.php';
 include_once '../model/Cliente.php';
 include_once '../model/OrdemServico.php';
 include_once '../database/conexao.php';
+include_once '../control/ClienteControle.php';
+include_once '../control/CarroControle.php';
+include_once '../control/FuncionarioControle.php';
 
 $conn = new Conexao();
 $conn = $conn->conexao();
@@ -33,10 +36,17 @@ if(isset($_POST['bt_cadastro_ordemservico'])){
     }
 }
 
-if(isset("bt_busca_ordemservico")){
-    if(!isset($_POST["busca"]) or empty($_POST["busca"])){
-        header ('Location: ..ERRO');
+if(isset($_POST["bt_busca_ordemservico"])){
+    if(!isset($_POST["busca"]) or empty($_POST["busca"]) or empty($_GET['coluna']) or !isset($_GET['coluna'])){
+            header ('Location: ../view/telaBusca.php?msg=naoencontrado');
+        }   
+    if($_GET['coluna'] = "cpf_c"){
+    $cliente = buscarCliente($_POST['busca']);
+    if( null!==($cliente->getId()) or empty($cliente->getId())){
+     header('Location: ../view/telaBusca.php?msg=naoencontrado');
     }
+    }
+    buscarOrdemServico($_POST['busca'] , $_GET['coluna']);
     
 
 }
@@ -60,7 +70,54 @@ function inserirOrdemServico($id_carro,$id_cliente,$id_funcionario,$valor,$descr
 }
 
 function buscarOrdemServico($valor_busca , $coluna){
-    fsfs TERMINAR
+    if(!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)){
+        header('Location: ERRO');
+    }
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    if($coluna == "cpf_c"){
+        $busca = buscarCliente($valor_busca);
+        $valor_para_buscar = $busca->getId(); 
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_cliente like :busca"); 
+        }
+    if($coluna == "cpf_f"){
+            $busca = buscarFuncionario($valor_busca);
+            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_funcionario like :busca");
+            $valor_para_buscar = $busca->getId();   
+        }
+    if($coluna == "placa"){
+            $busca = buscarCarro($valor_busca);
+            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_carro like :busca");
+            $valor_para_buscar = $busca->getId();
+        }
+    if($coluna == "descricao"){
+            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE descricao like :busca");
+            $valor_para_buscar = "%".$valor_busca."%";
+        }
+    if($coluna == "valor"){
+            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE valor like :busca");
+            $valor_para_buscar = $valor_para_buscar;
+        }
+    $stmt->bindParam(':busca', $valor_para_buscar);
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll();
+    $vetor_servicos[] = "";
+    $i = 0;
+       foreach($resultado as $ordem){
+        $ordemservico = new OrdemServico();
+        $ordemservico->setID($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $vetor_servicos[$i] = $ordemservico;
+        $i++; 
+    }
+       return $vetor_servicos;    
 }
 
 
