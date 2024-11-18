@@ -12,46 +12,59 @@ include_once '../control/FuncionarioControle.php';
 $conn = new Conexao();
 $conn = $conn->conexao();
 
-if(isset($_POST['placa'])){$placa = $_POST['placa'];}
-if(isset($_POST['cpf_cliente'])){$cpf_cliente = $_POST['cpf_cliente'];}
-if(isset($_POST['cpf_funcionario'])){$cpf_funcionario = $_POST['cpf_funcionario'];}
-if(isset($_POST['descricao'])){$descricao = $_POST['descricao'];}
-if(isset($_POST['valor'])){$valor = $_POST['valor'];}
-if(isset($_POST['kminicial'])){$kminicial = $_POST['kminicial'];}
-if(isset($_POST['kmfinal'])){$kmfinal = $_POST['kmfinal'];}
+if (isset($_POST['placa'])) {
+    $placa = $_POST['placa'];
+}
+if (isset($_POST['cpf_cliente'])) {
+    $cpf_cliente = $_POST['cpf_cliente'];
+}
+if (isset($_POST['cpf_funcionario'])) {
+    $cpf_funcionario = $_POST['cpf_funcionario'];
+}
+if (isset($_POST['descricao'])) {
+    $descricao = $_POST['descricao'];
+}
+if (isset($_POST['valor'])) {
+    $valor = $_POST['valor'];
+}
+if (isset($_POST['kminicial'])) {
+    $kminicial = $_POST['kminicial'];
+}
+if (isset($_POST['kmfinal'])) {
+    $kmfinal = $_POST['kmfinal'];
+}
 
-if(isset($_POST['bt_cadastro_ordemservico'])){
+if (isset($_POST['bt_cadastro_ordemservico'])) {
     $cliente = buscarCliente($cpf_cliente);
     $funcionario = buscarFuncionario($cpf_funcionario);
     $carro = buscarCarro($placa);
-  
-     if($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null){
-        if(!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)){
-            header('Location: ../view/telaCadastro.php?msg=dadosinvalidos'); 
-        }else{
-            inserirOrdemServico($carro->getId(),$cliente->getId(),$funcionario->getId(),$valor,$descricao,$kminicial,$kmfinal);
+
+    if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
+        if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
+            header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        } else {
+            inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal);
         }
-    }else{
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos'); 
+    } else {
+        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
     }
 }
 
-if(isset($_POST["bt_busca_ordemservico"])){
-    if(!isset($_POST["busca"]) or empty($_POST["busca"]) or empty($_GET['coluna']) or !isset($_GET['coluna'])){
-            header ('Location: ../view/telaBusca.php?msg=naoencontrado');
-        }   
-    if($_GET['coluna'] = "cpf_c"){
-    $cliente = buscarCliente($_POST['busca']);
-    if( null!==($cliente->getId()) or empty($cliente->getId())){
-     header('Location: ../view/telaBusca.php?msg=naoencontrado');
+if (isset($_POST["bt_busca_ordemservico"])) {
+    if (!isset($_POST["busca"]) or empty($_POST["busca"]) or empty($_GET['coluna']) or !isset($_GET['coluna'])) {
+        header('Location: ../view/telaBusca.php?msg=naoencontrado');
     }
+    if ($_GET['coluna'] = "cpf_c") {
+        $cliente = buscarCliente($_POST['busca']);
+        if (empty($cliente->getId())) {
+            header('Location: ../view/telaBusca.php?msg=naoencontrado');
+        }
     }
-    buscarOrdemServico($_POST['busca'] , $_GET['coluna']);
-    
-
+    buscarOrdemServico($_POST['busca'], $_GET['coluna']);
 }
 
-function inserirOrdemServico($id_carro,$id_cliente,$id_funcionario,$valor,$descricao,$kminicial,$kmfinal){
+function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $descricao, $kminicial, $kmfinal)
+{
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("INSERT INTO `ordem_servico`(`id_cliente`, `id_funcionario`, `id_carro`, `valor`, `descricao`, `kminicial`, `kmfinal`)
@@ -63,48 +76,49 @@ function inserirOrdemServico($id_carro,$id_cliente,$id_funcionario,$valor,$descr
     $stmt->bindParam(':descricao', $descricao);
     $stmt->bindParam(':kminicial', $kminicial);
     $stmt->bindParam(':kmfinal', $kmfinal);
- 
+
     $stmt->execute();
-    $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    $stmt = null;
+    header('Location: ../view/telaCadastro.php?msg=sucesso');
 }
 
-function buscarOrdemServico($valor_busca , $coluna){
-    if(!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)){
+function buscarOrdemServico($valor_busca, $coluna)
+{
+    if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
         header('Location: ERRO');
     }
     $conn = new Conexao();
     $conn = $conn->conexao();
-    if($coluna == "cpf_c"){
+    if ($coluna == "cpf_c") {
         $busca = buscarCliente($valor_busca);
-        $valor_para_buscar = $busca->getId(); 
-        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_cliente like :busca"); 
-        }
-    if($coluna == "cpf_f"){
-            $busca = buscarFuncionario($valor_busca);
-            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_funcionario like :busca");
-            $valor_para_buscar = $busca->getId();   
-        }
-    if($coluna == "placa"){
-            $busca = buscarCarro($valor_busca);
-            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_carro like :busca");
-            $valor_para_buscar = $busca->getId();
-        }
-    if($coluna == "descricao"){
-            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE descricao like :busca");
-            $valor_para_buscar = "%".$valor_busca."%";
-        }
-    if($coluna == "valor"){
-            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE valor like :busca");
-            $valor_para_buscar = $valor_para_buscar;
-        }
+        $valor_para_buscar = $busca->getId();
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_cliente like :busca");
+    }
+    if ($coluna == "cpf_f") {
+        $busca = buscarFuncionario($valor_busca);
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_funcionario like :busca");
+        $valor_para_buscar = $busca->getId();
+    }
+    if ($coluna == "placa") {
+        $busca = buscarCarro($valor_busca);
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_carro like :busca");
+        $valor_para_buscar = $busca->getId();
+    }
+    if ($coluna == "descricao") {
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE descricao like :busca");
+        $valor_para_buscar = "%" . $valor_busca . "%";
+    }
+    if ($coluna == "valor") {
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE valor like :busca");
+        $valor_para_buscar = $valor_para_buscar;
+    }
     $stmt->bindParam(':busca', $valor_para_buscar);
     $stmt->execute();
 
     $resultado = $stmt->fetchAll();
     $vetor_servicos[] = "";
     $i = 0;
-       foreach($resultado as $ordem){
+    foreach ($resultado as $ordem) {
         $ordemservico = new OrdemServico();
         $ordemservico->setID($ordem['id']);
         $ordemservico->setId_carro($ordem['id_carro']);
@@ -115,14 +129,52 @@ function buscarOrdemServico($valor_busca , $coluna){
         $ordemservico->setKminicial($ordem['kminicial']);
         $ordemservico->setKmfinal($ordem['kmfinal']);
         $vetor_servicos[$i] = $ordemservico;
-        $i++; 
+        $i++;
     }
-       return $vetor_servicos;    
+    imprimirResultados($vetor_servicos);
+    return $vetor_servicos;
 }
 
 
+function imprimirResultados($vetor_servicos){
+        if (empty($vetor_servicos)) {
+            echo "Não há dados para exibir.";
+            return;
+        }
+       
+        $html = "<table border='1'>
+                <thead>
+                    <tr>
+                        <th>Placa</th>
+                        <th>Cliente</th>
+                        <th>Funcionário</th>
+                        <th>Serviço</th>
+                        <th>Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>";
+                $conteudo = "";
+        foreach ($vetor_servicos as $ordemservico) {
+            $cliente = buscarClientePorId($ordemservico->getId_cliente());
+            $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
+            $carro = buscarCarroPorId($ordemservico->getId_carro());
+        
+            
+            $conteudo = $conteudo . "<tr><td>" . $carro->getPlaca() . "</td>".
+             "<td>" . $cliente->getNome() . "</td>" .
+             "<td>" . $funcionario->getNome() . "</td>"
+            . "<td>" . $ordemservico->getDescricao() . "</td>"
+            . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
+            . "<td>
+                    <button onclick='editarRegistro(" . $ordemservico->getId(). ")'>Editar</button>
+                    <button onclick='apagarRegistro(" . $ordemservico->getId() . ")'>Apagar</button>
+                </td>"
+            . "</tr>";
+        }
+        $html = $html . $conteudo ."</tbody>
+            </table>";
 
-
-
-
+    return $html;
+    }
 ?>

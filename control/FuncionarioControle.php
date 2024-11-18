@@ -47,4 +47,21 @@ function buscarFuncionario($cpf){
        }
        return $funcionario;    
 }
+
+
+function buscarFuncionarioPorId($id){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE `id` like :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $funcionario = new Funcionario();
+       while( $result = $stmt->fetch()){
+        $funcionario->setID($result["id"]);
+        $funcionario->setNome($result["nome"]);
+        $funcionario->setCpf($result["cpf"]);
+        $funcionario->setTelefone($result["telefone"]);
+       }
+       return $funcionario;    
+}
 ?>

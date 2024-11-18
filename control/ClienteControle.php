@@ -46,4 +46,20 @@ function buscarCliente($cpf){
        }
        return $cliente;    
 }
+
+function buscarClientePorId($id){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE `id` like :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $cliente = new Cliente();
+       while( $result = $stmt->fetch()){
+        $cliente->setID($result["id"]);
+        $cliente->setNome($result["nome"]);
+        $cliente->setCpf($result["cpf"]);
+        $cliente->setTelefone($result["telefone"]);
+       }
+       return $cliente;
+}
 ?>

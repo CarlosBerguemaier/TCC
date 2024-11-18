@@ -50,4 +50,21 @@ function buscarCarro($placa){
        }
        return $carro;    
 }
+
+function buscarCarroPorId($id){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare("SELECT * FROM `carro` WHERE `id` like :id");
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $carro = new Carro();
+       while( $result = $stmt->fetch()){
+        $carro->setID($result["id"]);
+        $carro->setPlaca($result["placa"]);
+        $carro->setMarca($result["marca"]);
+        $carro->setModelo($result["modelo"]);
+        $carro->setAno($result["ano"]);
+       }
+       return $carro;    
+}
 ?>
