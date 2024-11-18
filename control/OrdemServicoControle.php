@@ -50,18 +50,19 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
     }
 }
 
-if (isset($_POST["bt_busca_ordemservico"])) {
-    if (!isset($_POST["busca"]) or empty($_POST["busca"]) or empty($_GET['coluna']) or !isset($_GET['coluna'])) {
-        header('Location: ../view/telaBusca.php?msg=naoencontrado');
-    }
-    if ($_GET['coluna'] = "cpf_c") {
-        $cliente = buscarCliente($_POST['busca']);
-        if (empty($cliente->getId())) {
+if(isset($_POST['bt_busca_ordemservico'])){
+if(isset($_POST['busca']) or !empty($_POST['busca'])){
+header('Location: ../view/telaBusca.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
+}}
+
+function bt_buscar($busca , $coluna){
+        if (!isset($busca) or empty($busca) or empty($coluna) or !isset($coluna)) {
             header('Location: ../view/telaBusca.php?msg=naoencontrado');
         }
-    }
-    buscarOrdemServico($_POST['busca'], $_GET['coluna']);
+        $result = buscarOrdemServico($busca, $coluna);
+        return $result;
 }
+
 
 function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $descricao, $kminicial, $kmfinal)
 {
@@ -110,7 +111,7 @@ function buscarOrdemServico($valor_busca, $coluna)
     }
     if ($coluna == "valor") {
         $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE valor like :busca");
-        $valor_para_buscar = $valor_para_buscar;
+        $valor_para_buscar = $valor_busca;
     }
     $stmt->bindParam(':busca', $valor_para_buscar);
     $stmt->execute();
@@ -131,7 +132,6 @@ function buscarOrdemServico($valor_busca, $coluna)
         $vetor_servicos[$i] = $ordemservico;
         $i++;
     }
-    imprimirResultados($vetor_servicos);
     return $vetor_servicos;
 }
 
@@ -141,8 +141,11 @@ function imprimirResultados($vetor_servicos){
             echo "Não há dados para exibir.";
             return;
         }
-       
-        $html = "<table border='1'>
+        $ordemservico = $vetor_servicos[0];
+        if(empty($ordemservico)){
+            echo "Nenhum dado foi encontrado!";
+        }else{
+        echo "<table id=\"tabelabusca\" border='1'>
                 <thead>
                     <tr>
                         <th>Placa</th>
@@ -154,27 +157,25 @@ function imprimirResultados($vetor_servicos){
                     </tr>
                 </thead>
                 <tbody>";
-                $conteudo = "";
         foreach ($vetor_servicos as $ordemservico) {
             $cliente = buscarClientePorId($ordemservico->getId_cliente());
             $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
             $carro = buscarCarroPorId($ordemservico->getId_carro());
         
             
-            $conteudo = $conteudo . "<tr><td>" . $carro->getPlaca() . "</td>".
+            echo "<tr><td>" . $carro->getPlaca() . "</td>".
              "<td>" . $cliente->getNome() . "</td>" .
              "<td>" . $funcionario->getNome() . "</td>"
             . "<td>" . $ordemservico->getDescricao() . "</td>"
             . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
             . "<td>
-                    <button onclick='editarRegistro(" . $ordemservico->getId(). ")'>Editar</button>
-                    <button onclick='apagarRegistro(" . $ordemservico->getId() . ")'>Apagar</button>
+                   <button class=\"btn btn-primary\">Editar</button>
+                    <button class=\"btn btn-danger\"  data-toggle=\"modal\" data-target=\"#modalExcluir\">Apagar</button>
                 </td>"
             . "</tr>";
         }
-        $html = $html . $conteudo ."</tbody>
+        echo "</tbody> .
             </table>";
-
-    return $html;
+        }
     }
 ?>

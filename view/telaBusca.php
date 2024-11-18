@@ -36,8 +36,31 @@
   } 
 ?>
 
+ 
+
 <div class="principal">
 <div>
+
+<div class="modal fade" id="modalExcluir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deseja mesmo excluír este dado?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Está ação não poderá ser desfeita
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Sim</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="servico-tab" data-toggle="tab" href="#servico" role="tab" aria-controls="servico" aria-selected="true">Serviços</a>
@@ -57,8 +80,8 @@
   <div class="tab-pane fade show active bg-white border" id="servico" role="tabpanel" aria-labelledby="servico-tab"> 
        <div class="card-body">
        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           Escolha o parametro para buscar
+        <button class="btn btn-primary dropdown-toggle select" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           Escolha o parâmetro para buscar
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a class="dropdown-item" href="../view/telaBusca.php?sv_busca=placa">Placa do Veículo</a>
@@ -75,41 +98,39 @@
           if($_GET["sv_busca"] == "cpf_c"){
             $coluna = "cpf_c";
              echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
-             echo "Digite o CPF do cliente:<input type='text' name='busca'>";
+             echo "<h3>Digite o CPF do cliente:</h3><input type='text' name='busca'>";
              echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
           }
           if($_GET["sv_busca"] == "cpf_f"){
             $coluna = "cpf_f";
             echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
-            echo "Digite o CPF do Funcionário:<input type='text' name='busca'>";
+            echo "<h3>Digite o CPF do Funcionário:</h3><input type='text' name='busca'>";
             echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
 
           }
           if($_GET["sv_busca"] == "placa"){
             $coluna = "placa";
             echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
-            echo "Digite a placa do veículo:<input type='text' name='busca'>";
+            echo "<h3>Digite a placa do veículo:</h3><input type='text' name='busca'>";
             echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
 
           }
           if($_GET["sv_busca"] == "valor"){
             $coluna = "valor";
             echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
-            echo "Digite o valor do serviço:<input type='text' name='busca'>";
+            echo "<h3>Digite o valor do serviço:</h3><input type='text' name='busca'>";
             echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
 
           }
           if($_GET["sv_busca"] == "descricao"){
             $coluna = "descricao";
             echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna='.$coluna.'" method="post">';
-            echo "Digite a descrição do serviço:<input type='text' name='busca'>";
+            echo "<h3>Digite a descrição do serviço:</h3><input type='text' name='busca'>";
             echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico">Buscar</button>';
 
           }
         }
           ?>
-  
-       
     </form>
 </div></div>
 
@@ -140,10 +161,25 @@
         Telefone: <input type="text" name="telefone">
         <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_funcionario" name="bt_cadastro_funcionario">Cadastrar</button>
     </form>
-    </div>  </div>
+    </div></div>
+
 </div>
 </div>
+
+
+<div class="div-resultados">
+ 
+<?php 
+    include_once '../control/OrdemServicoControle.php';
+    if(isset($_GET['valor']) and isset($_GET['coluna'])){
+      echo " <button class=\"btn btn-primary btn-esconder\"><a class=\"link-esconder\" href=\"telaBusca.php\">Esconder resultados</a  ></button>";
+    $html = bt_buscar($_GET['valor'],$_GET['coluna']);
+    imprimirResultados($html);
+    }
+    ?>
 </div>
+
+
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

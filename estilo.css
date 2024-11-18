@@ -14,7 +14,6 @@
   padding-right: 28%;
   padding-top: 2%;
   padding-bottom: 2%;
-  height: 1900px;
   font-size: 2em;
 }
 .navbar{
@@ -46,3 +45,20 @@
   font-size: 2em;
 }
 
+.div-resultados{
+  margin-left: 22%;
+    width: 1200px;
+}
+.btn-esconder{
+  margin-left: 35%;
+  text-decoration: none;
+}
+
+.link-esconder{
+  color: white;
+  text-decoration: none;
+}
+.link-esconder:hover{
+  color: white;
+  text-decoration: none;
+}
