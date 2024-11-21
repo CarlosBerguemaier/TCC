@@ -22,21 +22,41 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link navbar-link" href="index.php">Início</a>
-      </li>
-        
-      <li class="nav-item">
         <a class="nav-link navbar-link" href="../view/telaCadastro.php">Cadastrar</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link navbar-link" href="../view/telaBusca.php">Buscar/Editar</a>
-      </li>
-
+        <a class="nav-link navbar-link dropdown-toggle select" href="#" id="dropdownMenuButtonClientes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Buscar/Editar</a>
+      
+      <div class="dropdown">
+          
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonClientes">
+            <a class="dropdown-item" href="../view/telaBuscaOrdemServico.php">Ordem de Serviço</a>
+            <a class="dropdown-item" href="../view/telaBuscaClientes.php">Clientes</a>
+            <a class="dropdown-item" href="../view/telaBuscaFuncionarios.php">Funcionários</a>
+            <a class="dropdown-item" href="../view/telaBusca.php">Carros</a>
+          </div>
+            </div>
+            </li>
 
     </ul>
   </div>
 </nav>
+<?php 
+    if(isset($_GET['msg'])){
+      $msg=$_GET['msg'];
+      if($msg == "sucesso"){
+        echo '<div class="alert alert-success" role="alert">
+        <h6 class="texto-alertas">Ação efetuada com Sucesso!</h6>
+      </div>';
+      }
+      if($msg == "naoencontrado"){
+        echo '<div class="alert alert-danger" role="alert">
+        <h6 class="texto-alertas">Não foi encontrado nenhum registro com o dado informado!</h6>
+      </div>';
+      }
+    } 
+  ?>
 <div class="principal"></div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

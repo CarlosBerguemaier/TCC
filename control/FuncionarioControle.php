@@ -32,7 +32,7 @@ function inserirFuncionario($nome,$telefone,$cpf){
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
 
-function buscarFuncionario($cpf){
+function buscarFuncionarioCpf($cpf){
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE `cpf` like :cpf");
@@ -63,5 +63,90 @@ function buscarFuncionarioPorId($id){
         $funcionario->setTelefone($result["telefone"]);
        }
        return $funcionario;    
+}
+
+if(isset($_POST['bt_busca_funcionario'])){
+    if(isset($_POST['busca']) or !empty($_POST['busca'])){
+    header('Location: ../view/telaBuscaFuncionarios.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
+    }}
+
+
+function buscarFuncionario($valor_busca, $coluna)
+{
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+
+    if ($coluna == "nome") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE nome like :busca");
+        $valor_busca = "%".$valor_busca."%";
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+    if ($coluna == "cpf_f") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE cpf like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+    if ($coluna == "telefone") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE telefone like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+
+
+    $stmt->execute();
+    $resultado = $stmt->fetchAll();
+    $vetor_funcionarios[] = "";
+    $i = 0;
+    foreach ($resultado as $restultado_objeto) {
+        $Funcionario = new Funcionario();
+        $Funcionario->setID($restultado_objeto['id']);
+        $Funcionario->setNome($restultado_objeto['nome']);
+        $Funcionario->setCpf($restultado_objeto['cpf']);
+        $Funcionario->setTelefone($restultado_objeto['telefone']);
+        $vetor_funcionarios[$i] = $Funcionario;
+        $i++;
+    }
+    return $vetor_funcionarios;
+}
+
+function bt_buscar_funcionarios($busca,$coluna){
+    if (!isset($busca) or empty($busca) or empty($coluna) or !isset($coluna)) {
+        header('Location: ../view/telaBuscaFuncionarios.php?msg=naoencontrado');
+    }
+    $result = buscarFuncionario($busca, $coluna);
+    return $result;
+}
+
+
+
+function imprimirResultadosFuncionarios($vetor_funcionarios){
+    if (empty($vetor_funcionarios)) {
+        echo "Não há dados para exibir.";
+        return;
+    }
+    $funcionario = $vetor_funcionarios[0];
+    if(empty($funcionario)){
+        echo "Nenhum dado foi encontrado!";
+    }else{
+    echo "<table id=\"tabelabusca\" border='1'>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                </tr>
+            </thead>
+            <tbody>";
+    foreach ($vetor_funcionarios as $funcionario) {
+        echo "<tr><td>" . $funcionario->getNome() . "</td>".
+         "<td>" . $funcionario->getCpf() . "</td>" .
+         "<td>" . $funcionario->getTelefone() . "</td>"
+        . "<td>
+               <a href=\"telaExlcuir.php?id=".$funcionario->getId()."&tipo=funcionario\"><button class=\"btn btn-primary\">Editar</button></a>
+                <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
+            </td>"
+        . "</tr>";
+    }
+    echo "</tbody> .
+        </table>";
+    }
 }
 ?>

@@ -31,7 +31,7 @@ function inserirCliente($nome,$telefone,$cpf){
     $stmt = null;    
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
-function buscarCliente($cpf){
+function buscarClienteCpf($cpf){
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE `cpf` like :cpf");
@@ -47,6 +47,11 @@ function buscarCliente($cpf){
        return $cliente;    
 }
 
+if(isset($_POST['bt_busca_cliente'])){
+    if(isset($_POST['busca']) or !empty($_POST['busca'])){
+    header('Location: ../view/telaBuscaClientes.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
+    }}
+
 function buscarClientePorId($id){
     $conn = new Conexao();
     $conn = $conn->conexao();
@@ -61,5 +66,84 @@ function buscarClientePorId($id){
         $cliente->setTelefone($result["telefone"]);
        }
        return $cliente;
+}
+
+function buscarCliente($valor_busca, $coluna)
+{
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+
+    if ($coluna == "nome") {
+        $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE nome like :busca");
+        $valor_busca = "%".$valor_busca."%";
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+    if ($coluna == "cpf_c") {
+        $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE cpf like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+    if ($coluna == "telefone") {
+        $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE telefone like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
+
+
+    $stmt->execute();
+    $resultado = $stmt->fetchAll();
+    $vetor_clientes[] = "";
+    $i = 0;
+    foreach ($resultado as $restultado_objeto) {
+        $Cliente = new Cliente();
+        $Cliente->setID($restultado_objeto['id']);
+        $Cliente->setNome($restultado_objeto['nome']);
+        $Cliente->setCpf($restultado_objeto['cpf']);
+        $Cliente->setTelefone($restultado_objeto['telefone']);
+        $vetor_clientes[$i] = $Cliente;
+        $i++;
+    }
+    return $vetor_clientes;
+}
+
+function bt_buscar_cliente($busca,$coluna){
+    if (!isset($busca) or empty($busca) or empty($coluna) or !isset($coluna)) {
+        header('Location: ../view/telaBuscaClientes.php?msg=naoencontrado');
+    }
+    $result = buscarCliente($busca, $coluna);
+    return $result;
+}
+
+
+
+function imprimirResultadosClientes($vetor_clientes){
+    if (empty($vetor_clientes)) {
+        echo "Não há dados para exibir.";
+        return;
+    }
+    $cliente = $vetor_clientes[0];
+    if(empty($cliente)){
+        echo "Nenhum dado foi encontrado!";
+    }else{
+    echo "<table id=\"tabelabusca\" border='1'>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                </tr>
+            </thead>
+            <tbody>";
+    foreach ($vetor_clientes as $cliente) {
+        echo "<tr><td>" . $cliente->getNome() . "</td>".
+         "<td>" . $cliente->getCpf() . "</td>" .
+         "<td>" . $cliente->getTelefone() . "</td>"
+        . "<td>
+               <a href=\"telaEditar.php?id=".$cliente->getId()."&tipo=cliente\"><button class=\"btn btn-primary\">Editar</button></a>
+                <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
+            </td>"
+        . "</tr>";
+    }
+    echo "</tbody> .
+        </table>";
+    }
 }
 ?>
