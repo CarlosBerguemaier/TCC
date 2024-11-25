@@ -76,6 +76,10 @@ function buscarFuncionario($valor_busca, $coluna)
     $conn = new Conexao();
     $conn = $conn->conexao();
 
+    if ($coluna == "id") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
     if ($coluna == "nome") {
         $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE nome like :busca");
         $valor_busca = "%".$valor_busca."%";
@@ -140,13 +144,73 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
          "<td>" . $funcionario->getCpf() . "</td>" .
          "<td>" . $funcionario->getTelefone() . "</td>"
         . "<td>
-               <a href=\"telaExlcuir.php?id=".$funcionario->getId()."&tipo=funcionario\"><button class=\"btn btn-primary\">Editar</button></a>
+               <a href=\"telaEditar.php?id=".$funcionario->getId()."&tipo=funcionario\"><button class=\"btn btn-primary\">Editar</button></a>
                 <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
             </td>"
         . "</tr>";
     }
-    echo "</tbody> .
+    echo "</tbody> 
         </table>";
     }
 }
+
+
+function imprimirEditarFuncionario($funcionario){
+    if(empty($funcionario)){
+    return null;
+    }
+
+    echo " <form action=\"../control/FuncionarioControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        Nome: <input type=\"text\" name=\"nome\" value=\"". $funcionario->getNome() ."\">
+        CPF: <input type=\"text\" name=\"cpf_f\" value=\"". $funcionario->getCpf() ."\">
+        Telefone <input type=\"text\" name=\"telefone\" value=\"". $funcionario->getTelefone()."\">
+       
+        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_funcionario\" name=\"bt_editar_funcionario\">Editar</button>
+    </form>";
+    }
+
+
+
+
+if(isset($_POST['bt_editar_funcionario'])){
+
+if(isset($_POST['nome']) and isset($_POST['cpf_f']) and isset($_POST['telefone'])){
+$nome = $_POST['nome'];
+$cpf = $_POST['cpf_f'];
+$telefone = $_POST['telefone'];
+
+$funcionario = new Funcionario;
+
+$funcionario->setId($_GET['id']);
+$funcionario->setNome($_POST['nome']);
+$funcionario->setCpf($_POST['cpf_f']);
+$funcionario->setTelefone($_POST['telefone']);
+
+
+editarFuncionario($funcionario);
+}
+}
+
+function editarFuncionario($funcionario){
+    $id = $funcionario->getId();
+    $nome = $funcionario->getNome();
+    $telefone = $funcionario->getTelefone();
+    $cpf = $funcionario->getCpf();
+
+    
+        $conn = new Conexao();
+        $conn = $conn->conexao();
+        $stmt = $conn->prepare("UPDATE `funcionario`
+         SET `nome`= :nome,`cpf`=:cpf,`telefone`= :telefone WHERE id like :id");
+    
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':cpf', $cpf);
+        $stmt->bindParam(':telefone', $telefone);
+
+    
+        $stmt->execute();
+        $stmt = null;
+        header('Location: ../view/index.php?msg=sucesso');
+    }
 ?>

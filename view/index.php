@@ -34,7 +34,7 @@
             <a class="dropdown-item" href="../view/telaBuscaOrdemServico.php">Ordem de Serviço</a>
             <a class="dropdown-item" href="../view/telaBuscaClientes.php">Clientes</a>
             <a class="dropdown-item" href="../view/telaBuscaFuncionarios.php">Funcionários</a>
-            <a class="dropdown-item" href="../view/telaBusca.php">Carros</a>
+            <a class="dropdown-item" href="../view/telaBuscaCarros.php">Carros</a>
           </div>
             </div>
             </li>

@@ -51,6 +51,27 @@
           <?php
           imprimirEditarOrdemServico($resultados[0]);
         }
+        
+        if($tipo == "cliente"){
+          include_once '../control/ClienteControle.php';
+
+        $resultados = buscarCliente($id,"id");
+        ?>
+        <div class="div-resultados">
+        <?php
+        imprimirEditarCliente($resultados[0]);
+      }
+
+      if($tipo == "funcionario"){
+        include_once '../control/FuncionarioControle.php';
+
+      $resultados = buscarFuncionario($id,"id");
+      ?>
+      <div class="div-resultados">
+      <?php
+      imprimirEditarFuncionario($resultados[0]);
+    }
+
     }
   ?>
 

@@ -37,7 +37,7 @@ if (isset($_POST['kmfinal'])) {
 if (isset($_POST['bt_cadastro_ordemservico'])) {
     $cliente = buscarClienteCpf($cpf_cliente);
     $funcionario = buscarFuncionarioCpf($cpf_funcionario);
-    $carro = buscarCarro($placa);
+    $carro = buscarCarroPlaca($placa);
 
     if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
         if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
@@ -94,7 +94,7 @@ $cpf_f = $_POST['cpf_funcionario'];
 $placa = $_POST['placa'];
     $cliente = buscarClienteCpf($cpf_c);
     $funcionario = buscarFuncionarioCpf($cpf_f);
-    $carro = buscarCarro($placa);
+    $carro = buscarCarroPlaca($placa);
 
     if($cliente->getId() == 0 or $funcionario->getId() == 0 or $carro->getId() == 0){
         header('Location: ../view/telaEditar.php?id='.$_GET['id'].'&tipo=ordemservico&msg=naoencontrado');
@@ -178,7 +178,7 @@ function buscarOrdemServico($valor_busca, $coluna)
         $valor_para_buscar = $busca->getId();
     }
     if ($coluna == "placa") {
-        $busca = buscarCarro($valor_busca);
+        $busca = buscarCarroPlaca($valor_busca);
         $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id_carro like :busca");
         $valor_para_buscar = $busca->getId();
     }
@@ -213,50 +213,48 @@ function buscarOrdemServico($valor_busca, $coluna)
     }
     return $vetor_servicos;
 }
-
-
 function imprimirResultadosOrdemServicos($vetor_servicos){
-        if (empty($vetor_servicos)) {
-            echo "Não há dados para exibir.";
-            return;
-        }
-        $ordemservico = $vetor_servicos[0];
-        if(empty($ordemservico)){
-            echo "Nenhum dado foi encontrado!";
-        }else{
-        echo "<table id=\"tabelabusca\" border='1'>
-                <thead>
-                    <tr>
-                        <th>Placa</th>
-                        <th>Cliente</th>
-                        <th>Funcionário</th>
-                        <th>Serviço</th>
-                        <th>Valor</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>";
-        foreach ($vetor_servicos as $ordemservico) {
-            $cliente = buscarClientePorId($ordemservico->getId_cliente());
-            $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
-            $carro = buscarCarroPorId($ordemservico->getId_carro());
-        
-            
-            echo "<tr><td>" . $carro->getPlaca() . "</td>".
-             "<td>" . $cliente->getNome() . "</td>" .
-             "<td>" . $funcionario->getNome() . "</td>"
-            . "<td>" . $ordemservico->getDescricao() . "</td>"
-            . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
-            . "<td>
-                   <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\"><button class=\"btn btn-primary\">Editar</button></a>
-                    <a href=\"telaExlcuir.php?id=".$ordemservico->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
-                </td>"
-            . "</tr>";
-        }
-        echo "</tbody> .
-            </table>";
-        }
+    if (empty($vetor_servicos)) {
+        echo "Não há dados para exibir.";
+        return;
     }
+    $ordemservico = $vetor_servicos[0];
+    if(empty($ordemservico)){
+        echo "Nenhum dado foi encontrado!";
+    }else{
+    echo "<table id=\"tabelabusca\" border='1'>
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Cliente</th>
+                    <th>Funcionário</th>
+                    <th>Serviço</th>
+                    <th>Valor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>";
+    foreach ($vetor_servicos as $ordemservico) {
+        $cliente = buscarClientePorId($ordemservico->getId_cliente());
+        $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
+        $carro = buscarCarroPorId($ordemservico->getId_carro());
+    
+        
+        echo "<tr><td>" . $carro->getPlaca() . "</td>".
+         "<td>" . $cliente->getNome() . "</td>" .
+         "<td>" . $funcionario->getNome() . "</td>"
+        . "<td>" . $ordemservico->getDescricao() . "</td>"
+        . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
+        . "<td>
+               <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\"><button class=\"btn btn-primary\">Editar</button></a>
+                <a href=\"telaExlcuir.php?id=".$ordemservico->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
+            </td>"
+        . "</tr>";
+    }
+    echo "</tbody> .
+        </table>";
+    }
+}
 
     function imprimirEditarOrdemServico($ordemservico){
     if(empty($ordemservico)){

@@ -73,6 +73,10 @@ function buscarCliente($valor_busca, $coluna)
     $conn = new Conexao();
     $conn = $conn->conexao();
 
+    if ($coluna == "id") {
+        $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE id like :busca");
+        $stmt->bindParam(":busca", $valor_busca);
+    }
     if ($coluna == "nome") {
         $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE nome like :busca");
         $valor_busca = "%".$valor_busca."%";
@@ -130,20 +134,76 @@ function imprimirResultadosClientes($vetor_clientes){
                     <th>CPF</th>
                     <th>Telefone</th>
                 </tr>
-            </thead>
+    </thead>
             <tbody>";
     foreach ($vetor_clientes as $cliente) {
         echo "<tr><td>" . $cliente->getNome() . "</td>".
          "<td>" . $cliente->getCpf() . "</td>" .
-         "<td>" . $cliente->getTelefone() . "</td>"
-        . "<td>
+         "<td>" . $cliente->getTelefone() . "</td>" . "<td>
                <a href=\"telaEditar.php?id=".$cliente->getId()."&tipo=cliente\"><button class=\"btn btn-primary\">Editar</button></a>
                 <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
-            </td>"
-        . "</tr>";
+            </td> </tr>";
     }
-    echo "</tbody> .
+    echo "</tbody> 
         </table>";
+    }}
+
+    function imprimirEditarCliente($cliente){
+        if(empty($cliente)){
+        return null;
+        }
+
+        echo " <form action=\"../control/ClienteControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+            Nome: <input type=\"text\" name=\"nome\" value=\"". $cliente->getNome() ."\">
+            CPF: <input type=\"text\" name=\"cpf_c\" value=\"". $cliente->getCpf() ."\">
+            Telefone <input type=\"text\" name=\"telefone\" value=\"". $cliente->getTelefone()."\">
+           
+            <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_cliente\" name=\"bt_editar_cliente\">Editar</button>
+        </form>";
+        }
+
+
+
+
+if(isset($_POST['bt_editar_cliente'])){
+
+    if(isset($_POST['nome']) and isset($_POST['cpf_c']) and isset($_POST['telefone'])){
+    $nome = $_POST['nome'];
+    $cpf = $_POST['cpf_c'];
+    $telefone = $_POST['telefone'];
+    
+    $cliente = new Cliente;
+    
+    $cliente->setId($_GET['id']);
+    $cliente->setNome($_POST['nome']);
+    $cliente->setCpf($_POST['cpf_c']);
+    $cliente->setTelefone($_POST['telefone']);
+
+    
+    editarCliente($cliente);
     }
-}
+    }
+
+    function editarCliente($cliente){
+        $id = $cliente->getId();
+        $nome = $cliente->getNome();
+        $telefone = $cliente->getTelefone();
+        $cpf = $cliente->getCpf();
+
+        
+            $conn = new Conexao();
+            $conn = $conn->conexao();
+            $stmt = $conn->prepare("UPDATE `cliente`
+             SET `nome`= :nome,`cpf`=:cpf,`telefone`= :telefone WHERE id like :id");
+        
+            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':cpf', $cpf);
+            $stmt->bindParam(':telefone', $telefone);
+
+        
+            $stmt->execute();
+            $stmt = null;
+            header('Location: ../view/index.php?msg=sucesso');
+        }
 ?>

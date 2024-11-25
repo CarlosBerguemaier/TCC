@@ -34,7 +34,58 @@ function inserirCarro($placa, $marca, $modelo, $ano){
     header('Location: ../view/telaCadastro.php?msg=sucesso'); 
 }
 
-function buscarCarro($placa){
+function buscarCarro($valor_busca, $coluna)
+{
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    if ($coluna == "todos") {
+        $stmt = $conn->prepare("SELECT * FROM `carro`");
+    }else{
+    if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
+        header('Location: ERRO');
+    }
+    if ($coluna == "id") {
+        $stmt = $conn->prepare("SELECT * FROM `carro` WHERE id like :busca");
+        $valor_para_buscar = $valor_busca;
+    }
+    if ($coluna == "marca") {
+        $stmt = $conn->prepare("SELECT * FROM `carro` WHERE marca like :busca");
+        $valor_para_buscar = "%".$valor_busca."%";
+    }
+    if ($coluna == "modelo") {
+        $stmt = $conn->prepare("SELECT * FROM `carro` WHERE modelo like :busca");
+        $valor_para_buscar = "%".$valor_busca."%";
+    }
+    if ($coluna == "placa") {
+        $stmt = $conn->prepare("SELECT * FROM `carro` WHERE placa like :busca");
+        $valor_para_buscar = "%".$valor_busca."%";
+    }
+    if ($coluna == "ano") {
+        $stmt = $conn->prepare("SELECT * FROM `carro` WHERE ano like :busca");
+        $valor_para_buscar = $valor_busca;
+    }
+    $stmt->bindParam(':busca', $valor_para_buscar);
+}
+
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll();
+    $vetor_carros[] = "";
+    $i = 0;
+    foreach ($resultado as $ordem) {
+        $carro = new Carro();
+        $carro->setID($ordem['id']);
+        $carro->setMarca($ordem['marca']);
+        $carro->setModelo($ordem['modelo']);
+        $carro->setPlaca($ordem['placa']);
+        $carro->setAno($ordem['ano']);
+        $vetor_carros[$i] = $carro;
+        $i++;
+    }
+    return $vetor_carros;
+}
+
+function buscarCarroPlaca($placa){
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("SELECT * FROM `carro` WHERE `placa` like :placa");
@@ -51,6 +102,14 @@ function buscarCarro($placa){
        return $carro;    
 }
 
+if(isset($_POST['bt_busca_carro'])){
+    if($_GET['coluna'] == "todos"){
+        header('Location: ../view/telaBuscaCarros.php?coluna='.$_GET['coluna'].'&valor=todos');
+    }
+if(isset($_POST['busca']) or !empty($_POST['busca'])){
+header('Location: ../view/telaBuscaCarros.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
+}}
+
 function buscarCarroPorId($id){
     $conn = new Conexao();
     $conn = $conn->conexao();
@@ -66,5 +125,50 @@ function buscarCarroPorId($id){
         $carro->setAno($result["ano"]);
        }
        return $carro;    
+}
+function bt_buscar_carros($busca,$coluna){
+    if (!isset($busca) or empty($busca) or empty($coluna) or !isset($coluna)) {
+        header('Location: ../view/telaBuscaCarros.php?msg=naoencontrado');
+    }
+    $result = buscarCarro($busca, $coluna);
+    return $result;
+}
+
+
+
+function imprimirResultadosCarros($vetor_carros){
+    if (empty($vetor_carros)) {
+        echo "Não há dados para exibir.";
+        return;
+    }
+    $carro = $vetor_carros[0];
+    if(empty($carro)){
+        echo "Nenhum dado foi encontrado!";
+    }else{
+    echo "<table id=\"tabelabusca\" border='1'>
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                </tr>
+            </thead>
+            <tbody>";
+    foreach ($vetor_carros as $carro) {
+        echo "<tr><td>" . $carro->getPlaca() . "</td>".
+         "<td>" . $carro->getMarca() . "</td>" .
+         "<td>" . $carro->getModelo() . "</td>" .
+         "<td>" . $carro->getAno() . "</td>"
+
+        . "<td>
+               <a href=\"telaEditar.php?id=".$carro->getId()."&tipo=carro\"><button class=\"btn btn-primary\">Editar</button></a>
+                <a href=\"telaExlcuir.php?id=".$carro->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
+            </td>"
+        . "</tr>";
+    }
+    echo "</tbody> 
+        </table>";
+    }
 }
 ?>
