@@ -161,7 +161,7 @@ function buscarOrdemServico($valor_busca, $coluna)
         $stmt = $conn->prepare("SELECT * FROM `ordem_servico`");
     }else{
     if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
-        header('Location: ERRO');
+        header('Location: ../view/index.php?msg=naoencontrado');
     }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id like :busca");

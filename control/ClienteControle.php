@@ -167,7 +167,7 @@ function imprimirResultadosClientes($vetor_clientes){
 
 if(isset($_POST['bt_editar_cliente'])){
 
-    if(isset($_POST['nome']) and isset($_POST['cpf_c']) and isset($_POST['telefone'])){
+    if(isset($_POST['nome']) and isset($_POST['cpf_c']) and isset($_POST['telefone']) and !empty($_POST['nome']) and !empty($_POST['cpf_c']) and !empty($_POST['telefone'])){
     $nome = $_POST['nome'];
     $cpf = $_POST['cpf_c'];
     $telefone = $_POST['telefone'];
@@ -181,6 +181,8 @@ if(isset($_POST['bt_editar_cliente'])){
 
     
     editarCliente($cliente);
+    }else{
+        header('Location: ../view/telaEditar.php?msg=dadosinvalidos');
     }
     }
 
@@ -189,6 +191,10 @@ if(isset($_POST['bt_editar_cliente'])){
         $nome = $cliente->getNome();
         $telefone = $cliente->getTelefone();
         $cpf = $cliente->getCpf();
+        echo $cpf;
+        if($cpf == "" or empty($cpf)){
+        header('Location: ../view/telaEditar.php?msg=dadosinvalidos');
+        }else{
 
         
             $conn = new Conexao();
@@ -205,5 +211,5 @@ if(isset($_POST['bt_editar_cliente'])){
             $stmt->execute();
             $stmt = null;
             header('Location: ../view/index.php?msg=sucesso');
-        }
+        }}
 ?>

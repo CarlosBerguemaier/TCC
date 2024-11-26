@@ -28,6 +28,11 @@
         <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
       </div>';
       }
+      if($msg == "dadosinvalidos"){
+        echo '<div class="alert alert-danger" role="alert">
+        <h6 class="texto-alertas">Você inseriu dados inválidos! Por favor verifique!</h6>
+      </div>';
+      }
       if($msg == "naoencontrado"){
         echo '<div class="alert alert-danger" role="alert">
         <h6 class="texto-alertas">Não foi encontrado nenhum registro com o dado informado!</h6>
