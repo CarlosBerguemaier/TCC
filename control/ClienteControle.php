@@ -20,6 +20,13 @@ if(isset($_POST['bt_cadastro_cliente'])){
 }
 
 function inserirCliente($nome,$telefone,$cpf){
+
+    $cliente = buscarCliente($cpf,"cpf_c");
+    if(!empty($cliente[0])){
+        header('Location: ../view/telaCadastro.php?msg=dadosduplicadoscpf');
+    }
+
+
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("INSERT INTO `cliente`(`nome`, `telefone`, `cpf`)
@@ -209,4 +216,39 @@ if(isset($_POST['bt_editar_cliente'])){
             $stmt = null;
             header('Location: ../view/index.php?msg=sucesso');
         }}
+
+        function gerarPdfdosClientes($vetor_clientes){
+            if (empty($vetor_clientes)) {
+                echo "Não há dados para exibir.";
+                return;
+            }
+            $cliente = $vetor_clientes[0];
+            if(empty($cliente)){
+                echo "Nenhum dado foi encontrado!";
+            }else{
+                $data_atual = date("d/m/Y");
+            $tabela = "
+            <h2> Relatório de Clientes - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
+            <table id=\"tabelabusca\" border='1'>
+                    <thead>
+                        <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Telefone</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+                    foreach ($vetor_clientes as $cliente) {
+                        $tabela .=  "<tr><td>" . $cliente->getNome() . "</td>".
+                         "<td>" . $cliente->getCpf() . "</td>" .
+                         "<td>" . $cliente->getTelefone() . "</td>"
+                        . "</tr>";
+                    }
+            $tabela .=  "</tbody> </table>";
+        
+            include_once 'gerarPdf.php';
+            gerarPdf($tabela);
+        
+            }
+        }
 ?>

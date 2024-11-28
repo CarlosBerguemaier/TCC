@@ -1,3 +1,4 @@
+
   <!DOCTYPE html>
   <html lang="pt-br">
   <head>
@@ -15,7 +16,12 @@
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">   
       <ul class="navbar-nav">
         <li class="nav-item custom">
-          <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
+          <a class="nav-link navbar-link" href="<?php if(isset($_GET['coluna'])){
+            echo "../view/telaBuscaOrdemServico.php";
+          }else{
+            echo "../view/index.php";
+          }?>
+          "><i class="material-icons">arrow_back</i></a>
         </li>
       </ul>
   </nav>
@@ -99,16 +105,28 @@
           }
             ?>
       </form>
-  </div></div>
+   
+
+    </div></div>
   <div class="div-resultados">
-  
-  <?php 
-      include_once '../control/OrdemServicoControle.php';
-      if(isset($_GET['valor']) and isset($_GET['coluna'])){
-      $html = bt_buscar_os($_GET['valor'],$_GET['coluna']);
-      imprimirResultadosOrdemServicos($html);
-      }
-      ?>
+  <?php    
+         include_once '../control/OrdemServicoControle.php';
+         include_once '../control/gerarPdf.php';
+         if(isset($_GET['valor']) and isset($_GET['coluna'])){
+         echo '<form method="post" action="telaBuscaOrdemServico.php?valor='.$_GET['valor'].'&coluna='.$_GET['coluna'].'"><button class="btn btn-success botao-enviar" type="submit" id="bt_gerar_pdf" name="bt_gerar_pdf"></a> <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>';
+
+         $html = bt_buscar_os($_GET['valor'],$_GET['coluna']);
+         if(isset($_POST['bt_gerar_pdf'])){
+          gerarPdfdasOS($html);
+          }
+         $resultado = imprimirResultadosOrdemServicos($html);
+         echo $resultado;
+        
+
+
+
+         }
+         ?>
   </div>
 
 

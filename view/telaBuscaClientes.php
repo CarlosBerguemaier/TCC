@@ -15,7 +15,12 @@
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">   
       <ul class="navbar-nav">
         <li class="nav-item custom">
-          <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
+          <a class="nav-link navbar-link" href="<?php if(isset($_GET['coluna'])){
+            echo "../view/telaBuscaClientes.php";
+          }else{
+            echo "../view/index.php";
+          }?>
+          "><i class="material-icons">arrow_back</i></a>
         </li>
       </ul>
   </nav>
@@ -92,7 +97,17 @@
       include_once '../control/ClienteControle.php';
       if(isset($_GET['valor']) and isset($_GET['coluna'])){
       $html = bt_buscar_cliente($_GET['valor'],$_GET['coluna']);
-      imprimirResultadosClientes($html);
+
+      if(isset($_GET['valor']) and isset($_GET['coluna'])){
+        echo '<form method="post" action="telaBuscaClientes.php?valor='.$_GET['valor'].'&coluna='.$_GET['coluna'].'"><button class="btn btn-success botao-enviar" type="submit" id="bt_gerar_pdf" name="bt_gerar_pdf"></a> <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>';
+        
+        if(isset($_POST['bt_gerar_pdf'])){
+          gerarPdfdosClientes($html);
+          }
+        
+        $resultado = imprimirResultadosClientes($html);
+        echo $resultado;
+        }
       }
       ?>
   </div>

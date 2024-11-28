@@ -20,6 +20,12 @@ if(isset($_POST['bt_cadastro_funcionario'])){
 }
 
 function inserirFuncionario($nome,$telefone,$cpf){
+  
+    $funcionario = buscarFuncionario($cpf,"cpf_f");
+    if(!empty($funcionario[0])){
+        header('Location: ../view/telaCadastro.php?msg=dadosduplicadoscpf');
+    }
+
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("INSERT INTO `funcionario`(`nome`, `telefone`, `cpf`)
@@ -130,7 +136,7 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
     if(empty($funcionario)){
         echo "Nenhum dado foi encontrado!";
     }else{
-    echo "<table id=\"tabelabusca\" border='1'>
+    $resultado = "<table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -140,7 +146,7 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
             </thead>
             <tbody>";
     foreach ($vetor_funcionarios as $funcionario) {
-        echo "<tr><td>" . $funcionario->getNome() . "</td>".
+        $resultado .= "<tr><td>" . $funcionario->getNome() . "</td>".
          "<td>" . $funcionario->getCpf() . "</td>" .
          "<td>" . $funcionario->getTelefone() . "</td>"
         . "<td>
@@ -149,8 +155,10 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
             </td>"
         . "</tr>";
     }
-    echo "</tbody> 
+    $resultado .= "</tbody> 
         </table>";
+
+        return $resultado;
     }
 }
 
@@ -212,5 +220,39 @@ function editarFuncionario($funcionario){
         $stmt->execute();
         $stmt = null;
         header('Location: ../view/index.php?msg=sucesso');
+    }
+    function gerarPdfdosFuncionarios($vetor_funcionarios){
+        if (empty($vetor_funcionarios)) {
+            echo "Não há dados para exibir.";
+            return;
+        }
+        $funcionario = $vetor_funcionarios[0];
+        if(empty($funcionario)){
+            echo "Nenhum dado foi encontrado!";
+        }else{
+            $data_atual = date("d/m/Y");
+        $tabela = "
+        <h2> Relatório de funcionários - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
+        <table id=\"tabelabusca\" border='1'>
+                <thead>
+                    <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    </tr>
+                </thead>
+                <tbody>";
+                foreach ($vetor_funcionarios as $funcionario) {
+                    $tabela .=  "<tr><td>" . $funcionario->getNome() . "</td>".
+                     "<td>" . $funcionario->getCpf() . "</td>" .
+                     "<td>" . $funcionario->getTelefone() . "</td>"
+                    . "</tr>";
+                }
+        $tabela .=  "</tbody> </table>";
+    
+        include_once 'gerarPdf.php';
+        gerarPdf($tabela);
+    
+        }
     }
 ?>

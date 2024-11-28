@@ -21,6 +21,11 @@ if(isset($_POST['bt_cadastro_carro'])){
 }
 
 function inserirCarro($placa, $marca, $modelo, $ano){
+    $carro = buscarCarro($placa,"placa");
+    if(!empty($carro[0])){
+    header('Location: ../view/telaCadastro.php?msg=dadosduplicadosplaca');
+    }
+
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("INSERT INTO `carro`(`placa`, `marca`, `modelo`, `ano`)
@@ -89,6 +94,7 @@ function buscarCarroPlaca($placa){
     $conn = new Conexao();
     $conn = $conn->conexao();
     $stmt = $conn->prepare("SELECT * FROM `carro` WHERE `placa` like :placa");
+    $placa = "%".$placa."%";
     $stmt->bindParam(':placa', $placa);
     $stmt->execute();
     $carro = new Carro();
@@ -145,7 +151,7 @@ function imprimirResultadosCarros($vetor_carros){
     if(empty($carro)){
         echo "Nenhum dado foi encontrado!";
     }else{
-    echo "<table id=\"tabelabusca\" border='1'>
+        $resultado = "<table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Placa</th>
@@ -156,7 +162,7 @@ function imprimirResultadosCarros($vetor_carros){
             </thead>
             <tbody>";
     foreach ($vetor_carros as $carro) {
-        echo "<tr><td>" . $carro->getPlaca() . "</td>".
+        $resultado .= "<tr><td>" . $carro->getPlaca() . "</td>".
          "<td>" . $carro->getMarca() . "</td>" .
          "<td>" . $carro->getModelo() . "</td>" .
          "<td>" . $carro->getAno() . "</td>"
@@ -167,8 +173,9 @@ function imprimirResultadosCarros($vetor_carros){
             </td>"
         . "</tr>";
     }
-    echo "</tbody> 
+       $resultado.= "</tbody> 
         </table>";
+        return $resultado;
     }
 }
 
@@ -236,5 +243,42 @@ function editarCarro($carro){
         $stmt->execute();
         $stmt = null;
        # header('Location: ../view/index.php?msg=sucesso');
+    }
+
+    function gerarPdfdosCarros($vetor_carros){
+        if (empty($vetor_carros)) {
+            echo "Não há dados para exibir.";
+            return;
+        }
+        $carro = $vetor_carros[0];
+        if(empty($carro)){
+            echo "Nenhum dado foi encontrado!";
+        }else{
+            $data_atual = date("d/m/Y");
+        $tabela = "
+        <h2> Relatório de funcionários - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
+        <table id=\"tabelabusca\" border='1'>
+                <thead>
+                    <tr>
+                  <th>Placa</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Ano</th>
+                    </tr>
+                </thead>
+                <tbody>";
+                foreach ($vetor_carros as $carro) {
+          $tabela .="<tr><td>" . $carro->getPlaca() . "</td>".
+         "<td>" . $carro->getMarca() . "</td>" .
+         "<td>" . $carro->getModelo() . "</td>" .
+         "<td>" . $carro->getAno() . "</td>"
+                    . "</tr>";
+                }
+        $tabela .=  "</tbody> </table>";
+    
+        include_once 'gerarPdf.php';
+        gerarPdf($tabela);
+    
+        }
     }
 ?>

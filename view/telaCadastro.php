@@ -40,7 +40,18 @@
       <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
     </div>';
     }
-  } 
+
+    if($msg == "dadosduplicadosplaca"){
+      echo '<div class="alert alert-danger" role="alert">
+      <h6 class="texto-alertas">Já existe um veículo cadastrado com esta placa!</h6>
+    </div>';
+    }
+    if($msg == "dadosduplicadoscpf"){
+      echo '<div class="alert alert-danger" role="alert">
+      <h6 class="texto-alertas">Este CPF já foi cadastrado!</h6>
+    </div>';
+    }
+  }
 ?>
 
 <div class="principal">

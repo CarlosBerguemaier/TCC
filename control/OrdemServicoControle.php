@@ -1,5 +1,4 @@
 <?php
-
 include_once '../model/Funcionario.php';
 include_once '../model/Carro.php';
 include_once '../model/Cliente.php';
@@ -222,7 +221,8 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
     if(empty($ordemservico)){
         echo "Nenhum dado foi encontrado!";
     }else{
-    echo "<table id=\"tabelabusca\" border='1'>
+        
+    $tabela = "<table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Placa</th>
@@ -240,7 +240,7 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
         $carro = buscarCarroPorId($ordemservico->getId_carro());
     
         
-        echo "<tr><td>" . $carro->getPlaca() . "</td>".
+        $tabela = $tabela . "<tr><td>" . $carro->getPlaca() . "</td>".
          "<td>" . $cliente->getNome() . "</td>" .
          "<td>" . $funcionario->getNome() . "</td>"
         . "<td>" . $ordemservico->getDescricao() . "</td>"
@@ -248,13 +248,65 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
         . "<td>
                <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\">
                <button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=".$ordemservico->getId()."\">
-                <button class=\"btn btn-danger\">Apagar</button></a>
+
+               <form method=\"post\" action=\"../view/telaExcluir.php\">
+
+                <input type=\"hidden\" name=\"id_apagar\" value=\" ". $ordemservico->getId() ."\">
+
+                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\">Apagar</button>
+
+                </form>
+                
             </td>"
         . "</tr>";
     }
-    echo "</tbody> .
-        </table>";
+    $tabela = $tabela . "</tbody> </table>";
+
+    return $tabela;
+    }
+}
+
+function gerarPdfdasOS($vetor_servicos){
+    if (empty($vetor_servicos)) {
+        echo "Não há dados para exibir.";
+        return;
+    }
+    $ordemservico = $vetor_servicos[0];
+    if(empty($ordemservico)){
+        echo "Nenhum dado foi encontrado!";
+    }else{
+        $data_atual = date("d/m/Y");
+    $tabela = "
+    <h2> Relatório de ordem de serviço - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
+    <table id=\"tabelabusca\" border='1'>
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Cliente</th>
+                    <th>Funcionário</th>
+                    <th>Serviço</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>";
+    foreach ($vetor_servicos as $ordemservico) {
+        $cliente = buscarClientePorId($ordemservico->getId_cliente());
+        $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
+        $carro = buscarCarroPorId($ordemservico->getId_carro());
+    
+        
+        $tabela = $tabela . "<tr><td>" . $carro->getPlaca() . "</td>".
+         "<td>" . $cliente->getNome() . "</td>" .
+         "<td>" . $funcionario->getNome() . "</td>"
+        . "<td>" . $ordemservico->getDescricao() . "</td>"
+        . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
+        . "</tr>";
+    }
+    $tabela = $tabela . "</tbody> </table>";
+
+    include_once 'gerarPdf.php';
+    gerarPdf($tabela);
+
     }
 }
 
