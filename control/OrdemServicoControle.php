@@ -246,8 +246,10 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
         . "<td>" . $ordemservico->getDescricao() . "</td>"
         . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
         . "<td>
-               <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=".$ordemservico->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
+               <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\">
+               <button class=\"btn btn-primary\">Editar</button></a>
+                <a href=\"telaExlcuir.php?id=".$ordemservico->getId()."\">
+                <button class=\"btn btn-danger\">Apagar</button></a>
             </td>"
         . "</tr>";
     }

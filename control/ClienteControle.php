@@ -193,21 +193,18 @@ if(isset($_POST['bt_editar_cliente'])){
         $cpf = $cliente->getCpf();
         echo $cpf;
         if($cpf == "" or empty($cpf)){
-        header('Location: ../view/telaEditar.php?msg=dadosinvalidos');
+        header('Location: ../view/telaBuscaClientes.php?msg=dadosinvalidos');
         }else{
-
-        
             $conn = new Conexao();
             $conn = $conn->conexao();
             $stmt = $conn->prepare("UPDATE `cliente`
-             SET `nome`= :nome,`cpf`=:cpf,`telefone`= :telefone WHERE id like :id");
-        
+             SET `nome`= :nome,`cpf`=:cpf,`telefone`= :telefone
+             WHERE id like :id");
             $stmt->bindParam(':id', $id);
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':cpf', $cpf);
             $stmt->bindParam(':telefone', $telefone);
 
-        
             $stmt->execute();
             $stmt = null;
             header('Location: ../view/index.php?msg=sucesso');

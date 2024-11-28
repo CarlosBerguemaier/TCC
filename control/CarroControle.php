@@ -171,4 +171,70 @@ function imprimirResultadosCarros($vetor_carros){
         </table>";
     }
 }
+
+
+function imprimirEditarCarro($carro){
+    if(empty($carro)){
+    return null;
+    }
+
+    echo " <form action=\"../control/CarroControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        Placa: <input type=\"text\" name=\"placa\" value=\"". $carro->getPlaca() ."\">
+        Marca: <input type=\"text\" name=\"marca\" value=\"". $carro->getMarca() ."\">
+        Modelo <input type=\"text\" name=\"modelo\" value=\"". $carro->getModelo()."\">
+        Ano <input type=\"text\" name=\"ano\" value=\"". $carro->getAno()."\">
+       
+        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_carro\" name=\"bt_editar_carro\">Editar</button>
+    </form>";
+    }
+
+
+
+
+if(isset($_POST['bt_editar_carro'])){
+
+if(isset($_POST['placa']) and isset($_POST['marca']) and isset($_POST['modelo']) and isset($_POST['ano'])){
+        
+$placa = $_POST['placa'];
+$marca = $_POST['marca'];
+$modelo = $_POST['modelo'];
+$ano = $_POST['ano'];
+
+$carro = new Carro;
+
+$carro->setId($_GET['id']);
+$carro->setPlaca($placa);
+$carro->setMarca($marca);
+$carro->setModelo($modelo);
+$carro->setAno($ano);
+
+
+editarCarro($carro);
+}
+}
+
+function editarCarro($carro){
+    $id = $carro->getId();
+    $placa = $carro->getPlaca();
+    $marca = $carro->getMarca();
+    $modelo = $carro->getModelo();
+    $ano = $carro->getAno();
+
+    
+        $conn = new Conexao();
+        $conn = $conn->conexao();
+        $stmt = $conn->prepare("UPDATE `carro`
+         SET `placa`=:placa, `marca`=:marca , `modelo`= :modelo,`ano`= :ano WHERE id like :id");
+    
+        $stmt->bindParam(':placa', $placa);
+        $stmt->bindParam(':marca', $marca);
+        $stmt->bindParam(':modelo', $modelo);
+        $stmt->bindParam(':ano', $ano);
+        $stmt->bindParam(':id', $id);
+
+    
+        $stmt->execute();
+        $stmt = null;
+       # header('Location: ../view/index.php?msg=sucesso');
+    }
 ?>

@@ -76,6 +76,15 @@
       <?php
       imprimirEditarFuncionario($resultados[0]);
     }
+    if($tipo == "carro"){
+      include_once '../control/CarroControle.php';
+
+    $resultados = buscarCarro($id,"id");
+    ?>
+    <div class="div-resultados">
+    <?php
+    imprimirEditarCarro($resultados[0]);
+  }
 
     }
   ?>
