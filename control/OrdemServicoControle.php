@@ -38,14 +38,16 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
     $funcionario = buscarFuncionarioCpf($cpf_funcionario);
     $carro = buscarCarroPlaca($placa);
 
+   echo $descricao .", ". $valor . ", " . $kminicial. ", ". $kmfinal;
+
     if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
         if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
-            header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+           # header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
         } else {
             inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal);
         }
     } else {
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+       # header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
     }
 }
 

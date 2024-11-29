@@ -64,3 +64,9 @@
   color: white;
   text-decoration: none;
 }
+
+.container{
+  margin: 0 auto;
+  width: 50%;
+  align-items: center;
+}

@@ -1,137 +1,296 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tela de serviços</title>
- <!-- Última versão CSS compilada e minificada -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-<link rel="stylesheet" href="../estilo.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tela de serviços</title>
+  <!-- Última versão CSS compilada e minificada -->
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="../estilo.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">
+
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #6AA6F9;">
 
 
     <ul class="navbar-nav">
       <li class="nav-item custom">
         <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
       </li>
- 
-
 
     </ul>
-
-</nav>
-<?php 
-  if(isset($_GET['msg'])){
-    $msg=$_GET['msg'];
-    if($msg == "sucesso"){
+  </nav>
+  <?php
+  if (isset($_GET['msg'])) {
+    $msg = $_GET['msg'];
+    if ($msg == "sucesso") {
       echo '<div class="alert alert-success" role="alert">
       <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
     </div>';
     }
-    if($msg == "dadosinvalidos"){
+    if ($msg == "dadosinvalidos") {
       echo '<div class="alert alert-danger" role="alert">
       <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
     </div>';
     }
 
-    if($msg == "dadosduplicadosplaca"){
+    if ($msg == "dadosduplicadosplaca") {
       echo '<div class="alert alert-danger" role="alert">
       <h6 class="texto-alertas">Já existe um veículo cadastrado com esta placa!</h6>
     </div>';
     }
-    if($msg == "dadosduplicadoscpf"){
+    if ($msg == "dadosduplicadoscpf") {
       echo '<div class="alert alert-danger" role="alert">
       <h6 class="texto-alertas">Este CPF já foi cadastrado!</h6>
     </div>';
     }
   }
-?>
-
-<div class="principal">
-<div>
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="servico-tab" data-toggle="tab" href="#servico" role="tab" aria-controls="servico" aria-selected="true">Serviços</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="cliente-tab" data-toggle="tab" href="#cliente" role="tab" aria-controls="cliente" aria-selected="false">Clientes</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="carro-tab" data-toggle="tab" href="#carro" role="tab" aria-controls="carro" aria-selected="false">Carros</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="funcionario-tab" data-toggle="tab" href="#funcionario" role="tab" aria-controls="funcionario" aria-selected="false">Funcionários</a>
-  </li>
-</ul>
-
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active bg-white border" id="servico" role="tabpanel" aria-labelledby="servico-tab"> 
-       <div class="card-body">
-       <form action="../control/OrdemServicoControle.php" method="post">
-        Placa do Carro: <input type="text" name="placa">
-        CPF do Cliente:<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-        <i class="material-icons">search</i>
-</button>
-
-<input type="text" name="cpf_cliente"> 
-        CPF do Funcionário: <input type="text" name="cpf_funcionario">
-        Descrição: <input type="text" name="descricao">
-        Valor: <input type="text" name="valor">
-        Quilometragem Inicial: <input type="text" name="kminicial">
-        Quilometragem Final: <input type="text" name="kmfinal">
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_ordemservico" name="bt_cadastro_ordemservico">Cadastrar</button>
-    </form>
-</div></div>
-
-  <div class="tab-pane fade bg-white border" id="cliente" role="tabpanel" aria-labelledby="cliente-tab">
-  <div class="card-body">
-  <form action="../control/ClienteControle.php" method="post">
-        Nome: <input type="text" name="nome">
-        CPF: <input type="text" name="cpf">
-        Telefone: <input class="" type="text" name="telefone">
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_cliente" name="bt_cadastro_cliente">Cadastrar</button>
-    </form>
-  </div></div>
-  <div class="tab-pane fade bg-white border" id="carro" role="tabpanel" aria-labelledby="carro-tab">
-  <div class="card-body">
-  <form action="../control/CarroControle.php" method="post">
-        Placa: <input type="text" name="placa">
-        Marca: <input type="text" name="marca">
-        Modelo: <input type="text" name="modelo">
-        Ano: <input type="text" name="ano">
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_carro" name="bt_cadastro_carro">Cadastrar</button>
-    </form>
-  </div>  </div>
-    <div class="tab-pane fade bg-white border" id="funcionario" role="tabpanel" aria-labelledby="funcionario-tab">
-    <div class="card-body">
-    <form action="../control/FuncionarioControle.php" method="post">
-        Nome: <input type="text" name="nome">
-        CPF: <input type="text" name="cpf">
-        Telefone: <input type="text" name="telefone">
-        <button class="btn btn-success botao-enviar" type="submit" id="bt_cadastro_funcionario" name="bt_cadastro_funcionario">Cadastrar</button>
-    </form>
-    </div>  </div>
-</div>
+  ?>
 
 
+  <br>
+  <ul class="nav nav-pills mb-3  justify-content-center" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-servicos" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+        <h3>Serviços</h3>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-clientes" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+        <h3>Clientes</h3>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-carros" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+        <h3>Carros</h3>
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-funcionarios" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+        <h3>Funcionários</h3>
+      </button>
+    </li>
+  </ul>
+  <br>
+
+  <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="ExemploModalCliente" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ExemploModalCliente">Buscar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="resultado_ajax_clientes">
+
+
+          <div id="Pesquisar">
+            <div class="input-group mb-3">
+              <input onkeyup="getDadosCliente();" type="text" id="txtnome_clientes" name="txtnome_clientes" class="form-control" placeholder="Infome o nome:" aria-label="Infome o nome:" aria-describedby="basic-addon2">
+            </div>
+
+          </div>
+          <hr />
+
+          <div id="Resultado_clientes">
+
+         
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalFuncionario" tabindex="-1" aria-lablledby="exemploModalFuncionario" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exemploModalFuncionario">Buscar Funcionário</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="resultado_ajax_funcionarios">
+
+
+        <div id="Pesquisar">
+            <div class="input-group mb-3">
+              <input onkeyup="getDadosFuncionarios();" type="text" id="txtnome_funcionario" name="txtnome_funcionario" class="form-control" placeholder="Infome o nome:" aria-label="Infome o nome:" aria-describedby="basic-addon2">
+            </div>
+
+          </div>
+          <hr />
+
+          <div id="Resultado_funcionarios">
+
+         
+
+          </div>
+
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form method="post" action="../control/OrdemServicoControle.php">
+    <div class="tab-content" id="pills-tabContent">
+
+      <div class="tab-pane fade show active" id="pills-servicos" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="container">
+          <form action="../control/OrdemServicoControle.php" method="post">
+
+            <div class="form-floating mb-3 ">
+              <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" placeholder="ABC1D23">
+              <label for="exampleFormControlInput1" class="form-label">Placa do Carro</label>
+            </div>
+
+            <div class=" input-group form-floating mb-3">
+              <input type="text" name="cpf_cliente" class="form-control" id="cliente_cpf_input" placeholder="Digite o CPF do cliente">
+              <label for="cliente_cpf_input input-group-text" class="form-label">Digite o CPF do cliente</label>
+
+              <span class="input-group-text">ou</span>
+
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                <i class="material-icons">search</i></button>
+            </div>
+
+            <div class=" input-group form-floating mb-3">
+              <input type="text" name="cpf_funcionario" class="form-control" id="funcionario_cpf_input" placeholder="11122233345">
+              <label for="funcionario_cpf_input" class="form-label">CPF do funcionário</label>
+
+              <span class="input-group-text">ou</span>
+
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFuncionario">
+                <i class="material-icons">search</i></button>
+            </div>
+
+            <div class="form-floating mb-3">
+              <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="3" placeholder="descrição"></textarea>
+              <label for="exampleFormControlTextarea1" class="form-label">Descrição do serviço</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="valor" class="form-control" id="exampleFormControlInput1" placeholder="150">
+              <label for="exampleFormControlInput1" class="form-label">Valor</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="kminicial" class="form-control" id="exampleFormControlInput1" placeholder="15000">
+              <label for="exampleFormControlInput1" class="form-label">Quilometragem Inicial</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="kmfinal" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Quilometragem Final</label>
+            </div>
+            <button type="submit" class="btn btn-success" name="bt_cadastro_ordemservico">
+              <h2>Cadastrar</h2>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade" id="pills-clientes" role="tabpanel" aria-labelledby="pills-profile-tab">
+        <div class="container">
+          <form action="../control/ClienteControle.php" method="post">
+
+            <div class="form-floating mb-3">
+              <input type="text" name="nome" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Nome</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="cpf" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">CPF</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="telefone" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Telefone</label>
+            </div>
+
+            <button type="submit" class="btn btn-success" name="bt_cadastro_cliente">
+              <h2>Cadastrar</h2>
+            </button>
+
+          </form>
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade" id="pills-carros" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <div class="container">
+
+          <form action="../control/CarroControle.php" method="post">
+            <div class="form-floating mb-3">
+              <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Placa</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="marca" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Marca</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="modelo" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">modelo</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="ano" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Ano</label>
+            </div>
+
+            <button type="submit" class="btn btn-success" name="bt_cadastro_carro">
+              <h2>Cadastrar</h2>
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="tab-pane fade" id="pills-funcionarios" role="tabpanel" aria-labelledby="pills-contact-tab">
+        <div class="container">
+          <form action="../control/FuncionarioControle.php" method="post">
+
+            <div class="form-floating mb-3">
+              <input type="text" name="nome" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Nome</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="cpf" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">CPF</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="telefone" class="form-control" id="exampleFormControlInput1" placeholder="16000">
+              <label for="exampleFormControlInput1" class="form-label">Telefone</label>
+            </div>
+
+            <button type="submit" class="btn btn-success" name="bt_cadastro_funcionario">
+              <h2>Cadastrar</h2>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
 
 
 
-</div>
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script src="../js.js"></script>
-<script src="../cadastros.js"></script>
+    <script src="../ajax/ajaxCadastro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="../js.js"></script>
+    <script src="../cadastros.js"></script>
 </body>
 
 </html>

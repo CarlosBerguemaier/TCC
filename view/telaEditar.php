@@ -41,6 +41,8 @@
     } 
 ?>
 <br>
+<div class="principal"><h1>Editar dados</h1></div>
+
 <?php
     if(empty($_GET['id'])){
     header('Location: index.php');
