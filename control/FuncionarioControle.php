@@ -136,7 +136,8 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
     if(empty($funcionario)){
         echo "Nenhum dado foi encontrado!";
     }else{
-    $resultado = "<table id=\"tabelabusca\" border='1'>
+    $resultado = " <link rel=\"stylesheet\" href=\"../tabelas.css\">
+    <table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Nome</th>

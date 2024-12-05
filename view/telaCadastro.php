@@ -20,7 +20,7 @@
 
     <ul class="navbar-nav">
       <li class="nav-item custom">
-        <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
+        <a class="nav-link navbar-link" href="index.php"><i style="color:white;" class="material-icons">arrow_back</i></a>
       </li>
 
     </ul>

@@ -10,7 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   
 </head>
-<body>
+<body style="background-color:rgb(213, 232, 252);">
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">
  
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,11 +21,11 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item">
-        <a class="nav-link navbar-link" href="../view/telaCadastro.php">Cadastrar</a>
+        <a class="nav-link navbar-link" style="color:white;" href="../view/telaCadastro.php">Cadastrar</a>
       </li>
 
       <li class="nav-item dropdown">
-          <a class="nav-link navbar-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link navbar-link dropdown-toggle" style="color:white;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Buscar/Editar
           </a>
           <ul class="dropdown-menu">
@@ -53,7 +53,9 @@
       }
     } 
   ?>
-<div class="principal"></div>
+<div class="principal">
+<h4 style="text-align: center;">Sua oficina, sempre organizada. Ordens de serviço sob controle.</h4>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
    
 </body>

@@ -224,7 +224,8 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
         echo "Nenhum dado foi encontrado!";
     }else{
         
-    $tabela = "<table id=\"tabelabusca\" border='1'>
+    $tabela = "  <link rel=\"stylesheet\" href=\"../tabelas.css\">
+    <table id=\"tabelabusca\"  style='word-wrap: break-word; border:solid;border-collapse: collapse'>
             <thead>
                 <tr>
                     <th>Placa</th>
@@ -232,7 +233,8 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
                     <th>Funcionário</th>
                     <th>Serviço</th>
                     <th>Valor</th>
-                    <th>Ações</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>";
@@ -249,13 +251,13 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
         . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
         . "<td>
                <a href=\"telaEditar.php?id=".$ordemservico->getId()."&tipo=ordemservico\">
-               <button class=\"btn btn-primary\">Editar</button></a>
+               <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
 
-               <form method=\"post\" action=\"../view/telaExcluir.php\">
+               <td><form method=\"post\" action=\"../view/telaExcluir.php\">
 
                 <input type=\"hidden\" name=\"id_apagar\" value=\" ". $ordemservico->getId() ."\">
 
-                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\">Apagar</button>
+                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
 
                 </form>
                 

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-  <body>
+  <body style="background-color:rgb(213, 232, 252);">
 
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">   
       <ul class="navbar-nav">
@@ -20,7 +20,7 @@
           }else{
             echo "../view/index.php";
           }?>
-          "><i class="material-icons">arrow_back</i></a>
+          "><i class="material-icons" style="color:white;">arrow_back</i></a>
         </li>
       </ul>
   </nav>

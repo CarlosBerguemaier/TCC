@@ -1,4 +1,6 @@
-
+body{
+  background-color: rgb(213, 232, 252);
+}
 .removerLink:hover{
     text-decoration: none;
     color: rgb(110, 110, 110);
@@ -48,8 +50,8 @@
 }
 
 .div-resultados{
-  margin-left: 22%;
-    width: 1200px;
+   margin: 0, auto;
+    width: 100%;
 }
 .btn-esconder{
   margin-left: 35%;
@@ -69,4 +71,12 @@
   margin: 0 auto;
   width: 50%;
   align-items: center;
+}
+
+.listgroup{
+font-size: 1rem;
+}
+
+table, th, td {
+  border: 1px solid black;
 }
