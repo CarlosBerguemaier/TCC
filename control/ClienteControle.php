@@ -55,9 +55,14 @@ function buscarClienteCpf($cpf){
 }
 
 if(isset($_POST['bt_busca_cliente'])){
+    if(isset($_POST['coluna'])){
+        header('Location: ../view/telaBuscaClientes.php?coluna='.$_GET['coluna'].'&valor=todos');
+    }
     if(isset($_POST['busca']) or !empty($_POST['busca'])){
     header('Location: ../view/telaBuscaClientes.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
-    }}
+    }
+  
+}
 
 function buscarClientePorId($id){
     $conn = new Conexao();
@@ -79,7 +84,9 @@ function buscarCliente($valor_busca, $coluna)
 {
     $conn = new Conexao();
     $conn = $conn->conexao();
-
+    if ($coluna == "todos") {
+        $stmt = $conn->prepare("SELECT * FROM `cliente`;");
+    }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `cliente` WHERE id like :busca");
         $stmt->bindParam(":busca", $valor_busca);
@@ -132,14 +139,16 @@ function imprimirResultadosClientes($vetor_clientes){
     }
     $cliente = $vetor_clientes[0];
     if(empty($cliente)){
-        echo "Nenhum dado foi encontrado!";
+        header('Location: ../view/telaBuscaClientes.php?msg=naoencontrado');
     }else{
-    echo "<table id=\"tabelabusca\" border='1'>
+    echo "<br> <link rel=\"stylesheet\" href=\"../tabelas.css\"><table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
+                    <th></th>
+                    <th></th>
                 </tr>
     </thead>
             <tbody>";
@@ -147,8 +156,8 @@ function imprimirResultadosClientes($vetor_clientes){
         echo "<tr><td>" . $cliente->getNome() . "</td>".
          "<td>" . $cliente->getCpf() . "</td>" .
          "<td>" . $cliente->getTelefone() . "</td>" . "<td>
-               <a href=\"telaEditar.php?id=".$cliente->getId()."&tipo=cliente\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
+               <a href=\"telaEditar.php?id=".$cliente->getId()."&tipo=cliente\"><button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
+             <td>   <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\"><i class=\"material-icons\">delete</i></button></a>
             </td> </tr>";
     }
     echo "</tbody> 

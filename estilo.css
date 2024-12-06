@@ -18,7 +18,7 @@ body{
   padding-bottom: 2%;
   font-size: 2em;
   width: 99%;  
-  margin: 0 auto;
+  margin: 0, auto;
 
 }
 .navbar{
@@ -75,8 +75,4 @@ body{
 
 .listgroup{
 font-size: 1rem;
-}
-
-table, th, td {
-  border: 1px solid black;
 }

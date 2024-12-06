@@ -5,7 +5,8 @@ th, td {
 
 table, th, td {
     border-bottom: 1px solid #5f5f5f;
-
+    word-wrap: break-word;
+    white-space: normal;
   }
   tr:nth-child(even) {background-color: #c2ddfd}
   
@@ -18,4 +19,18 @@ table, th, td {
 
 table{
     border-radius: 20px;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    max-width: 800px;
+}
+td {
+    padding: 15px;
+    word-wrap: break-word;
+}
+
+table{
+    margin-bottom: 25%;
 }

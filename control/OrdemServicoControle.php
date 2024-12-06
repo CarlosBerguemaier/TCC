@@ -42,12 +42,12 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
 
     if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
         if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
-           # header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+           header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
         } else {
             inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal);
         }
     } else {
-       # header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+       header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
     }
 }
 
@@ -56,7 +56,7 @@ if(isset($_POST['bt_busca_ordemservico'])){
         header('Location: ../view/telaBuscaOrdemServico.php?coluna='.$_GET['coluna'].'&valor=todos');
     }
 if(isset($_POST['busca']) or !empty($_POST['busca'])){
-  
+
 header('Location: ../view/telaBuscaOrdemServico.php?coluna='.$_GET['coluna'].'&valor='.$_POST['busca']);
 }}
 
@@ -221,11 +221,11 @@ function imprimirResultadosOrdemServicos($vetor_servicos){
     }
     $ordemservico = $vetor_servicos[0];
     if(empty($ordemservico)){
-        echo "Nenhum dado foi encontrado!";
+        header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
     }else{
         
     $tabela = "  <link rel=\"stylesheet\" href=\"../tabelas.css\">
-    <table id=\"tabelabusca\"  style='word-wrap: break-word; border:solid;border-collapse: collapse'>
+    <table id=\"tabelabusca\" border=\"1\">
             <thead>
                 <tr>
                     <th>Placa</th>
@@ -280,7 +280,7 @@ function gerarPdfdasOS($vetor_servicos){
         echo "Nenhum dado foi encontrado!";
     }else{
         $data_atual = date("d/m/Y");
-    $tabela = "
+    $tabela = "  <link rel=\"stylesheet\" href=\"../tabela_pdf.css\">
     <h2> Relatório de ordem de serviço - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
     <table id=\"tabelabusca\" border='1'>
             <thead>
@@ -307,7 +307,7 @@ function gerarPdfdasOS($vetor_servicos){
         . "</tr>";
     }
     $tabela = $tabela . "</tbody> </table>";
-
+    ob_end_clean();
     include_once 'gerarPdf.php';
     gerarPdf($tabela);
 
@@ -322,16 +322,61 @@ function gerarPdfdasOS($vetor_servicos){
     $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
     $carro = buscarCarroPorId($ordemservico->getId_carro());
     
-    echo " <form action=\"../control/OrdemServicoControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
-        Placa do Carro: <input type=\"text\" name=\"placa\" value=\"". $carro->getPlaca() ."\">
-        CPF do Cliente: <input type=\"text\" name=\"cpf_cliente\" value=\"". $cliente->getCpf() ."\">
-        CPF do Funcionário: <input type=\"text\" name=\"cpf_funcionario\" value=\"". $funcionario->getCpf()."\">
-        Descrição: <input type=\"text\" name=\"descricao\" value=\"". $ordemservico->getDescricao()."\">
-        Valor: <input type=\"text\" name=\"valor\" value=\"". $ordemservico->getValor()."\">
-        Quilometragem Inicial: <input type=\"text\" name=\"kminicial\" value=\"". $ordemservico->getKminicial()."\">
-        Quilometragem Final: <input type=\"text\" name=\"kmfinal\" value=\"". $ordemservico->getKmfinal()."\">
-        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_ordemservico\" name=\"bt_editar_ordemservico\">Editar</button>
-    </form>";
+   echo '<div class="container">
+        <form action="../control/OrdemServicoControle.php?id='. $_GET['id'].'&tipo='.$_GET['tipo'].'" method="post">
+            <div class="form-floating mb-3 ">
+              <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" value="'. $carro->getPlaca() .'" placeholder="ABC1D23">
+              <label for="exampleFormControlInput1" class="form-label">Placa do veículo</label>
+            </div>
+
+            <div class=" input-group form-floating mb-3">
+              <input type="text" name="cpf_cliente" class="form-control" id="cliente_cpf_input" value="'. $cliente->getCpf() .'">
+              <label for="cliente_cpf_input input-group-text" class="form-label">CPF do cliente</label>
+
+              <span class="input-group-text">ou</span>
+
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
+                <i class="material-icons">search</i></button>
+            </div>
+
+            <div class=" input-group form-floating mb-3">
+              <input type="text" name="cpf_funcionario" class="form-control" id="funcionario_cpf_input" value="'. $funcionario->getCpf().'">
+              <label for="funcionario_cpf_input" class="form-label">CPF do funcionário</label>
+
+              <span class="input-group-text">ou</span>
+
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFuncionario">
+                <i class="material-icons">search</i></button>
+            </div>
+
+            <div class="form mb-3">
+              <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="5" value="'.$ordemservico->getDescricao().'" style="height: 150px;" >'.$ordemservico->getDescricao().'</textarea>
+
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="valor" class="form-control" id="exampleFormControlInput1" value="'. $ordemservico->getValor().'">
+              <label for="exampleFormControlInput1" class="form-label">Valor</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="kminicial" class="form-control" id="exampleFormControlInput1" value="'. $ordemservico->getKminicial().'">
+              <label for="exampleFormControlInput1" class="form-label">Quilometragem Inicial</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="text" name="kmfinal" class="form-control" id="exampleFormControlInput1" value="'. $ordemservico->getKmfinal().'">
+              <label for="exampleFormControlInput1" class="form-label">Quilometragem Final</label>
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-success" name="bt_editar_ordemservico">
+              <h2>Editar</h2>
+            </button>
+          </form>
+        </div>';
+
     }
 
 ?>
