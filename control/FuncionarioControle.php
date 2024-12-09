@@ -13,7 +13,7 @@ if(isset($_POST['cpf'])){$cpf = $_POST['cpf'];}
 
 if(isset($_POST['bt_cadastro_funcionario'])){
     if(!isset($nome) or !isset($telefone) or !isset($cpf) or empty($nome) or empty($telefone) or empty($cpf)){
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroFuncionario.php?msg=dadosinvalidos');
     }else{
         inserirFuncionario($nome, $telefone, $cpf);
     }
@@ -23,7 +23,7 @@ function inserirFuncionario($nome,$telefone,$cpf){
   
     $funcionario = buscarFuncionario($cpf,"cpf_f");
     if(!empty($funcionario[0])){
-        header('Location: ../view/telaCadastro.php?msg=dadosduplicadoscpf');
+        header('Location: ../view/telaCadastroFuncionario.php?msg=dadosduplicadoscpf');
     }
 
     $conn = new Conexao();
@@ -35,7 +35,7 @@ function inserirFuncionario($nome,$telefone,$cpf){
     $stmt->bindParam(':cpf', $cpf);
     $stmt->execute();
     $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    header('Location: ../view/telaCadastroFuncionario.php?msg=sucesso'); 
 }
 
 function buscarFuncionarioCpf($cpf){
@@ -82,6 +82,9 @@ function buscarFuncionario($valor_busca, $coluna)
     $conn = new Conexao();
     $conn = $conn->conexao();
 
+    if ($coluna == "todos") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario`");
+    }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");
         $stmt->bindParam(":busca", $valor_busca);
@@ -143,6 +146,8 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>";
@@ -150,11 +155,20 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
         $resultado .= "<tr><td>" . $funcionario->getNome() . "</td>".
          "<td>" . $funcionario->getCpf() . "</td>" .
          "<td>" . $funcionario->getTelefone() . "</td>"
-        . "<td>
-               <a href=\"telaEditar.php?id=".$funcionario->getId()."&tipo=funcionario\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
+        . "<td class=\"centralizar_coluna\">
+               <a href=\"telaEditar.php?id=" . $funcionario->getId() . "&tipo=funcionario\">
+               <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
+
+               <td class=\"centralizar_coluna\"><form method=\"post\" action=\"../view/telaExcluir.php\">
+
+                <input type=\"hidden\" name=\"id_apagar\" value=\" " . $funcionario->getId() . "\">
+
+                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
+
+                </form>
+                
             </td>"
-        . "</tr>";
+                . "</tr>";
     }
     $resultado .= "</tbody> 
         </table>";

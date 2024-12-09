@@ -1,3 +1,4 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -13,19 +14,18 @@
 
 </head>
 
-<body style="background-color:rgb(213, 232, 252);">
+<body">
 
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">
-    <ul class="navbar-nav">
-      <li class="nav-item custom">
-        <a class="nav-link navbar-link" href="<?php    ob_start(); if (isset($_GET['coluna'])) {
-                                                echo "../view/telaBuscaOrdemServico.php";
-                                              } else {
-                                                echo "../view/index.php";
-                                              } ?>
-          "><i class="material-icons" style="color:white;">arrow_back</i></a>
-      </li>
-    </ul>
+  <nav class="navbar navbar-light bg-light nav_bar">
+
+    <div class="container-fluid justify-content-around">
+      <h1><a href="../view/index.php"><img src="../images/logo.webp" alt="logo da oficina" style="width:50px;"></h1></a>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+        <button class="btn btn-outline-dark" type="submit"><i class="material-icons">search</i></button>
+      </form>
+      <h1></h1>
+    </div>
   </nav>
 
   <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="ExemploModalCliente" aria-hidden="true">
@@ -86,14 +86,19 @@
   }
   ?>
 
-  <div class="container text-center" <?php if (!isset($_GET['sv_busca']) and isset($_GET['coluna'])) {
-                                        echo " hidden ";
-                                      } ?> style="margin-top: 2%;">
+  <div class="container text-center central" <?php if (!isset($_GET['sv_busca']) and isset($_GET['coluna'])) {
+                                                echo " hidden ";
+                                              } ?> style="margin-top: 2%;">
 
-    <div class="row">
+    <div class="row central">
       <div class="col">
-        <h3>Selecione:</h3>
-        <div class="principal" id="">
+
+        <div class="menulateral">
+          <form method="post" action="index.php"><button class="btn btn-dark botao-enviar m-1" type="submit" id="bt_voltar" name="bt_voltar"></a>
+              <h6><i class="material-icons">arrow_back</i> Voltar ao Início</h6>
+            </button></form>
+
+          <h3>Selecione:</h3>
           <div class="card-body">
             <ul class="list-group">
               <li class="list-group-item listgroup <?php if (isset($_GET['sv_busca'])) {
@@ -126,13 +131,13 @@
                                                         echo " active ";
                                                       }
                                                     } ?>"><a class="dropdown-item" href="../view/telaBuscaOrdemServico.php?sv_busca=valor">Valor</a></li>
-            </ul>
+          </ul>
             </select>
           </div>
         </div>
       </div>
 
-      <div class="col-3">
+      <div class="col">
 
 
         <?php
@@ -141,12 +146,11 @@
           if ($_GET["sv_busca"] == "todos") {
             $coluna = "todos";
             echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">';
-            echo '<button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"> <i class="material-icons">search</i> Buscar</button>';
-          }
+             }
           if ($_GET["sv_busca"] == "cpf_c") {
             $coluna = "cpf_c";
 
-            echo '<form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
+            echo '<form id="meu_form" class="w-100" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
               <div class=" input-group form-floating mb-3">
         
               <input type="text" name="busca" class="form-control" id="cliente_cpf_input" placeholder="Digite o CPF do cliente">
@@ -156,13 +160,11 @@
 
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
                 <i class="material-icons">search</i></button>
-            </div>
-              <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i>Buscar</button>';
-          }
+            </div>';  }
           if ($_GET["sv_busca"] == "cpf_f") {
             $coluna = "cpf_f";
 
-          echo ' <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
+            echo ' <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
           <div class=" input-group form-floating mb-3">
               <input type="text" name="busca" class="form-control" id="funcionario_cpf_input" placeholder="11122233345">
               <label for="funcionario_cpf_input" class="form-label">Digite o CPF do funcionário</label>
@@ -172,30 +174,24 @@
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFuncionario">
                 <i class="material-icons">search</i></button>
             </div>
-            <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i>Buscar</button>';
-
-          }
+          ';}
           if ($_GET["sv_busca"] == "placa") {
             $coluna = "placa";
 
-          echo ' <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
+            echo ' <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
           <div class="form-floating mb-3 ">
               <input type="text" name="busca" class="form-control" id="exampleFormControlInput1" placeholder="ABC1D23">
               <label for="exampleFormControlInput1" class="form-label">Placa do Carro</label>
             </div>
-            <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i>Buscar</button>';
-          }
+          ';}
           if ($_GET["sv_busca"] == "valor") {
             $coluna = "valor";
 
-           echo '  <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
+            echo '  <form id="meu_form" action="../control/OrdemServicoControle.php?coluna=' . $coluna . '" method="post">
            <div class="form-floating mb-3">
               <input type="text" name="busca" class="form-control" id="exampleFormControlInput1" placeholder="150">
               <label for="exampleFormControlInput1" class="form-label">Valor</label>
-            </div>
-            <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i>Buscar</button>';
-
-      
+            </div>';
           }
           if ($_GET["sv_busca"] == "descricao") {
             $coluna = "descricao";
@@ -204,12 +200,26 @@
             <div class="form-floating mb-3">
               <textarea class="form-control" name="busca" id="exampleFormControlTextarea1" rows="3" placeholder="descrição"></textarea>
               <label for="exampleFormControlTextarea1" class="form-label">Descrição do serviço</label>
-            </div>
-           <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i>Buscar</button>';
+            </div>';
+          
           }
+    echo '<div class="input-group w-100">
+            <span class="input-group-text"> Após </span>
+               <input type="date" name="data_apos" class="form-control" style="width:4%" id="" value="">
+               </div>
+               <br>
+               <div class="input-group w-100">
+               <span class="input-group-text"> Antes de </span>
+               <input type="date" name="data_antes" class="form-control" style="width:4%" id="" value="">
+               </div>
+               <br>
+                <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i> Buscar</button>
+        </form>';
+
         }
         ?>
-        </form>
+
+
 
 
 
@@ -223,13 +233,12 @@
   </div>
   </div>
 
-  <div class="container text-center">
-    <div class="row">
+  <div class="container text-center w-100">
+    <div class="row w-auto">
       <div class="col"></div>
-      <div class="col-md-auto ">
-        <div class="div-resultados ">
-          <?php
-          include_once '../control/OrdemServicoControle.php';
+      <div class="col-md-auto w-100 ">
+        <div class="div-resultados text-center" style="align-self :center;">
+          <?php include_once '../control/OrdemServicoControle.php';
           include_once '../control/gerarPdf.php';
           if (isset($_GET['valor']) and isset($_GET['coluna'])) {
             echo "<br>";
@@ -241,16 +250,33 @@
       <form method=\"post\" action=\"telaBuscaOrdemServico.php\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_voltar\" name=\"bt_voltar\"></a> <h6><i class=\"material-icons\">arrow_back</i> Voltar</h6></button></form>
     </div>
     <div class=\"col\">
-      <form method=\"post\" action=\"telaBuscaOrdemServico.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\">
-      <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
+      <form method=\"post\" action=\"telaBuscaOrdemServico.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
     </div>
     <div class=\"col\">
       
     </div>
   </div>
 </div>";
+            
+              if(!empty($_GET['data_apos']) and !empty($_GET['data_antes'])){
+                $html =  buscarOrdemServicoEntreDatas($_GET['valor'], $_GET['coluna'],$_GET['data_apos'],$_GET['data_antes']);
+              }
+               if(!empty($_GET['data_apos']) and empty($_GET['data_antes'])){
+               $html = buscarOrdemServicoEntreDatas($_GET['valor'], $_GET['coluna'],$_GET['data_apos'],"nao");
+               }
+              if(!empty($_GET['data_antes']) and  empty($_GET['data_apos'])){
+               $html =  buscarOrdemServicoEntreDatas($_GET['valor'], $_GET['coluna'],"nao",$_GET['data_antes']);  
+               }
 
-            $html = bt_buscar_os($_GET['valor'], $_GET['coluna']);
+                  if(empty($_GET['data_apos']) and empty($_GET['data_antes'])){
+                 $html = bt_buscar_os($_GET['valor'], $_GET['coluna']);
+               
+              }
+           
+              if(empty($html[0])){
+              header('Location: telaBuscaOrdemServico.php?msg=naoencontrado');
+              }
+
             if (isset($_POST['bt_gerar_pdf'])) {
               gerarPdfdasOS($html);
             }
@@ -270,6 +296,6 @@
   <script src="../ajax/ajaxCadastro.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="../js.js"></script>
-</body>
+  </body>
 
 </html>

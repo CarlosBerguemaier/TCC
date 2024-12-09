@@ -11,13 +11,16 @@
   </head>
   <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #6AA6F9;">   
-      <ul class="navbar-nav">
-        <li class="nav-item custom">
-          <a class="nav-link navbar-link" href="index.php"><i class="material-icons">arrow_back</i></a>
-        </li>
-      </ul>
-  </nav>
+  <nav class="navbar navbar-light bg-light nav_bar">
+  <div class="container-fluid justify-content-around">
+    <a href="index.php"><h1><img src="../images/logo.webp" alt="" style="width:50px;"></h1></a>
+    <form class="d-flex">
+      <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+      <button class="btn btn-outline-dark" type="submit"><i class="material-icons">search</i></button>
+    </form>
+    <h1></h1>
+  </div>
+</nav>
   
   <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="ExemploModalCliente" aria-hidden="true">
     <div class="modal-dialog">
@@ -79,35 +82,33 @@
       </div>
     </div>
 
-  <?php 
-    if(isset($_GET['msg'])){
-      $msg=$_GET['msg'];
-      if($msg == "sucesso"){
-        echo '<div class="alert alert-success" role="alert">
-        <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
-      </div>';
-      }
-      if($msg == "dadosinvalidos"){
-        echo '<div class="alert alert-danger" role="alert">
-        <h6 class="texto-alertas">Voce inseriu dados inválidos! Por favor verifique!</h6>
-      </div>';
-      }
-      if($msg == "naoencontrado"){
-        echo '<div class="alert alert-danger" role="alert">
-        <h6 class="texto-alertas">Não foi encontrado nenhum registro com o dado informado!</h6>
-      </div>';
-      }
-    } 
-?>
+    <?php
+  if (isset($_GET['msg'])) {
+    $msg = $_GET['msg'];
+    if ($msg == "sucesso") {
+      echo '<div class="alert alert-success " style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
+    </div>';
+    }
+    if ($msg == "dadosinvalidos") {
+      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
+    </div>';
+    }
+  }
+  ?>
 <br>
 
 <div class="container">
   <div class="row">
     <div class="col">
+    <form method="post" action="index.php"><button class="btn btn-dark botao-enviar m-1" type="submit" id="bt_voltar" name="bt_voltar"></a>
+              <h6><i class="material-icons">arrow_back</i> Voltar ao Início</h6>
+            </button></form>
     </div>
     <div class="col-6">
-    <div class="principal"><h1>Editar dados</h1></div>
-    </div>
+    <div class="principal" style="text-align:center;"><h1>Editar dados</h1></div>
+    </div> 
     <div class="col">
     </div>
   </div>

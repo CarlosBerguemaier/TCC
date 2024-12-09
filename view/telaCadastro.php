@@ -5,8 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>tela de serviços</title>
-  <!-- Última versão CSS compilada e minificada -->
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="../estilo.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -50,6 +48,8 @@
     </div>';
     }
   }
+  date_default_timezone_set('UTC');
+  $data = date("d.m.y");
   ?>
 
 
@@ -179,6 +179,10 @@
             <div class="form-floating mb-3">
               <input type="text" name="valor" class="form-control" id="exampleFormControlInput1" placeholder="150">
               <label for="exampleFormControlInput1" class="form-label">Valor</label>
+            </div>
+
+            <div class="form-item mb-3">
+              <input type="date" name="data" class="form-control" id="" value="<?php echo date('Y-m-d');?>">
             </div>
 
             <div class="form-floating mb-3">
