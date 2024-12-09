@@ -50,6 +50,8 @@
     </div>';
     }
   }
+  date_default_timezone_set('UTC');
+  $data = date("d.m.y");
   ?>
 
 
@@ -179,6 +181,10 @@
             <div class="form-floating mb-3">
               <input type="text" name="valor" class="form-control" id="exampleFormControlInput1" placeholder="150">
               <label for="exampleFormControlInput1" class="form-label">Valor</label>
+            </div>
+
+            <div class="form-item mb-3">
+              <input type="date" name="data" class="form-control" id="" value="<?php echo date('Y-m-d');?>">
             </div>
 
             <div class="form-floating mb-3">

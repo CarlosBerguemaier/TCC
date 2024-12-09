@@ -8,12 +8,11 @@ table, th, td {
     word-wrap: break-word;
     white-space: normal;
   }
-  tr:nth-child(even) {background-color: #c2ddfd}
+  tr:nth-child(even) {background-color: #acacac}
+  tr{background-color: #dddddd}
   
-  tr:hover {background-color: #9cc8fc}
-
   th {
-    background-color: #5b85ce;
+    background-color: #6a6f78;
     color: white;
 }
 
@@ -24,7 +23,6 @@ table{
 table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
-    max-width: 800px;
 }
 td {
     padding: 15px;
@@ -33,4 +31,17 @@ td {
 
 table{
     margin-bottom: 25%;
+    width: 1400px;
+    max-width: 1400px;
+}
+.nao_quebrar_linha {
+    white-space: nowrap;
+    word-wrap:normal;
+    width: 120px;
+  }
+
+.table_inicio{
+    margin-bottom: 25%;
+    width: 800px !important; 
+    max-width: 800px !important; 
 }
