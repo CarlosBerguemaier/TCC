@@ -18,6 +18,66 @@
         </li>
       </ul>
   </nav>
+  
+  <div class="modal fade" id="modalCliente" tabindex="-1" aria-labelledby="ExemploModalCliente" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ExemploModalCliente">Buscar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="resultado_ajax_clientes">
+
+
+          <div id="Pesquisar">
+            <div class="input-group mb-3">
+              <input onkeyup="getDadosCliente();" type="text" id="txtnome_clientes" name="txtnome_clientes" class="form-control" placeholder="Infome o nome:" aria-label="Infome o nome:" aria-describedby="basic-addon2">
+            </div>
+
+          </div>
+          <hr />
+
+          <div id="Resultado_clientes">
+
+         
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalFuncionario" tabindex="-1" aria-lablledby="exemploModalFuncionario" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exemploModalFuncionario">Buscar Funcionário</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="resultado_ajax_funcionarios">
+
+
+        <div id="Pesquisar">
+            <div class="input-group mb-3">
+              <input onkeyup="getDadosFuncionarios();" type="text" id="txtnome_funcionario" name="txtnome_funcionario" class="form-control" placeholder="Infome o nome:" aria-label="Infome o nome:" aria-describedby="basic-addon2">
+            </div>
+
+          </div>
+          <hr />
+
+          <div id="Resultado_funcionarios">
+
+         
+
+          </div>
+
+        </div>
+
+        </div>
+      </div>
+    </div>
 
   <?php 
     if(isset($_GET['msg'])){
@@ -40,7 +100,19 @@
     } 
 ?>
 <br>
-<div class="principal"><h1>Editar dados</h1></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+    </div>
+    <div class="col-6">
+    <div class="principal"><h1>Editar dados</h1></div>
+    </div>
+    <div class="col">
+    </div>
+  </div>
+</div>
+
 
 <?php
     if(empty($_GET['id'])){
@@ -94,10 +166,9 @@
 
 
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../ajax/ajaxCadastro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="../js.js"></script>
   </body>
   </html>

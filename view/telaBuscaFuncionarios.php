@@ -85,9 +85,14 @@
   <?php 
       include_once '../control/FuncionarioControle.php';
       if(isset($_GET['valor']) and isset($_GET['coluna'])){
+        
       $html = bt_buscar_funcionarios($_GET['valor'],$_GET['coluna']);
+
+      
       if(isset($_GET['valor']) and isset($_GET['coluna'])){
-      echo '<form method="post" action="telaBuscaFuncionarios.php?valor='.$_GET['valor'].'&coluna='.$_GET['coluna'].'"><button class="btn btn-success botao-enviar" type="submit" id="bt_gerar_pdf" name="bt_gerar_pdf"></a> <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>';
+      echo '<form method="post" action="telaBuscaFuncionarios.php?valor='.$_GET['valor'].'&coluna='.$_GET['coluna'].'">
+      <button class="btn btn-success botao-enviar" type="submit" id="bt_gerar_pdf" name="bt_gerar_pdf"></a>
+      <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>';
       
       if(isset($_POST['bt_gerar_pdf'])){
         gerarPdfdosFuncionarios($html);

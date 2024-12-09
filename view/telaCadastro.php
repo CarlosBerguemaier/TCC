@@ -50,6 +50,8 @@
     </div>';
     }
   }
+  date_default_timezone_set('UTC');
+  $data = date("d.m.y");
   ?>
 
 
@@ -98,7 +100,7 @@
 
           <div id="Resultado_clientes">
 
-         
+
 
           </div>
 
@@ -118,7 +120,7 @@
         <div class="modal-body" id="resultado_ajax_funcionarios">
 
 
-        <div id="Pesquisar">
+          <div id="Pesquisar">
             <div class="input-group mb-3">
               <input onkeyup="getDadosFuncionarios();" type="text" id="txtnome_funcionario" name="txtnome_funcionario" class="form-control" placeholder="Infome o nome:" aria-label="Infome o nome:" aria-describedby="basic-addon2">
             </div>
@@ -128,15 +130,15 @@
 
           <div id="Resultado_funcionarios">
 
-         
+
 
           </div>
 
         </div>
 
-        </div>
       </div>
     </div>
+  </div>
   </div>
 
   <form method="post" action="../control/OrdemServicoControle.php">
@@ -148,7 +150,7 @@
 
             <div class="form-floating mb-3 ">
               <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" placeholder="ABC1D23">
-              <label for="exampleFormControlInput1" class="form-label">Placa do Carro</label>
+              <label for="exampleFormControlInput1" class="form-label">Placa do veículo</label>
             </div>
 
             <div class=" input-group form-floating mb-3">
@@ -163,7 +165,7 @@
 
             <div class=" input-group form-floating mb-3">
               <input type="text" name="cpf_funcionario" class="form-control" id="funcionario_cpf_input" placeholder="11122233345">
-              <label for="funcionario_cpf_input" class="form-label">CPF do funcionário</label>
+              <label for="funcionario_cpf_input" class="form-label">Digite o CPF do funcionário</label>
 
               <span class="input-group-text">ou</span>
 
@@ -181,6 +183,10 @@
               <label for="exampleFormControlInput1" class="form-label">Valor</label>
             </div>
 
+            <div class="form-item mb-3">
+              <input type="date" name="data" class="form-control" id="" value="<?php echo date('Y-m-d');?>">
+            </div>
+
             <div class="form-floating mb-3">
               <input type="text" name="kminicial" class="form-control" id="exampleFormControlInput1" placeholder="15000">
               <label for="exampleFormControlInput1" class="form-label">Quilometragem Inicial</label>
@@ -190,9 +196,22 @@
               <input type="text" name="kmfinal" class="form-control" id="exampleFormControlInput1" placeholder="16000">
               <label for="exampleFormControlInput1" class="form-label">Quilometragem Final</label>
             </div>
-            <button type="submit" class="btn btn-success" name="bt_cadastro_ordemservico">
+
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-6">
+                <button type="submit" class="btn btn-success" name="bt_cadastro_ordemservico">
               <h2>Cadastrar</h2>
             </button>
+                </div>
+                <div class="col">
+                </div>
+              </div>
+            </div>
+
+      
           </form>
         </div>
 
@@ -217,9 +236,21 @@
               <label for="exampleFormControlInput1" class="form-label">Telefone</label>
             </div>
 
-            <button type="submit" class="btn btn-success" name="bt_cadastro_cliente">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-6">
+                <button type="submit" class="btn btn-success" name="bt_cadastro_cliente">
               <h2>Cadastrar</h2>
             </button>
+                </div>
+                <div class="col">
+                </div>
+              </div>
+            </div>
+            
+          
 
           </form>
         </div>
@@ -250,9 +281,22 @@
               <label for="exampleFormControlInput1" class="form-label">Ano</label>
             </div>
 
-            <button type="submit" class="btn btn-success" name="bt_cadastro_carro">
+
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-6">
+                <button type="submit" class="btn btn-success" name="bt_cadastro_carro">
               <h2>Cadastrar</h2>
             </button>
+                </div>
+                <div class="col">
+                </div>
+              </div>
+            </div>
+
+        
           </form>
         </div>
 
@@ -277,9 +321,22 @@
               <label for="exampleFormControlInput1" class="form-label">Telefone</label>
             </div>
 
-            <button type="submit" class="btn btn-success" name="bt_cadastro_funcionario">
+
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                </div>
+                <div class="col-6">
+                <button type="submit" class="btn btn-success" name="bt_cadastro_funcionario">
               <h2>Cadastrar</h2>
             </button>
+                </div>
+                <div class="col">
+                </div>
+              </div>
+            </div>
+
+        
           </form>
         </div>
       </div>
