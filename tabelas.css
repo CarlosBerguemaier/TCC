@@ -45,3 +45,8 @@ table{
     width: 800px !important; 
     max-width: 800px !important; 
 }
+
+.centralizar_coluna {
+    text-align: center;
+    width: 90px;
+}

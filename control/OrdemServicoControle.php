@@ -45,12 +45,12 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
 
     if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
         if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
-            header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+            header('Location: ../view/telaCadastroOrdemServico.php?msg=dadosinvalidos');
         } else {
             inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal, $data);
         }
     } else {
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroOrdemServico.php?msg=dadosinvalidos');
     }
 }
 
@@ -105,10 +105,9 @@ function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $d
     $stmt->bindParam(':kminicial', $kminicial);
     $stmt->bindParam(':kmfinal', $kmfinal);
     $stmt->bindParam(':dataa', $data);
-
     $stmt->execute();
     $stmt = null;
-    header('Location: ../view/telaCadastro.php?msg=sucesso');
+    header('Location: ../view/telaCadastroOrdemServico.php?msg=sucesso');
 }
 
 if (isset($_POST['bt_editar_ordemservico'])) {
@@ -203,7 +202,7 @@ function buscarOrdemServico($valor_busca, $coluna)
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico`");
         } 
         if ($coluna == "todos-inicial") {
-            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` ORDER BY data DESC");
+            $stmt = $conn->prepare("SELECT * FROM `ordem_servico` ORDER BY data DESC LIMIT 6");
         } 
        } else {
         if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
@@ -323,7 +322,7 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
                     }
                 }
             }
-            $valor_para_buscar = $valor_busca;
+            $stmt->bindParam(':busca', $valor_busca);
         }
 
         if ($coluna == "cpf_c") {
@@ -500,7 +499,7 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
                     <th>Funcionário</th>
                     <th class=\"nao_quebrar_linha\">Data</th>
                     <th>Valor</th>
-                    <th></th>
+                    <th class=\"centralizar_coluna\"></th>
                 </tr>
             </thead>
             <tbody>";
@@ -696,10 +695,11 @@ function imprimirEditarOrdemServico($ordemservico)
             </div>
 
             
-
+            <div style="text-align:center;">
             <button type="submit" class="btn btn-success" name="bt_editar_ordemservico">
               <h2>Editar</h2>
             </button>
+            </div>
           </form>
         </div>';
 }

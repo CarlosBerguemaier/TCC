@@ -14,7 +14,7 @@ if(isset($_POST['ano'])){$ano = $_POST['ano'];}
 
 if(isset($_POST['bt_cadastro_carro'])){
     if(!isset($placa) or !isset($marca) or !isset($modelo) or !isset($ano) or empty($placa) or empty($marca) or empty($modelo) or empty($ano)){
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroCarro.php?msg=dadosinvalidos');
     }else{
         inserirCarro($placa, $marca, $modelo, $ano);
     }
@@ -23,7 +23,7 @@ if(isset($_POST['bt_cadastro_carro'])){
 function inserirCarro($placa, $marca, $modelo, $ano){
     $carro = buscarCarro($placa,"placa");
     if(!empty($carro[0])){
-    header('Location: ../view/telaCadastro.php?msg=dadosduplicadosplaca');
+    header('Location: ../view/telaCadastroCarro.php?msg=dadosduplicadosplaca');
     }
 
     $conn = new Conexao();
@@ -36,7 +36,7 @@ function inserirCarro($placa, $marca, $modelo, $ano){
     $stmt->bindParam(':ano', $ano);
     $stmt->execute();
     $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    header('Location: ../view/telaCadastroCarro.php?msg=sucesso'); 
 }
 
 function buscarCarro($valor_busca, $coluna)
@@ -151,13 +151,16 @@ function imprimirResultadosCarros($vetor_carros){
     if(empty($carro)){
         echo "Nenhum dado foi encontrado!";
     }else{
-        $resultado = "<table id=\"tabelabusca\" border='1'>
+        $resultado = " <link rel=\"stylesheet\" href=\"../tabelas.css\">
+        <table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Placa</th>
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Ano</th>
+                    <th class=\"centralizar_coluna\"></th>
+                    <th class=\"centralizar_coluna\"></th>
                 </tr>
             </thead>
             <tbody>";
@@ -165,13 +168,21 @@ function imprimirResultadosCarros($vetor_carros){
         $resultado .= "<tr><td>" . $carro->getPlaca() . "</td>".
          "<td>" . $carro->getMarca() . "</td>" .
          "<td>" . $carro->getModelo() . "</td>" .
-         "<td>" . $carro->getAno() . "</td>"
+         "<td>" . $carro->getAno() . "</td>
+        <td>
+         <a href=\"telaEditar.php?id=" . $carro->getId() . "&tipo=carro\">
+         <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
 
-        . "<td>
-               <a href=\"telaEditar.php?id=".$carro->getId()."&tipo=carro\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=".$carro->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
-            </td>"
-        . "</tr>";
+         <td><form method=\"post\" action=\"../view/telaExcluir.php\">
+
+          <input type=\"hidden\" name=\"id_apagar\" value=\" " . $carro->getId() . "\">
+
+          <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
+
+          </form>
+          
+      </td>"
+          . "</tr>";
     }
        $resultado.= "</tbody> 
         </table>";

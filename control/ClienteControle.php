@@ -13,7 +13,7 @@ if(isset($_POST['cpf'])){$cpf = $_POST['cpf'];}
 
 if(isset($_POST['bt_cadastro_cliente'])){
     if(!isset($nome) or !isset($telefone) or !isset($cpf) or empty($nome) or empty($telefone) or empty($cpf)){
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroCliente.php?msg=dadosinvalidos');
     }else{
         inserirCliente($nome, $telefone, $cpf);
     }
@@ -36,7 +36,7 @@ function inserirCliente($nome,$telefone,$cpf){
     $stmt->bindParam(':cpf', $cpf);
     $stmt->execute();
     $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    header('Location: ../view/telaCadastroCliente.php?msg=sucesso'); 
 }
 function buscarClienteCpf($cpf){
     $conn = new Conexao();
@@ -147,17 +147,17 @@ function imprimirResultadosClientes($vetor_clientes){
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
-                    <th></th>
-                    <th></th>
+                    <th class=\"centralizar_coluna\"></th>
+                    <th class=\"centralizar_coluna\"></th>
                 </tr>
     </thead>
             <tbody>";
     foreach ($vetor_clientes as $cliente) {
         echo "<tr><td>" . $cliente->getNome() . "</td>".
          "<td>" . $cliente->getCpf() . "</td>" .
-         "<td>" . $cliente->getTelefone() . "</td>" . "<td>
+         "<td>" . $cliente->getTelefone() . "</td>" . "<td class=\"centralizar_coluna\">
                <a href=\"telaEditar.php?id=".$cliente->getId()."&tipo=cliente\"><button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
-             <td>   <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\"><i class=\"material-icons\">delete</i></button></a>
+             <td class=\"centralizar_coluna\">   <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\"><i class=\"material-icons\">delete</i></button></a>
             </td> </tr>";
     }
     echo "</tbody> 
@@ -260,4 +260,138 @@ if(isset($_POST['bt_editar_cliente'])){
         
             }
         }
+
+        function buscarClienteEntreDatas($valor_busca, $coluna, $data_apos, $data_antes)
+{
+    $data1 = "";
+    $data2 = "";
+    $valor_para_buscar ="";
+
+    if($data_apos == "nao") {$data1 == false;}else{$data1 == true;}
+    if($data_antes == "nao") { $data2 == false;}else{$data2 == true;}
+
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+   
+     if($coluna == "todos"){
+        if($data_apos != "nao" and $data_antes != "nao"){
+            $stmt = $conn->prepare("SELECT * 
+            FROM cliente
+            WHERE data BETWEEN :data_apos AND :data_antes;");
+            $stmt->bindParam(':data_apos', $data_apos);
+            $stmt->bindParam(':data_antes', $data_antes);
+        }else{
+            if($data_apos != "nao" and $data_antes == "nao"){
+                $stmt = $conn->prepare("SELECT * 
+                FROM cliente
+                WHERE data >= :data_apos");
+                $stmt->bindParam(':data_apos', $data_apos);
+            }else{
+                if($data_apos == "nao" and $data_antes != "nao"){
+                    $stmt = $conn->prepare("SELECT * 
+                    FROM cliente
+                    WHERE data <= :data_antes");
+                    $stmt->bindParam(':data_antes', $data_antes);
+                }
+            }
+        }
+        }
+        else{
+        if ($coluna == "id") {
+            if($data_apos == true and $data_antes == true){
+                $stmt = $conn->prepare("SELECT * 
+                FROM cliente
+                WHERE data BETWEEN :data_apos AND :data_antes AND id like :busca;");
+                $stmt->bindParam(':data_apos', $data_apos);
+                $stmt->bindParam(':data_antes', $data_antes);
+            }else{
+                if($data_apos == true and $data_antes == false){
+                    $stmt = $conn->prepare("SELECT * 
+                    FROM cliente
+                    WHERE data >= :data_apos AND id like :busca;");
+                    $stmt->bindParam(':data_apos', $data_apos);
+                }else{
+                    if($data_apos == false and $data_antes == true){
+                        $stmt = $conn->prepare("SELECT * 
+                        FROM cliente
+                        WHERE data <= :data_antes AND id like :busca;");
+                        $stmt->bindParam(':data_antes', $data_antes);
+                    }
+                }
+            }
+            $valor_para_buscar = $valor_busca;
+        }
+
+        if ($coluna == "cpf") {
+            if($data_apos != "nao" and $data_antes != "nao"){
+                $stmt = $conn->prepare("SELECT * 
+                FROM cliente
+                WHERE data BETWEEN :data_apos AND :data_antes AND cpf like :busca;");
+                $stmt->bindParam(':data_apos', $data_apos);
+                $stmt->bindParam(':data_antes', $data_antes);
+            }else{
+                if($data_apos != "nao" and $data_antes == "nao"){
+                    $stmt = $conn->prepare("SELECT * 
+                    FROM cliente
+                    WHERE data >= :data_apos AND cpf like :busca;");
+                    $stmt->bindParam(':data_apos', $data_apos);
+                }else{
+                    if($data_apos == "nao" and $data_antes != "nao"){
+                        $stmt = $conn->prepare("SELECT * 
+                        FROM cliente
+                        WHERE data <= :data_antes AND cpf like :busca;");
+                        $stmt->bindParam(':data_antes', $data_antes);
+                    }
+                }
+            }
+            $stmt->bindParam(':busca', $valor_para_buscar);
+        }
+        if ($coluna == "telefone") {
+            if($data_apos != "nao" and $data_antes != "nao"){
+                $stmt = $conn->prepare("SELECT * 
+                FROM cliente
+                WHERE data BETWEEN :data_apos AND :data_antes AND telefone like :busca;");
+                $stmt->bindParam(':data_apos', $data_apos);
+                $stmt->bindParam(':data_antes', $data_antes);
+            }else{
+                if($data_apos != "nao" and $data_antes == "nao"){
+                    $stmt = $conn->prepare("SELECT * 
+                    FROM cliente
+                    WHERE data >= :data_apos AND telefone like :busca;");
+                    $stmt->bindParam(':data_apos', $data_apos);
+                }else{
+                    if($data_apos == "nao" and $data_antes != "nao"){
+                        $stmt = $conn->prepare("SELECT * 
+                        FROM cliente
+                        WHERE data <= :data_antes AND telefone like :busca;");
+                        $stmt->bindParam(':data_antes', $data_antes);
+                    }
+                }
+            }
+            $stmt->bindParam(':busca',$valor_busca);
+        }
+        }
+     
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll();
+    $vetor_servicos[] = "";
+    $i = 0;
+    foreach ($resultado as $ordem) {
+        $ordemservico = new OrdemServico();
+        $ordemservico->setID($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $ordemservico->setData($ordem['data']);
+        $vetor_servicos[$i] = $ordemservico;
+        $i++;
+    }
+    
+    return $vetor_servicos;
+}
 ?>
