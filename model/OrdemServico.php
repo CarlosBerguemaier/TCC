@@ -9,6 +9,7 @@ class OrdemServico{
     private $descricao;
     private $kminicial;
     private $kmfinal;
+    private $data;
 
     public function getId() {return $this->id;}
     public function getId_cliente() {return $this->id_cliente;}
@@ -18,6 +19,7 @@ class OrdemServico{
     public function getDescricao() {return $this->descricao;}
     public function getKminicial() {return $this->kminicial;}
     public function getKmfinal() {return $this->kmfinal;}
+    public function getData() {return $this->data;}
 
     public function setId($id){$this->id = $id;}
     public function setId_cliente($id){$this->id_cliente = $id;}
@@ -27,6 +29,7 @@ class OrdemServico{
     public function setDescricao($descricao){$this->descricao = $descricao;}
     public function setKminicial($kminicial){$this->kminicial = $kminicial;}
     public function setKmfinal($kmfinal){$this->kmfinal = $kmfinal;}
+    public function setData($data){$this->data = $data;}
    
 }
 
