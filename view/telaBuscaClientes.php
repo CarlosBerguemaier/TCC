@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tela de serviços</title>
+    <title>Listar Clientes</title>
 
     <link rel="stylesheet" href="../estilo.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -150,10 +150,10 @@ echo '<form id="meu_form" action="../control/ClienteControle.php?coluna=' . $col
           <div class=\"container text-center\">
   <div class=\"row\">
     <div class=\"col\">
-      <form method=\"post\" action=\"telaBuscaClientes.php\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_voltar\" name=\"bt_voltar\"></a> <h6><i class=\"material-icons\">arrow_back</i> Voltar</h6></button></form>
+      <form method=\"post\" action=\"telaBuscaClientes.php\"><button class=\"btn btn-dark botao-enviar\" type=\"submit\" id=\"bt_voltar\" name=\"bt_voltar\"></a> <h6><i class=\"material-icons\">arrow_back</i> Voltar</h6></button></form>
     </div>
     <div class=\"col\">
-      <form method=\"post\" action=\"telaBuscaClientes.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
+      <form method=\"post\" action=\"telaBuscaClientes.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\"><button class=\"btn btn-danger botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
     </div>
     <div class=\"col\">
       

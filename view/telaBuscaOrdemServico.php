@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>tela de serviços</title>
+  <title>Listar Ordens de Serviço</title>
 
 
   <link rel="stylesheet" href="../estilo.css">
@@ -74,12 +74,12 @@
   if (isset($_GET['msg'])) {
     $msg = $_GET['msg'];
     if ($msg == "sucesso") {
-      echo '<div class="alert alert-success" role="alert">
+      echo '<div class="alert alert-success" style="text-align:center" role="alert">
         <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
       </div>';
     }
     if ($msg == "naoencontrado") {
-      echo '<div class="alert alert-danger" role="alert">
+      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
         <h6 class="texto-alertas">Não foi encontrado nenhum registro com o dado informado!</h6>
       </div>';
     }
@@ -201,32 +201,36 @@
               <textarea class="form-control" name="busca" id="exampleFormControlTextarea1" rows="3" placeholder="descrição"></textarea>
               <label for="exampleFormControlTextarea1" class="form-label">Descrição do serviço</label>
             </div>';
-          
           }
-    echo '<div class="input-group w-100">
-            <span class="input-group-text"> Após </span>
-               <input type="date" name="data_apos" class="form-control" style="width:4%" id="" value="">
-               </div>
-               <br>
-               <div class="input-group w-100">
-               <span class="input-group-text"> Antes de </span>
-               <input type="date" name="data_antes" class="form-control" style="width:4%" id="" value="">
-               </div>
-               <br>
-                <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i> Buscar</button>
-        </form>';
-
+    echo '  <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_ordemservico" name="bt_busca_ordemservico"><i class="material-icons">search</i> Buscar</button>';
         }
         ?>
-
-
-
-
-
-
       </div>
-      <div class="col">
+      <div class="col m-3">
+        <?php         if (isset($_GET["sv_busca"])) {
+    echo '<ul class="confirmacoes">
+                        <li>
+                        </li>
+                        <li>
+                         <label class="form-label"><input type="checkbox" id="checkData" onclick="trocar();">Filtrar por data</label>
+                        </li>
+                    </ul>
+                    <div class="input-group w-100">
 
+
+<span class="input-group-text"> Após </span>
+   <input disabled id="inputData1" type="date" name="data_apos" class="form-control" style="width:4%" id="" value="">
+   </div>
+   <br>
+
+   <div  class="input-group w-100">
+   <span class="input-group-text"> Antes de </span>
+   <input  disabled id="inputData2" type="date" name="data_antes" class="form-control" style="width:4%" id="" value="">
+   </div>
+   <br>
+  
+
+                  </form>';} ?>
       </div>
     </div>
   </div>
@@ -247,10 +251,10 @@
           <div class=\"container text-center\">
   <div class=\"row\">
     <div class=\"col\">
-      <form method=\"post\" action=\"telaBuscaOrdemServico.php\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_voltar\" name=\"bt_voltar\"></a> <h6><i class=\"material-icons\">arrow_back</i> Voltar</h6></button></form>
+      <form method=\"post\" action=\"telaBuscaOrdemServico.php\"><button class=\"btn btn-dark botao-enviar\" type=\"submit\" id=\"bt_voltar\" name=\"bt_voltar\"></a> <h6><i class=\"material-icons\">arrow_back</i> Voltar</h6></button></form>
     </div>
     <div class=\"col\">
-      <form method=\"post\" action=\"telaBuscaOrdemServico.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\"><button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
+      <form method=\"post\" action=\"telaBuscaOrdemServico.php?valor=" . $_GET['valor'] . "&coluna=" . $_GET['coluna'] . "\"><button class=\"btn btn-danger botao-enviar\" type=\"submit\" id=\"bt_gerar_pdf\" name=\"bt_gerar_pdf\"></a> <h6><i class=\"material-icons\">picture_as_pdf</i> Gerar PDF</h6></button></form>
     </div>
     <div class=\"col\">
       
