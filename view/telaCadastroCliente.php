@@ -33,6 +33,11 @@
       <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
     </div>';
     }
+    if ($msg == "dadosduplicadoscpf") {
+      echo '<div class="alert alert-danger " style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Este CPF já foi cadastrado!</h6>
+    </div>';
+    }
     if ($msg == "dadosinvalidos") {
       echo '<div class="alert alert-danger" style="text-align:center" role="alert">
       <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>

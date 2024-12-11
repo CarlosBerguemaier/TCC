@@ -15,9 +15,9 @@
 <nav class="navbar navbar-light bg-light nav_bar">
   <div class="container-fluid justify-content-around">
     <a href="index.php"><h1><img src="../images/logo.webp" alt="" style="width:50px;"></h1></a>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-      <button class="btn btn-outline-dark" type="submit"><i class="material-icons">search</i></button>
+    <form class="d-flex" method="post" action="../control/pesquisaControle.php">
+      <input name="pesquisar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+      <button class="btn btn-outline-dark" name="bt_pesquisar" type="submit"><i class="material-icons">search</i></button>
     </form>
     <h1></h1>
   </div>

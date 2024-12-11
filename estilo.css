@@ -57,3 +57,13 @@ a:hover{
     margin-right: 5px;
     position: relative;
 }
+
+.centralizar{
+  margin : 0, auto;
+}
+
+.hr{
+    border-color:#aaa;
+    box-sizing:border-box;
+    width:100%;  
+  }
