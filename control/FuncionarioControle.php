@@ -77,6 +77,28 @@ if(isset($_POST['bt_busca_funcionario'])){
     }}
 
 
+
+    function getNomeFuncionarioViaID($nome)
+    {
+        $conn = new Conexao();
+        $conn = $conn->conexao();
+            $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");
+            $stmt->bindParam(":busca", $nome);
+        $stmt->execute();
+        $resultado = $stmt->fetchAll();
+        $vetor_clientes[] = "";
+        $i = 0;
+        foreach ($resultado as $restultado_objeto) {
+            $Funcionario = new Funcionario();
+            $Funcionario->setID($restultado_objeto['id']);
+            $Funcionario->setNome($restultado_objeto['nome']);
+            $Funcionario->setCpf($restultado_objeto['cpf']);
+            $Funcionario->setTelefone($restultado_objeto['telefone']);
+            return $Funcionario;
+        }
+       
+    }
+
 function buscarFuncionario($valor_busca, $coluna)
 {
     $conn = new Conexao();
@@ -84,6 +106,13 @@ function buscarFuncionario($valor_busca, $coluna)
 
     if ($coluna == "todos") {
         $stmt = $conn->prepare("SELECT * FROM `funcionario`");
+    }
+    if ($coluna == "buscar_todos_parametros") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE nome like :busca or telefone like :busca1 or cpf like :busca2");
+        $buscanometelefone = "%".$valor_busca."%";
+        $stmt->bindParam(":busca", $buscanometelefone);
+        $stmt->bindParam(":busca1", $buscanometelefone);
+        $stmt->bindParam(":busca2", $valor_busca);
     }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");

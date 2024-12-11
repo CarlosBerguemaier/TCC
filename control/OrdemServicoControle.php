@@ -193,6 +193,38 @@ function editarOrdemServico($ordemservico)
     header('Location: ../view/index.php?msg=sucesso');
 }
 
+function buscarPorTodosParametros($valor_busca, $coluna){
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    if ($coluna == "buscar_todos_parametros") {
+        $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE descricao like :busca or valor like :busca1");
+        $buscadesc =  "%".$valor_busca."%";
+        $stmt->bindParam(":busca",$buscadesc);
+        $stmt->bindParam(":busca1", $valor_busca);
+    }
+    
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll();
+    $vetor_servicos[] = "";
+    $i = 0;
+    foreach ($resultado as $ordem) {
+        $ordemservico = new OrdemServico();
+        $ordemservico->setId($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $ordemservico->setData($ordem['data']);
+        $vetor_servicos[$i] = $ordemservico;
+        $i++;
+    }
+    return $vetor_servicos;
+}
+
 function buscarOrdemServico($valor_busca, $coluna)
 {
     $conn = new Conexao();
@@ -212,6 +244,7 @@ function buscarOrdemServico($valor_busca, $coluna)
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id like :busca");
             $valor_para_buscar = $valor_busca;
         }
+      
         if ($coluna == "cpf_c") {
             $busca = buscarClienteCpf($valor_busca);
             $valor_para_buscar = $busca->getId();
@@ -249,7 +282,7 @@ function buscarOrdemServico($valor_busca, $coluna)
     $i = 0;
     foreach ($resultado as $ordem) {
         $ordemservico = new OrdemServico();
-        $ordemservico->setID($ordem['id']);
+        $ordemservico->setId($ordem['id']);
         $ordemservico->setId_carro($ordem['id_carro']);
         $ordemservico->setId_cliente($ordem['id_cliente']);
         $ordemservico->setId_funcionario($ordem['id_funcionario']);
@@ -650,7 +683,7 @@ function imprimirEditarOrdemServico($ordemservico)
               <label for="exampleFormControlInput1" class="form-label">Placa do veículo</label>
             </div>
 
-            <div class=" input-group form-floating mb-3">
+            <div class="input-group form-floating mb-3">
               <input type="text" name="cpf_cliente" class="form-control" id="cliente_cpf_input" value="' . $cliente->getCpf() . '">
               <label for="cliente_cpf_input input-group-text" class="form-label">CPF do cliente</label>
 
@@ -672,7 +705,6 @@ function imprimirEditarOrdemServico($ordemservico)
 
             <div class="form mb-3">
               <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="5" value="' . $ordemservico->getDescricao() . '" style="height: 150px;" >' . $ordemservico->getDescricao() . '</textarea>
-
             </div>
 
             <div class="form-floating mb-3">

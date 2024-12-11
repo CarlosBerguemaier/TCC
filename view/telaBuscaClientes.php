@@ -166,7 +166,7 @@ echo '<form id="meu_form" action="../control/ClienteControle.php?coluna=' . $col
                $html = bt_buscar_cliente($_GET['valor'], $_GET['coluna']);
               }
               if(empty($html[0])){
-                header('Location: telaBuscaClientes.php?msg=naoencontrado');
+                #header('Location: telaBuscaClientes.php?msg=naoencontrado');
                 }
                 if (isset($_POST['bt_gerar_pdf'])) {
                   gerarPdfdosClientes($html);
