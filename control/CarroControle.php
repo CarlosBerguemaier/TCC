@@ -47,7 +47,7 @@ function buscarCarro($valor_busca, $coluna)
         $stmt = $conn->prepare("SELECT * FROM `carro`");
     }else{
     if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
-        header('Location: ERRO');
+        header('Location: ../view/index.php?msg=dadosinvalidos');
     }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `carro` WHERE id like :busca");
@@ -196,14 +196,31 @@ function imprimirEditarCarro($carro){
     return null;
     }
 
-    echo " <form action=\"../control/CarroControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
-        Placa: <input type=\"text\" name=\"placa\" value=\"". $carro->getPlaca() ."\">
-        Marca: <input type=\"text\" name=\"marca\" value=\"". $carro->getMarca() ."\">
-        Modelo <input type=\"text\" name=\"modelo\" value=\"". $carro->getModelo()."\">
-        Ano <input type=\"text\" name=\"ano\" value=\"". $carro->getAno()."\">
-       
-        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_carro\" name=\"bt_editar_carro\">Editar</button>
-    </form>";
+    echo " <div class=\"container\">
+<form action=\"../control/CarroControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"placa\" class=\"form-control\" id=\"placa\" value=\"". $carro->getPlaca() ."\">
+          <label for=\"placa input-group-text\" class=\"form-label\">Placa</label>   
+        </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"marca\" class=\"form-control\" id=\"marca\" value=\"". $carro->getMarca() ."\">
+          <label for=\"marca input-group-text\" class=\"form-label\">Marca</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"modelo\" class=\"form-control\" id=\"modelo\" value=\"". $carro->getModelo() ."\">
+          <label for=\"modelo input-group-text\" class=\"form-label\">Modelo</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"ano\" class=\"form-control\" id=\"ano\" value=\"". $carro->getAno()."\">
+          <label for=\"ano input-group-text\" class=\"form-label\">Telefone</label>   
+             </div>";
+
+          echo '<div style="text-align:center;">
+        <button type="submit" class="btn btn-success" name="bt_editar_carro">
+          <h2>Editar</h2>
+        </button>
+        </div></form>';
+
     }
 
 
@@ -212,7 +229,7 @@ function imprimirEditarCarro($carro){
 if(isset($_POST['bt_editar_carro'])){
 
 if(isset($_POST['placa']) and isset($_POST['marca']) and isset($_POST['modelo']) and isset($_POST['ano'])){
-        
+
 $placa = $_POST['placa'];
 $marca = $_POST['marca'];
 $modelo = $_POST['modelo'];
@@ -253,7 +270,7 @@ function editarCarro($carro){
     
         $stmt->execute();
         $stmt = null;
-       # header('Location: ../view/index.php?msg=sucesso');
+        header('Location: ../view/index.php?msg=sucesso');
     }
 
     function gerarPdfdosCarros($vetor_carros){

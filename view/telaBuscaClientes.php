@@ -16,10 +16,10 @@
   <nav class="navbar navbar-light bg-light nav_bar">
     <div class="container-fluid justify-content-around">
       <h1><a href="../view/index.php"><img src="../images/logo.webp" alt="logo da oficina" style="width:50px;"></h1></a>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
-        <button class="btn btn-outline-dark" type="submit"><i class="material-icons">search</i></button>
-      </form>
+    <form class="d-flex" method="post" action="../control/pesquisaControle.php">
+      <input name="pesquisar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
+      <button class="btn btn-outline-dark" name="bt_pesquisar" type="submit"><i class="material-icons">search</i></button>
+    </form>
       <h1></h1>
     </div>
   </nav>
@@ -43,7 +43,80 @@
       </div>';
       }
     }
-    ?>
+    ?><div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 nav-lateral bg-light">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                    <a href="../view/index.php"><button class="btn btn-dark m-1 bt_opcoes"><i class="material-icons">home</i> Início</button></a>
+ 
+                    </li>
+                    <li>
+                    <div class="btn-group dropend m-1">
+  <button type="button" class="btn btn-dark dropdown-toggle bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+  Ordem de serviço
+  </button>
+  <ul class="dropdown-menu ">
+  <a href="../view/telaCadastroOrdemServico.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">add</i> Cadastrar</button></a>
+   <br>
+   <a href="../view/telaBuscaOrdemServico.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Listar</button></a>
+  </ul>
+</div>
+                    </li>
+                    <li>
+                    <div class="btn-group dropend m-1">
+  <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+  Cliente
+  </button>
+  <ul class="dropdown-menu ">
+  <a href="../view/telaCadastroCliente.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">add</i> Cadastrar</button></a>
+   <br>
+   <a href="../view/telaBuscaClientes.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Listar</button></a>
+  </ul>
+</div>     
+                  </li>
+                    <li>
+                    <div class="btn-group dropend m-1">
+  <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+  Veículos
+  </button>
+  <ul class="dropdown-menu ">
+  <a href="../view/telaCadastroCarro.php">   <button class="btn btn-outline-dark m-1 sub_bt_opcoes" ><i class="material-icons">add</i> Cadastrar</button></a>
+   <br>
+   <a href="../view/telaBuscaCarros.php"> <button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Listar</button></a>
+  </ul>
+</div>
+                    </li>
+                    <li>
+                    <div class="btn-group dropend m-1">
+  <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+  Funcionário
+  </button>
+  <ul class="dropdown-menu ">
+  <a href="../view/telaCadastroFuncionario.php"> <button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">add</i> Cadastrar</button></a>
+   <br>
+   <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Listar</button></a>
+  </ul>
+</div>
+                    </li>
+                    <li>
+                    <div class="btn-group dropend m-1">
+  <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+  <i class="material-icons">picture_as_pdf</i> Relatórios
+  </button>
+  <ul class="dropdown-menu ">
+  <a href="../view/telaRelatorio.php"> <button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">add</i> Personalizar</button></a>
+   <br>
+   <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Mensal</button></a>
+   <br>
+   <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
+  </ul>
+</div> </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
 
 <div class="container text-center central" <?php if (!isset($_GET['sv_busca']) and isset($_GET['coluna'])) {
                                         echo " hidden ";
@@ -52,9 +125,6 @@
     <div class="row central" >
       <div class="col">
       <div class="menulateral" id="">
-      <form method="post" action="index.php"><button class="btn btn-dark botao-enviar m-1" type="submit" id="bt_voltar" name="bt_voltar"></a>
-              <h6><i class="material-icons">arrow_back</i> Voltar ao Início</h6>
-            </button></form>
           <h3>Selecione:</h3>
           <div class="card-body">
             <ul class="list-group">
@@ -140,7 +210,7 @@ echo '<form id="meu_form" action="../control/ClienteControle.php?coluna=' . $col
     <div class="row w-auto">
       <div class="col"></div>
       <div class="col-md-auto w-100 ">
-        <div class="div-resultados text-center" style="align-self :center;">
+        <div class="div-resultados text-center" style="align-self :center; margin-left:10%;">
           <?php
           include_once '../control/gerarPdf.php';
           if (isset($_GET['valor']) and isset($_GET['coluna'])) {

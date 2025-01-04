@@ -1,3 +1,173 @@
+<?php
+include_once '../model/Carro.php';
+include_once '../model/OrdemServico.php';
+include_once '../model/Cliente.php';
+include_once '../model/Funcionario.php';
+
+include_once '../database/Conexao.php';
+
+include_once '../control/CarroControle.php';
+include_once '../control/OrdemServicoControle.php';
+include_once '../control/ClienteControle.php';
+include_once '../control/FuncionarioControle.php';
+include_once '../control/ServicoControle.php';
+
+
+
+
+
+    function buscarRelatorio() {
+    $placa = "aa";
+    $cpf_c = "";
+    $cpf_f = "";
+    $descricao = "";
+    $valor = "";
+    $data = "";
+    $kminicial = "";
+    $kmfinal = "";
+    $pgto = "";
+
+    
+
+    $string = "SELECT * FROM `ordem_servico` WHERE 1=1 ";
+
+    if (!empty($_POST['placa'])) {
+        $placa = $_POST['placa'];
+        $placa = str_replace(' ', '', $placa);
+        $carro = buscarCarroPlaca($placa);
+        if($carro->getPlaca()!="") {    
+            $id = $carro->getId();
+            $string = $string . "and id_carro like " . $id;
+        }else{
+            $string = $string . "and id_carro like ''";
+        }
+
+    }
+    if (!empty($_POST['cpf_cliente'])) {
+        $cpf_c = $_POST['cpf_cliente'];
+        $cliente = buscarClienteCpf($cpf_c);
+        if ($cliente->getNome()!="") {
+            $id = $cliente->getId();
+            $string = $string . " and id_cliente like " . $id;
+        }else{
+            $string = $string . " and id_cliente like ''";
+        }
+    }
+    if (!empty($_POST['cpf_funcionario'])) {
+        $cpf_f = $_POST['cpf_funcionario'];
+        $funcionario = buscarFuncionarioCpf($cpf_f);
+        if ($funcionario->getNome()!="") {
+            $id = $funcionario->getId();
+            $string = $string . " and id_funcionario like " . $id;
+        }else{
+            $string = $string . " and id_funcionario like '' ";
+        }
+    }
+
+    if (!empty($_POST['descricao'])) {
+        $descricao = $_POST['descricao'];
+        $string = $string . " and descricao like '" . $descricao . "' ";
+    }
+    if (!empty($_POST['valor'])) {
+        $valor = $_POST['valor'];
+        $string = $string . " and valor like " . $valor;
+    }
+    if (!empty($_POST['data'])) {
+        $data = $_POST['data'];
+        $string = $string . " and data like '" . $data . "' ";
+    }
+    if (!empty($_POST['kminicial'])) {
+        $kminicial = $_POST['kminicial'];
+        $string = $string . " and kminicial like " . $kminicial;
+    }
+    if (!empty($_POST['kmfinal'])) {
+        $kmfinal = $_POST['kmfinal'];
+        $string = $string . " and kmfinal like " . $kmfinal;
+    }
+    if (!empty($_POST['pago'])) {
+        $pago = $_POST['pago'];
+        if ($pago == "option1") {
+            $string = $string . " and pagamento = 1 ";
+        }
+    }
+    if (!empty($_POST['npago'])) {
+        $pago = $_POST['npago'];
+        if ($pago == "option1") {
+            $string = $string . " and pagamento = 0 ";
+        }
+    }
+
+    $vetor_servicos = [];
+    $num_servicos = buscarNumeroDeServicos();
+    for ($i = 0; $i <= $num_servicos; $i++) {
+        if (!empty($_POST['servico_id' . $i])) {
+            $servico_id = $_POST['servico_id' . $i];
+            array_push($vetor_servicos, $servico_id);
+        }
+    }
+    $string_servicos = "(";
+    $tam = sizeof($vetor_servicos);
+    $i = 0;
+    foreach ($vetor_servicos as $sv_id) {
+        if($i==$tam-1){
+            $string_servicos =  $string_servicos . "$sv_id";
+        }else{
+            $string_servicos =  $string_servicos . "$sv_id, ";
+        }
+        $i++;
+    }
+    $string_servicos = $string_servicos . ")";
+
+    if(sizeof($vetor_servicos)>=1){
+        foreach ($vetor_servicos as $servico_id){
+            $string = $string . " and id in (SELECT id_os
+            from servico_os
+             where id_servico = ".$servico_id.")";
+        }
+    
+    }
+
+    $conn = new Conexao;
+    $conn = $conn->conexao();
+
+    $stmt = $conn->prepare($string);
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll();
+    $vetor_os = [];
+    if(empty($resultado)){
+        echo '<div class="alert alert-danger" style="text-align:center;" role="alert">
+        <h6 class="texto-alertas">Não foram encontradas ordens de serviço com os termos específicados!</h6>
+      </div>
+      <a href="../view/telaRelatorio.php"><button class="btn btn-success"> Refazer a busca</button></a><br>
+      ';
+    }else{
+    foreach ($resultado as $ordem) {
+        $ordemservico = new OrdemServico();
+        $ordemservico->setId($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $ordemservico->setData($ordem['data']);
+        if ($ordem['pagamento'] == 1) {
+            $ordemservico->setPagamento(true);
+        } else {
+            $ordemservico->setPagamento(false);
+        }
+        array_push($vetor_os,$ordemservico);
+    }
+}
+$tabela = imprimirResultadosOrdemServicos($vetor_os);
+echo $tabela;
+}
+
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -26,11 +196,6 @@
 <?php
   if (isset($_GET['msg'])) {
     $msg = $_GET['msg'];
-    if ($msg == "naoencontrado") {
-      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
-      <h6 class="texto-alertas">Não foi encontrado nenhum dado!</h6>
-    </div>';
-    }
     if ($msg == "sucesso") {
       echo '<div class="alert alert-success " style="text-align:center" role="alert">
       <h6 class="texto-alertas">Ação realizada com Sucesso!</h6>
@@ -41,9 +206,13 @@
       <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
     </div>';
     }
+    if ($msg == "semdados") {
+        echo '<div class="alert alert-danger" style="text-align:center" role="alert">
+        <h6 class="texto-alertas">Não foram encontradas ordens de serviço com os termos específicados!</h6>
+      </div>';
+      }
   }
   ?>
-
 <div class="container-fluid">
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 nav-lateral bg-light">
@@ -125,30 +294,19 @@
     <div class="col">
       
     </div>
-    <div class="col-6" style="text-align:center; margin-left:5%;">
-    <h1>Últimas Ordens de serviço</h1>
+    <div class="col-md-auto" style="text-align:center; margin-left:5%;">
+   <?php if (isset($_POST['bt_relatorio_ordemservico'])) { buscarRelatorio();}?>
     </div>
     <div class="col">
       
     </div>
   </div>
 
-<div class="col" style="text-align:center; margin-left:5%;">
-      <div class="central" style="margin-left:15%">
-<?php 
-include_once '../control/OrdemServicoControle.php';
-
-imprimirOS_telainicial();
-
-?>
-</div>
-</div>
 </div>
 
     </div>
   
   </div>
-</div>
 
 
 <script src="../js.js"></script>

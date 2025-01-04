@@ -26,11 +26,6 @@
 <?php
   if (isset($_GET['msg'])) {
     $msg = $_GET['msg'];
-    if ($msg == "naoencontrado") {
-      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
-      <h6 class="texto-alertas">Não foi encontrado nenhum dado!</h6>
-    </div>';
-    }
     if ($msg == "sucesso") {
       echo '<div class="alert alert-success " style="text-align:center" role="alert">
       <h6 class="texto-alertas">Ação realizada com Sucesso!</h6>
@@ -126,29 +121,18 @@
       
     </div>
     <div class="col-6" style="text-align:center; margin-left:5%;">
-    <h1>Últimas Ordens de serviço</h1>
+   
     </div>
     <div class="col">
       
     </div>
   </div>
 
-<div class="col" style="text-align:center; margin-left:5%;">
-      <div class="central" style="margin-left:15%">
-<?php 
-include_once '../control/OrdemServicoControle.php';
-
-imprimirOS_telainicial();
-
-?>
-</div>
-</div>
 </div>
 
     </div>
   
   </div>
-</div>
 
 
 <script src="../js.js"></script>
