@@ -13,7 +13,7 @@ if(isset($_POST['cpf'])){$cpf = $_POST['cpf'];}
 
 if(isset($_POST['bt_cadastro_funcionario'])){
     if(!isset($nome) or !isset($telefone) or !isset($cpf) or empty($nome) or empty($telefone) or empty($cpf)){
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroFuncionario.php?msg=dadosinvalidos');
     }else{
         inserirFuncionario($nome, $telefone, $cpf);
     }
@@ -23,7 +23,7 @@ function inserirFuncionario($nome,$telefone,$cpf){
   
     $funcionario = buscarFuncionario($cpf,"cpf_f");
     if(!empty($funcionario[0])){
-        header('Location: ../view/telaCadastro.php?msg=dadosduplicadoscpf');
+        header('Location: ../view/telaCadastroFuncionario.php?msg=dadosduplicadoscpf');
     }
 
     $conn = new Conexao();
@@ -35,7 +35,7 @@ function inserirFuncionario($nome,$telefone,$cpf){
     $stmt->bindParam(':cpf', $cpf);
     $stmt->execute();
     $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    header('Location: ../view/telaCadastroFuncionario.php?msg=sucesso'); 
 }
 
 function buscarFuncionarioCpf($cpf){
@@ -77,11 +77,43 @@ if(isset($_POST['bt_busca_funcionario'])){
     }}
 
 
+
+    function getNomeFuncionarioViaID($nome)
+    {
+        $conn = new Conexao();
+        $conn = $conn->conexao();
+            $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");
+            $stmt->bindParam(":busca", $nome);
+        $stmt->execute();
+        $resultado = $stmt->fetchAll();
+        $vetor_clientes[] = "";
+        $i = 0;
+        foreach ($resultado as $restultado_objeto) {
+            $Funcionario = new Funcionario();
+            $Funcionario->setID($restultado_objeto['id']);
+            $Funcionario->setNome($restultado_objeto['nome']);
+            $Funcionario->setCpf($restultado_objeto['cpf']);
+            $Funcionario->setTelefone($restultado_objeto['telefone']);
+            return $Funcionario;
+        }
+       
+    }
+
 function buscarFuncionario($valor_busca, $coluna)
 {
     $conn = new Conexao();
     $conn = $conn->conexao();
 
+    if ($coluna == "todos") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario`");
+    }
+    if ($coluna == "buscar_todos_parametros") {
+        $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE nome like :busca or telefone like :busca1 or cpf like :busca2");
+        $buscanometelefone = "%".$valor_busca."%";
+        $stmt->bindParam(":busca", $buscanometelefone);
+        $stmt->bindParam(":busca1", $buscanometelefone);
+        $stmt->bindParam(":busca2", $valor_busca);
+    }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `funcionario` WHERE id like :busca");
         $stmt->bindParam(":busca", $valor_busca);
@@ -143,6 +175,8 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
                     <th>Nome</th>
                     <th>CPF</th>
                     <th>Telefone</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>";
@@ -150,11 +184,20 @@ function imprimirResultadosFuncionarios($vetor_funcionarios){
         $resultado .= "<tr><td>" . $funcionario->getNome() . "</td>".
          "<td>" . $funcionario->getCpf() . "</td>" .
          "<td>" . $funcionario->getTelefone() . "</td>"
-        . "<td>
-               <a href=\"telaEditar.php?id=".$funcionario->getId()."&tipo=funcionario\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=\"\"><button class=\"btn btn-danger\">Apagar</button></a>
+        . "<td class=\"centralizar_coluna\">
+               <a href=\"telaEditar.php?id=" . $funcionario->getId() . "&tipo=funcionario\">
+               <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
+
+               <td class=\"centralizar_coluna\"><form method=\"post\" action=\"../view/telaExcluir.php\">
+
+                <input type=\"hidden\" name=\"id_apagar\" value=\" " . $funcionario->getId() . "\">
+
+                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
+
+                </form>
+                
             </td>"
-        . "</tr>";
+                . "</tr>";
     }
     $resultado .= "</tbody> 
         </table>";
@@ -168,14 +211,27 @@ function imprimirEditarFuncionario($funcionario){
     if(empty($funcionario)){
     return null;
     }
+    echo " <div class=\"container\">
+    <form action=\"../control/FuncionarioControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"nome\" class=\"form-control\" id=\"cliente_cpf_input\" value=\"". $funcionario->getNome() ."\">
+          <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">Nome</label>   
+        </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"cpf_f\" class=\"form-control\" id=\"cpf_f\" value=\"". $funcionario->getCpf() ."\">
+          <label for=\"cpf_f input-group-text\" class=\"form-label\">CPF</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"telefone\" class=\"form-control\" id=\"cliente_cpf_input\" value=\"". $funcionario->getTelefone()."\">
+          <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">Telefone</label>   
+             </div>";
 
-    echo " <form action=\"../control/FuncionarioControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
-        Nome: <input type=\"text\" name=\"nome\" value=\"". $funcionario->getNome() ."\">
-        CPF: <input type=\"text\" name=\"cpf_f\" value=\"". $funcionario->getCpf() ."\">
-        Telefone <input type=\"text\" name=\"telefone\" value=\"". $funcionario->getTelefone()."\">
-       
-        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_funcionario\" name=\"bt_editar_funcionario\">Editar</button>
-    </form>";
+          echo '<div style="text-align:center;">
+        <button type="submit" class="btn btn-success" name="bt_editar_funcionario">
+          <h2>Editar</h2>
+        </button>
+        </div></form>';
+
     }
 
 

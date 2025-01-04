@@ -14,7 +14,7 @@ if(isset($_POST['ano'])){$ano = $_POST['ano'];}
 
 if(isset($_POST['bt_cadastro_carro'])){
     if(!isset($placa) or !isset($marca) or !isset($modelo) or !isset($ano) or empty($placa) or empty($marca) or empty($modelo) or empty($ano)){
-        header('Location: ../view/telaCadastro.php?msg=dadosinvalidos');
+        header('Location: ../view/telaCadastroCarro.php?msg=dadosinvalidos');
     }else{
         inserirCarro($placa, $marca, $modelo, $ano);
     }
@@ -23,7 +23,7 @@ if(isset($_POST['bt_cadastro_carro'])){
 function inserirCarro($placa, $marca, $modelo, $ano){
     $carro = buscarCarro($placa,"placa");
     if(!empty($carro[0])){
-    header('Location: ../view/telaCadastro.php?msg=dadosduplicadosplaca');
+    header('Location: ../view/telaCadastroCarro.php?msg=dadosduplicadosplaca');
     }
 
     $conn = new Conexao();
@@ -36,7 +36,7 @@ function inserirCarro($placa, $marca, $modelo, $ano){
     $stmt->bindParam(':ano', $ano);
     $stmt->execute();
     $stmt = null;    
-    header('Location: ../view/telaCadastro.php?msg=sucesso'); 
+    header('Location: ../view/telaCadastroCarro.php?msg=sucesso'); 
 }
 
 function buscarCarro($valor_busca, $coluna)
@@ -47,7 +47,7 @@ function buscarCarro($valor_busca, $coluna)
         $stmt = $conn->prepare("SELECT * FROM `carro`");
     }else{
     if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
-        header('Location: ERRO');
+        header('Location: ../view/index.php?msg=dadosinvalidos');
     }
     if ($coluna == "id") {
         $stmt = $conn->prepare("SELECT * FROM `carro` WHERE id like :busca");
@@ -151,13 +151,16 @@ function imprimirResultadosCarros($vetor_carros){
     if(empty($carro)){
         echo "Nenhum dado foi encontrado!";
     }else{
-        $resultado = "<table id=\"tabelabusca\" border='1'>
+        $resultado = " <link rel=\"stylesheet\" href=\"../tabelas.css\">
+        <table id=\"tabelabusca\" border='1'>
             <thead>
                 <tr>
                     <th>Placa</th>
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Ano</th>
+                    <th class=\"centralizar_coluna\"></th>
+                    <th class=\"centralizar_coluna\"></th>
                 </tr>
             </thead>
             <tbody>";
@@ -165,13 +168,21 @@ function imprimirResultadosCarros($vetor_carros){
         $resultado .= "<tr><td>" . $carro->getPlaca() . "</td>".
          "<td>" . $carro->getMarca() . "</td>" .
          "<td>" . $carro->getModelo() . "</td>" .
-         "<td>" . $carro->getAno() . "</td>"
+         "<td>" . $carro->getAno() . "</td>
+        <td>
+         <a href=\"telaEditar.php?id=" . $carro->getId() . "&tipo=carro\">
+         <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
 
-        . "<td>
-               <a href=\"telaEditar.php?id=".$carro->getId()."&tipo=carro\"><button class=\"btn btn-primary\">Editar</button></a>
-                <a href=\"telaExlcuir.php?id=".$carro->getId()."\"><button class=\"btn btn-danger\">Apagar</button></a>
-            </td>"
-        . "</tr>";
+         <td><form method=\"post\" action=\"../view/telaExcluir.php\">
+
+          <input type=\"hidden\" name=\"id_apagar\" value=\" " . $carro->getId() . "\">
+
+          <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
+
+          </form>
+          
+      </td>"
+          . "</tr>";
     }
        $resultado.= "</tbody> 
         </table>";
@@ -185,14 +196,31 @@ function imprimirEditarCarro($carro){
     return null;
     }
 
-    echo " <form action=\"../control/CarroControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
-        Placa: <input type=\"text\" name=\"placa\" value=\"". $carro->getPlaca() ."\">
-        Marca: <input type=\"text\" name=\"marca\" value=\"". $carro->getMarca() ."\">
-        Modelo <input type=\"text\" name=\"modelo\" value=\"". $carro->getModelo()."\">
-        Ano <input type=\"text\" name=\"ano\" value=\"". $carro->getAno()."\">
-       
-        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_carro\" name=\"bt_editar_carro\">Editar</button>
-    </form>";
+    echo " <div class=\"container\">
+<form action=\"../control/CarroControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"placa\" class=\"form-control\" id=\"placa\" value=\"". $carro->getPlaca() ."\">
+          <label for=\"placa input-group-text\" class=\"form-label\">Placa</label>   
+        </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"marca\" class=\"form-control\" id=\"marca\" value=\"". $carro->getMarca() ."\">
+          <label for=\"marca input-group-text\" class=\"form-label\">Marca</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"modelo\" class=\"form-control\" id=\"modelo\" value=\"". $carro->getModelo() ."\">
+          <label for=\"modelo input-group-text\" class=\"form-label\">Modelo</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"ano\" class=\"form-control\" id=\"ano\" value=\"". $carro->getAno()."\">
+          <label for=\"ano input-group-text\" class=\"form-label\">Telefone</label>   
+             </div>";
+
+          echo '<div style="text-align:center;">
+        <button type="submit" class="btn btn-success" name="bt_editar_carro">
+          <h2>Editar</h2>
+        </button>
+        </div></form>';
+
     }
 
 
@@ -201,7 +229,7 @@ function imprimirEditarCarro($carro){
 if(isset($_POST['bt_editar_carro'])){
 
 if(isset($_POST['placa']) and isset($_POST['marca']) and isset($_POST['modelo']) and isset($_POST['ano'])){
-        
+
 $placa = $_POST['placa'];
 $marca = $_POST['marca'];
 $modelo = $_POST['modelo'];
@@ -242,7 +270,7 @@ function editarCarro($carro){
     
         $stmt->execute();
         $stmt = null;
-       # header('Location: ../view/index.php?msg=sucesso');
+        header('Location: ../view/index.php?msg=sucesso');
     }
 
     function gerarPdfdosCarros($vetor_carros){
