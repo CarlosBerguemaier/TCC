@@ -39,7 +39,7 @@ a:hover{
 
 .nav_bar{
   border-bottom: solid;
-  border-color: rgba(100, 100, 100, 0.494);
+  border-color: rgba(100, 100, 100, 0.277);
 }
 
 .div_resultados, .row{
@@ -66,4 +66,10 @@ a:hover{
     border-color:#aaa;
     box-sizing:border-box;
     width:100%;  
+  }
+
+.nav-lateral{
+   background-color: rgba(189, 189, 189, 0.908);
+   border-right: solid;
+   border-color: rgba(100, 100, 100, 0.277);
   }

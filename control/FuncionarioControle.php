@@ -211,14 +211,27 @@ function imprimirEditarFuncionario($funcionario){
     if(empty($funcionario)){
     return null;
     }
+    echo " <div class=\"container\">
+    <form action=\"../control/FuncionarioControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"nome\" class=\"form-control\" id=\"cliente_cpf_input\" value=\"". $funcionario->getNome() ."\">
+          <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">Nome</label>   
+        </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"cpf_f\" class=\"form-control\" id=\"cpf_f\" value=\"". $funcionario->getCpf() ."\">
+          <label for=\"cpf_f input-group-text\" class=\"form-label\">CPF</label>   
+    </div>
+        <div class=\" input-group form-floating mb-3\">
+          <input type=\"text\" name=\"telefone\" class=\"form-control\" id=\"cliente_cpf_input\" value=\"". $funcionario->getTelefone()."\">
+          <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">Telefone</label>   
+             </div>";
 
-    echo " <form action=\"../control/FuncionarioControle.php?id=". $_GET['id']."&tipo=".$_GET['tipo']."\" method=\"post\">
-        Nome: <input type=\"text\" name=\"nome\" value=\"". $funcionario->getNome() ."\">
-        CPF: <input type=\"text\" name=\"cpf_f\" value=\"". $funcionario->getCpf() ."\">
-        Telefone <input type=\"text\" name=\"telefone\" value=\"". $funcionario->getTelefone()."\">
-       
-        <button class=\"btn btn-success botao-enviar\" type=\"submit\" id=\"bt_editar_funcionario\" name=\"bt_editar_funcionario\">Editar</button>
-    </form>";
+          echo '<div style="text-align:center;">
+        <button type="submit" class="btn btn-success" name="bt_editar_funcionario">
+          <h2>Editar</h2>
+        </button>
+        </div></form>';
+
     }
 
 

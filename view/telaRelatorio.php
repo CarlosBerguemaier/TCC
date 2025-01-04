@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Serviço</title>
+  <title>Relatório personalizado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="../estilo.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -169,8 +169,8 @@
   </div>
     <div class="col-md-auto">
     <div class="container " style="text-align:center;">
-    <form action="../control/OrdemServicoControle.php" method="post">
-            <h1 class="">Cadastro de Serviço</h1>
+    <form action="../control/RelatorioControle.php" method="post">
+            <h1 class="">Relatório personalizado</h1>
             <div class="form-floating mb-3 ">
               <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" placeholder="ABC1D23">
               <label for="exampleFormControlInput1" class="form-label">Placa do veículo</label>
@@ -185,11 +185,6 @@
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCliente">
                 <i class="material-icons">search</i></button>
             </div>
-            <div class=" input-group form-floating mb-3">
-              <a href="../view/telaCadastroCliente.php">
-                <h6 class="btn btn-dark"><i class="material-icons">add</i> Cadastar Cliente</h6>
-              </a>
-            </div>
 
             <div class=" input-group form-floating mb-3">
               <input type="text" name="cpf_funcionario" class="form-control" id="funcionario_cpf_input" placeholder="11122233345">
@@ -199,11 +194,6 @@
 
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFuncionario">
                 <i class="material-icons">search</i></button>
-            </div>
-            <div class=" input-group form-floating mb-3">
-              <a href="../view/telaCadastroCliente.php">
-                <h6 class="btn btn-dark"><i class="material-icons">add</i> Cadastar Funcionário</h6>
-              </a>
             </div>
 
             
@@ -216,7 +206,7 @@
             $i = 1;
             foreach($servicos as $servico){
             echo '  <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="servico_id'.$servico->getId().'" id="'.$servico->getDescricao().'" value="option1">
+                <input class="form-check-input" type="checkbox" name="servico_id'.$servico->getId().'" id="'.$servico->getDescricao().'" value="'.$servico->getId().'">
                 <label class="form-check-label" for="'.$servico->getDescricao().'">'.$servico->getDescricao().'</label>
               </div>';
               $i++;
@@ -236,7 +226,7 @@
             </div>
 
             <div class="form-item mb-3">
-              <input type="date" name="data" class="form-control" id="" value="<?php echo date('Y-m-d'); ?>">
+              <input type="date" name="data" class="form-control" id="" value="">
             </div>
 
             <div class="form-floating mb-3">
@@ -248,10 +238,14 @@
               <input type="text" name="kmfinal" class="form-control" id="exampleFormControlInput1" placeholder="16000">
               <label for="exampleFormControlInput1" class="form-label">Quilometragem Final</label>
             </div>
-
+  
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="pgto" id="pgto" value="option1">
-                <label class="form-check-label" for="pgto">O pagamento foi realizado?</label>
+                <input class="form-check-input" type="checkbox" name="pago" id="pago" value="option1">
+                <label class="form-check-label" for="pago">Pago</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="npago" id="npago" value="option1">
+                <label class="form-check-label" for="npago">Não pago</label>
               </div>
 <br>
 <br>
@@ -260,8 +254,8 @@
                 <div class="col">
                 </div>
                 <div class="col-6">
-                  <button type="submit" class="btn btn-success" name="bt_cadastro_ordemservico">
-                    <h2>Cadastrar</h2>
+                  <button type="submit" class="btn btn-success" name="bt_relatorio_ordemservico">
+                    <h2>Buscar</h2>
                   </button>
                 </div>
                 <div class="col">

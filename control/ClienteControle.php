@@ -219,8 +219,8 @@ function imprimirEditarCliente($cliente)
               <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">CPF</label>   
         </div>
             <div class=\" input-group form-floating mb-3\">
-              <input type=\"text\" name=\"cpf_c\" class=\"form-control\" id=\"cliente_cpf_input\" value=\"".$cliente->getTelefone()."\">
-              <label for=\"cliente_cpf_input input-group-text\" class=\"form-label\">Telefone</label>   
+              <input type=\"text\" name=\"telefone\" class=\"form-control\" id=\"telefone\" value=\"".$cliente->getTelefone()."\">
+              <label for=\"telefone input-group-text\" class=\"form-label\">Telefone</label>   
                  </div>";
 
               echo '<div style="text-align:center;">
@@ -234,7 +234,6 @@ function imprimirEditarCliente($cliente)
 
 
 if (isset($_POST['bt_editar_cliente'])) {
-
     if (isset($_POST['nome']) and isset($_POST['cpf_c']) and isset($_POST['telefone']) and !empty($_POST['nome']) and !empty($_POST['cpf_c']) and !empty($_POST['telefone'])) {
         $nome = $_POST['nome'];
         $cpf = $_POST['cpf_c'];
@@ -246,6 +245,12 @@ if (isset($_POST['bt_editar_cliente'])) {
         $cliente->setNome($_POST['nome']);
         $cliente->setCpf($_POST['cpf_c']);
         $cliente->setTelefone($_POST['telefone']);
+
+        echo "editar cliente:
+        <br>Id:".$cliente->getId().
+        "<br>Nome: ".$cliente->getNome().
+        "<br>CPF:".$cliente->getCpf().
+        "<br>Telefone".$cliente->getTelefone();
 
 
         editarCliente($cliente);
