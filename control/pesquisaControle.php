@@ -72,7 +72,7 @@ function ImprimirF($valor){
 
 <div class="container-fluid">
     <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 nav-lateral bg-light">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
@@ -106,7 +106,7 @@ function ImprimirF($valor){
                     <li>
                     <div class="btn-group dropend m-1">
   <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
-  Carro
+  Veículos
   </button>
   <ul class="dropdown-menu ">
   <a href="../view/telaCadastroCarro.php">   <button class="btn btn-outline-dark m-1 sub_bt_opcoes" ><i class="material-icons">add</i> Cadastrar</button></a>
@@ -128,8 +128,19 @@ function ImprimirF($valor){
 </div>
                     </li>
                     <li>
-                    <a href="../view/telaCadastroCliente.php"><button class="btn btn-dark m-1 bt_opcoes"><i class="material-icons">picture_as_pdf</i> Relatório</button></a>
-                    </li>
+              <div class="btn-group dropend m-1">
+                <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="material-icons">picture_as_pdf</i> Relatórios
+                </button>
+                <ul class="dropdown-menu ">
+                  <a href="../view/telaRelatorio.php"> <button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">add</i> Personalizar</button></a>
+                  <br>
+                  <a href="../view/telaMeses.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Mensal</button></a>
+                  <br>
+                  <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
+                </ul>
+              </div>
+            </li>
                 </ul>
                 <hr>
                 </div>
