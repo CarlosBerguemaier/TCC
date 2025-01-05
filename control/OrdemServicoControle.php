@@ -46,25 +46,24 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
     $servicos = buscarTodosServicos();
     $tamanho = buscarNumeroDeServicos();
     $vetor_servicos = [];
-    for($i=0; $i<=$tamanho;$i++){
-        if(isset($_POST['servico_id'.$i])){
-            array_push($vetor_servicos, $i); 
+    for ($i = 0; $i <= $tamanho; $i++) {
+        if (isset($_POST['servico_id' . $i])) {
+            array_push($vetor_servicos, $i);
         }
     }
-    
+
 
     if ($cliente->getCpf() != null and $funcionario->getCpf() != null and $carro->getPlaca() != null) {
         if (!isset($descricao) or !isset($valor) or !isset($kminicial) or !isset($kmfinal) or empty($descricao) or empty($valor) or empty($kminicial) or empty($kmfinal)) {
             header('Location: ../view/telaCadastroOrdemServico.php?msg=dadosinvalidos');
         } else {
-            if(isset($_POST['pgto'])){
+            if (isset($_POST['pgto'])) {
                 $pgto = true;
-            }else{
+            } else {
                 $pgto = false;
             }
 
-          inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal, $data, $vetor_servicos,$pgto);
-          
+            inserirOrdemServico($carro->getId(), $cliente->getId(), $funcionario->getId(), $valor, $descricao, $kminicial, $kmfinal, $data, $vetor_servicos, $pgto);
         }
     } else {
         header('Location: ../view/telaCadastroOrdemServico.php?msg=dadosinvalidos');
@@ -74,29 +73,31 @@ if (isset($_POST['bt_cadastro_ordemservico'])) {
 if (isset($_POST['bt_busca_ordemservico'])) {
 
     if (($_GET['coluna'] == "todos" or $_GET['coluna'] == "pgto") and (empty($_POST['data_apos']) or empty($_POST['data_antes']))) {
-       $valor = $_GET['coluna'];
-       header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor='.$valor);
+        $valor = $_GET['coluna'];
+        header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor=' . $valor);
     }
-    if( isset($_POST['busca'])){
+    if (isset($_POST['busca'])) {
         $valor = $_POST['busca'];
     }
-  
-    if(!empty($_POST['data_apos']) or !empty($_POST['data_antes'])){
+
+    if (!empty($_POST['data_apos']) or !empty($_POST['data_antes'])) {
         if (!empty($_POST['data_apos']) and !empty($_POST['data_antes'])) {
-            header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor='.$valor. '&data_apos=' . $_POST['data_apos'] . '&data_antes=' . $_POST['data_antes']);
-        } else{
-        if (!empty($_POST['data_apos']) and empty($_POST['data_antes'])) {
-            header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor='.$valor. '&data_apos=' . $_POST['data_apos']);
+            header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor=' . $valor . '&data_apos=' . $_POST['data_apos'] . '&data_antes=' . $_POST['data_antes']);
+        } else {
+            if (!empty($_POST['data_apos']) and empty($_POST['data_antes'])) {
+                header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor=' . $valor . '&data_apos=' . $_POST['data_apos']);
+            }
+            if (!empty($_POST['data_antes']) and empty($_POST['data_apos'])) {
+                header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor=' . $valor . '&data_antes=' . $_POST['data_antes']);
+            }
         }
-        if (!empty($_POST['data_antes']) and empty($_POST['data_apos'])) {
-           header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor='.$valor . '&data_antes=' . $_POST['data_antes']);
+    } else {
+        if (isset($_POST['busca']) or !empty($_POST['busca'])) {
+            header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor=' . $valor);
         }
-    }}else{
-    if (isset($_POST['busca']) or !empty($_POST['busca'])) {
-      header('Location: ../view/telaBuscaOrdemServico.php?coluna=' . $_GET['coluna'] . '&valor='.$valor);
-    }}
+    }
 }
-    
+
 
 function bt_buscar_os($busca, $coluna)
 {
@@ -108,7 +109,7 @@ function bt_buscar_os($busca, $coluna)
 }
 
 
-function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $descricao, $kminicial, $kmfinal, $data, $servicos,$pgto)
+function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $descricao, $kminicial, $kmfinal, $data, $servicos, $pgto)
 {
     $conn = new Conexao();
     $conn = $conn->conexao();
@@ -130,27 +131,27 @@ function inserirOrdemServico($id_carro, $id_cliente, $id_funcionario, $valor, $d
     $stmt->execute();
 
     $resultado = $stmt->fetchAll();
-        $i = 0;
+    $i = 0;
     $ordemservico = new OrdemServico();
     foreach ($resultado as $ordem) {
-    $ordemservico->setId($ordem['id']);
-    $ordemservico->setId_carro($ordem['id_carro']); 
-    $ordemservico->setId_cliente($ordem['id_cliente']);
-    $ordemservico->setId_funcionario($ordem['id_funcionario']);
-    $ordemservico->setValor($ordem['valor']);
-    $ordemservico->setDescricao($ordem['descricao']);
-    $ordemservico->setKminicial($ordem['kminicial']);
-    $ordemservico->setKmfinal($ordem['kmfinal']);
-    $ordemservico->setData($ordem['data']);
-    $ordemservico->setPagamento($ordem['pgto']);
-    $i++;
-}
-foreach ($servicos as $servico) {
-    inserirServico_OS($servico,$ordemservico->getId());
-}
-   
+        $ordemservico->setId($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $ordemservico->setData($ordem['data']);
+        $ordemservico->setPagamento($ordem['pgto']);
+        $i++;
+    }
+    foreach ($servicos as $servico) {
+        inserirServico_OS($servico, $ordemservico->getId());
+    }
 
-   header('Location: ../view/telaCadastroOrdemServico.php?msg=sucesso');
+
+    header('Location: ../view/telaCadastroOrdemServico.php?msg=sucesso');
 }
 
 if (isset($_POST['bt_editar_ordemservico'])) {
@@ -163,14 +164,14 @@ if (isset($_POST['bt_editar_ordemservico'])) {
         $carro = buscarCarroPlaca($placa);
 
         $servicos = buscarTodosServicos();
-            $i = 1;
+        $i = 1;
 
         $vetor_servicos = [];
-            foreach($servicos as $servico){
-                if(isset($_POST['servico_id'.$servico->getId()])){
-                    array_push($vetor_servicos,$servico);
-                }
+        foreach ($servicos as $servico) {
+            if (isset($_POST['servico_id' . $servico->getId()])) {
+                array_push($vetor_servicos, $servico);
             }
+        }
 
         if ($cliente->getId() == 0 or $funcionario->getId() == 0 or $carro->getId() == 0) {
             header('Location: ../view/telaEditar.php?id=' . $_GET['id'] . '&tipo=ordemservico&msg=naoencontrado');
@@ -189,8 +190,8 @@ if (isset($_POST['bt_editar_ordemservico'])) {
             $data = $_POST['data'];
             $ordem->setData($data);
         }
-        
-        if(isset($_POST['pgto'])){
+
+        if (isset($_POST['pgto'])) {
             $ordem->setPagamento(true);
         }
 
@@ -205,7 +206,7 @@ if (isset($_POST['bt_editar_ordemservico'])) {
         $ordem->setServicos($vetor_servicos);
 
 
-       editarOrdemServico($ordem);
+        editarOrdemServico($ordem);
     }
 }
 
@@ -234,7 +235,8 @@ function editarOrdemServico($ordemservico)
 
     $conn = new Conexao();
     $conn = $conn->conexao();
-    $stmt = $conn->prepare("UPDATE `ordem_servico`
+    $stmt = $conn->prepare(
+        "UPDATE `ordem_servico`
      SET `id_cliente`= :id_cliente,`id_funcionario`=:id_funcionario,`id_carro`= :id_carro,`valor`=:valor,`descricao`=:descricao,`kminicial`=:kminicial,`kmfinal`= :kmfinal, `pagamento`= :pgto,`data`= :dataa
       WHERE id like :id "
     );
@@ -251,15 +253,15 @@ function editarOrdemServico($ordemservico)
     $stmt->bindParam(':pgto', $pgto);
 
     $todoservicos = buscarTodosServicos();
-    foreach($todoservicos as $servico_generico){
-        if(!in_array($servico_generico,$servicos)){
-        removerServicosOS($id,$servico_generico->getId());
+    foreach ($todoservicos as $servico_generico) {
+        if (!in_array($servico_generico, $servicos)) {
+            removerServicosOS($id, $servico_generico->getId());
         }
     }
-  
+
     foreach ($servicos as $servico) {
-        if(!verificarServico_os($servico->getId(),$id)){
-            inserirServico_OS($servico->getId(),$id);
+        if (!verificarServico_os($servico->getId(), $id)) {
+            inserirServico_OS($servico->getId(), $id);
         }
     }
 
@@ -269,27 +271,27 @@ function editarOrdemServico($ordemservico)
     header('Location: ../view/index.php?msg=sucesso');
 }
 
-function buscarPorTodosParametros($valor_busca, $coluna){
+function buscarPorTodosParametros($valor_busca, $coluna)
+{
     $conn = new Conexao();
     $conn = $conn->conexao();
     if ($coluna == "buscar_todos_parametros") {
         $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE descricao like :busca_desc or valor like :busca_val or id_funcionario like :busca_fun");
-        $buscadesc =  "%".$valor_busca."%";
-        $stmt->bindParam(":busca_desc",$buscadesc);
+        $buscadesc =  "%" . $valor_busca . "%";
+        $stmt->bindParam(":busca_desc", $buscadesc);
         $stmt->bindParam(":busca_val", $valor_busca);
 
         $funcionario = buscarFuncionario($valor_busca, "nome");
-        if(!empty($funcionario[0])){
+        if (!empty($funcionario[0])) {
             $id = $funcionario[0]->getId();
             $stmt->bindParam(":busca_fun", $id);
-        }else{
+        } else {
             $i = 0;
             $stmt->bindParam(":busca_fun", $i);
         }
- 
     }
-    
-   $stmt->execute();
+
+    $stmt->execute();
 
     $resultado = $stmt->fetchAll();
     $vetor_servicos[] = "";
@@ -319,16 +321,16 @@ function buscarOrdemServico($valor_busca, $coluna)
     if ($coluna == "todos-inicial" or $coluna == "todos" or $coluna == "pgto") {
         if ($coluna == "todos") {
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico`");
-        } 
+        }
         if ($coluna == "todos-inicial") {
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico` ORDER BY data DESC LIMIT 6");
-        } 
+        }
         if ($coluna == "pgto") {
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE pagamento = 0");
         }
-       } else {
+    } else {
         if (!isset($valor_busca) or !isset($coluna) or empty($valor_busca) or empty($coluna)) {
-           header('Location: ../view/index.php?msg=naoencontrado');
+            header('Location: ../view/index.php?msg=naoencontrado');
         }
         if ($coluna == "id") {
             $stmt = $conn->prepare("SELECT * FROM `ordem_servico` WHERE id like :busca");
@@ -380,9 +382,9 @@ function buscarOrdemServico($valor_busca, $coluna)
         $ordemservico->setKminicial($ordem['kminicial']);
         $ordemservico->setKmfinal($ordem['kmfinal']);
         $ordemservico->setData($ordem['data']);
-        if($ordem['pagamento'] == 1){
+        if ($ordem['pagamento'] == 1) {
             $ordemservico->setPagamento(true);
-        }else{
+        } else {
             $ordemservico->setPagamento(false);
         }
         $vetor_servicos[$i] = $ordemservico;
@@ -395,52 +397,60 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
 {
     $data1 = "";
     $data2 = "";
-    $valor_para_buscar ="";
+    $valor_para_buscar = "";
 
-    if($data_apos == "nao") {$data1 == false;}else{$data1 == true;}
-    if($data_antes == "nao") { $data2 == false;}else{$data2 == true;}
+    if ($data_apos == "nao") {
+        $data1 == false;
+    } else {
+        $data1 == true;
+    }
+    if ($data_antes == "nao") {
+        $data2 == false;
+    } else {
+        $data2 == true;
+    }
 
     $conn = new Conexao();
     $conn = $conn->conexao();
-    if($coluna == "todos" or $coluna == "pgto"){
-     if($coluna == "todos"){
-        if($data_apos != "nao" and $data_antes != "nao"){
-            $stmt = $conn->prepare("SELECT * 
+    if ($coluna == "todos" or $coluna == "pgto") {
+        if ($coluna == "todos") {
+            if ($data_apos != "nao" and $data_antes != "nao") {
+                $stmt = $conn->prepare("SELECT * 
             FROM ordem_servico
             WHERE data BETWEEN :data_apos AND :data_antes;");
-            $stmt->bindParam(':data_apos', $data_apos);
-            $stmt->bindParam(':data_antes', $data_antes);
-        }else{
-            if($data_apos != "nao" and $data_antes == "nao"){
-                $stmt = $conn->prepare("SELECT * 
+                $stmt->bindParam(':data_apos', $data_apos);
+                $stmt->bindParam(':data_antes', $data_antes);
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
+                    $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data >= :data_apos");
-                $stmt->bindParam(':data_apos', $data_apos);
-            }else{
-                if($data_apos == "nao" and $data_antes != "nao"){
-                    $stmt = $conn->prepare("SELECT * 
+                    $stmt->bindParam(':data_apos', $data_apos);
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
+                        $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data <= :data_antes");
-                    $stmt->bindParam(':data_antes', $data_antes);
+                        $stmt->bindParam(':data_antes', $data_antes);
+                    }
                 }
             }
         }
-        }
-        if($coluna == "pgto"){
-            if($data_apos != "nao" and $data_antes != "nao"){
+        if ($coluna == "pgto") {
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE pagamento = 0 and data BETWEEN :data_apos AND :data_antes;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos and pagamento = 0");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes and pagamento = 0");
@@ -448,24 +458,23 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
                     }
                 }
             }
-            }
-    }
-        else{
+        }
+    } else {
         if ($coluna == "id") {
-            if($data_apos == true and $data_antes == true){
+            if ($data_apos == true and $data_antes == true) {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND id like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos == true and $data_antes == false){
+            } else {
+                if ($data_apos == true and $data_antes == false) {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND id like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == false and $data_antes == true){
+                } else {
+                    if ($data_apos == false and $data_antes == true) {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND id like :busca;");
@@ -478,21 +487,20 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
 
         if ($coluna == "cpf_c") {
             $busca = buscarClienteCpf($valor_busca);
-            if($data_apos != "nao" and $data_antes != "nao"){
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND id_cliente like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-               
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND id_cliente like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND id_cliente like :busca;");
@@ -505,20 +513,20 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
         }
         if ($coluna == "cpf_f") {
             $busca = buscarFuncionarioCpf($valor_busca);
-            if($data_apos != "nao" and $data_antes != "nao"){
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND id_funcionario like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND id_funcionario like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND id_funcionario like :busca;");
@@ -527,24 +535,24 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
                 }
             }
             $valor_para_buscar = $busca->getId();
-            $stmt->bindParam(':busca',$valor_para_buscar);
+            $stmt->bindParam(':busca', $valor_para_buscar);
         }
         if ($coluna == "placa") {
             $busca = buscarCarroPlaca($valor_busca);
-            if($data_apos != "nao" and $data_antes != "nao"){
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND id_carro like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND id_carro like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND id_carro like :busca;");
@@ -556,20 +564,20 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
             $stmt->bindParam(':busca', $valor_para_buscar);
         }
         if ($coluna == "descricao") {
-            if($data_apos != "nao" and $data_antes != "nao"){
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND descricao like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND descricao like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND descricao like :busca;");
@@ -581,20 +589,20 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
             $stmt->bindParam(':busca', $valor_para_buscar);
         }
         if ($coluna == "valor") {
-            if($data_apos != "nao" and $data_antes != "nao"){
+            if ($data_apos != "nao" and $data_antes != "nao") {
                 $stmt = $conn->prepare("SELECT * 
                 FROM ordem_servico
                 WHERE data BETWEEN :data_apos AND :data_antes AND valor like :busca;");
                 $stmt->bindParam(':data_apos', $data_apos);
                 $stmt->bindParam(':data_antes', $data_antes);
-            }else{
-                if($data_apos != "nao" and $data_antes == "nao"){
+            } else {
+                if ($data_apos != "nao" and $data_antes == "nao") {
                     $stmt = $conn->prepare("SELECT * 
                     FROM ordem_servico
                     WHERE data >= :data_apos AND valor like :busca;");
                     $stmt->bindParam(':data_apos', $data_apos);
-                }else{
-                    if($data_apos == "nao" and $data_antes != "nao"){
+                } else {
+                    if ($data_apos == "nao" and $data_antes != "nao") {
                         $stmt = $conn->prepare("SELECT * 
                         FROM ordem_servico
                         WHERE data <= :data_antes AND valor like :busca;");
@@ -604,9 +612,8 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
             }
             $valor_para_buscar = $valor_busca;
             $stmt->bindParam(':busca', $valor_para_buscar);
-           
         }
-     }
+    }
 
     $stmt->execute();
 
@@ -627,7 +634,7 @@ function buscarOrdemServicoEntreDatas($valor_busca, $coluna, $data_apos, $data_a
         $vetor_servicos[$i] = $ordemservico;
         $i++;
     }
-    
+
     return $vetor_servicos;
 }
 function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
@@ -684,13 +691,13 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
 function imprimirResultadosOrdemServicos($vetor_servicos)
 {
     if (empty($vetor_servicos)) {
-        # echo "Não há dados para exibir.";
+        echo "Não há dados para exibir";
         return;
     }
 
     $ordemservico1 = $vetor_servicos[0];
     if (empty($ordemservico1)) {
-       # header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
+        header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
     } else {
         $tabela = "  <link rel=\"stylesheet\" href=\"../tabelas.css\">
     <table id=\"tabelabusca\" border=\"1\" >
@@ -732,7 +739,7 @@ function imprimirResultadosOrdemServicos($vetor_servicos)
                 </form>
                 
             </td>"
-                . "</tr>";              
+                . "</tr>";
         }
         $tabela = $tabela . "</tbody> </table>";
 
@@ -786,38 +793,38 @@ function gerarPdfdasOS($vetor_servicos)
     }
 }
 function gerarPdfOSUnica($id_os)
-{       
-    $ordemservico = buscarOrdemServico($id_os,"id");
+{
+    $ordemservico = buscarOrdemServico($id_os, "id");
 
     $ordem = $ordemservico[0];
     $cliente = buscarClientePorId($ordem->getId_cliente());
     $funcionario = buscarFuncionarioPorId($ordem->getId_funcionario());
     $carro = buscarCarroPorId($ordem->getId_carro());
     $servicos = buscar_sv_os_por_os($ordem->getId());
-        $data_atual = date("d/m/Y");
-        $tabela = "<h2> Relatório de ordem de serviço - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
-        <label>Cliente : ".$cliente->getNome()."</label><br><br>
-        <label>Funcionário : ".$funcionario->getNome()."</label><br><br>
-        <label>Carro : ".$carro->getMarca()." - ".$carro->getModelo()." - ".$carro->getAno()."</label><br><br>
+    $data_atual = date("d/m/Y");
+    $tabela = "<h2> Relatório de ordem de serviço - Oficina do Evandro.</h2> <h2>Data do relatório: $data_atual.</h2>
+        <label>Cliente : " . $cliente->getNome() . "</label><br><br>
+        <label>Funcionário : " . $funcionario->getNome() . "</label><br><br>
+        <label>Carro : " . $carro->getMarca() . " - " . $carro->getModelo() . " - " . $carro->getAno() . "</label><br><br>
         <label> Serviços realizados:</label><br>";
-        foreach($servicos as $servico){
-        $servico = buscarServicoPorId($servico,$ordem->getId());
-         $tabela .= "<label>-".$servico->getDescricao()."</label><br>";
-        }
+    foreach ($servicos as $servico) {
+        $servico = buscarServicoPorId($servico, $ordem->getId());
+        $tabela .= "<label>-" . $servico->getDescricao() . "</label><br>";
+    }
 
-        $data = implode("/",array_reverse(explode("-",$ordem->getData())));
-        $tabela .= "<br><label>Descrição do serviço : ".$ordem->getDescricao()."</label><br><br>
+    $data = implode("/", array_reverse(explode("-", $ordem->getData())));
+    $tabela .= "<br><label>Descrição do serviço : " . $ordem->getDescricao() . "</label><br><br>
         <label>Data : $data</label><br><br>
-        <label>Quilometragem Inicial : ".$ordem->getKminicial()."</label><br>
-        <label>Quilometragem Final : ".$ordem->getKmfinal()."</label><br><br>";
-        if($ordem->isPago()){
-            $tabela .= "<label>Pagamento : Pago</label>";
-        }else{
-            $tabela .= "<label>Pagamento : Não pago</label>";
-        }
+        <label>Quilometragem Inicial : " . $ordem->getKminicial() . "</label><br>
+        <label>Quilometragem Final : " . $ordem->getKmfinal() . "</label><br><br>";
+    if ($ordem->isPago()) {
+        $tabela .= "<label>Pagamento : Pago</label>";
+    } else {
+        $tabela .= "<label>Pagamento : Não pago</label>";
+    }
 
-        include_once 'gerarPdf.php';
-        gerarPdf($tabela);
+    include_once 'gerarPdf.php';
+    gerarPdf($tabela);
 }
 
 function imprimirEditarOrdemServico($ordemservico)
@@ -831,7 +838,7 @@ function imprimirEditarOrdemServico($ordemservico)
 
     echo '
     <div class="container">
-        <form method="post" action="../control/OrdemServicoControle.php?id_os='.$ordemservico->getId().'"><button class="btn btn-danger botao-enviar" type="submit" id="bt_gerar_pdf_unica" name="bt_gerar_pdf_unica"></a> <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>
+        <form method="post" action="../control/OrdemServicoControle.php?id_os=' . $ordemservico->getId() . '"><button class="btn btn-danger botao-enviar" type="submit" id="bt_gerar_pdf_unica" name="bt_gerar_pdf_unica"></a> <h6><i class="material-icons">picture_as_pdf</i> Gerar PDF</h6></button></form>
   <br>
         <form action="../control/OrdemServicoControle.php?id=' . $_GET['id'] . '&tipo=' . $_GET['tipo'] . '" method="post">
             <div class="form-floating mb-3 ">
@@ -861,21 +868,23 @@ function imprimirEditarOrdemServico($ordemservico)
             <div class="form-floating mb-3">
             <h5>Selecione os serviços realizados:</h5>
             ';
-          include_once '../control/ServicoControle.php';
+    include_once '../control/ServicoControle.php';
 
-          $servicos = buscarTodosServicos();
-          $i = 1;
-          foreach($servicos as $servico){
-          echo '  <div class="form-check form-check-inline">
-              <input '; 
-              if(verificarServico_os($servico->getId(),$ordemservico->getId())){echo ' checked ';} 
-              echo'class="form-check-input" type="checkbox" name="servico_id'.$servico->getId().'" id="'.$servico->getDescricao().'" value="option1">
-              <label class="form-check-label" for="'.$servico->getDescricao().'">'.$servico->getDescricao().'</label>
+    $servicos = buscarTodosServicos();
+    $i = 1;
+    foreach ($servicos as $servico) {
+        echo '  <div class="form-check form-check-inline">
+              <input ';
+        if (verificarServico_os($servico->getId(), $ordemservico->getId())) {
+            echo ' checked ';
+        }
+        echo 'class="form-check-input" type="checkbox" name="servico_id' . $servico->getId() . '" id="' . $servico->getDescricao() . '" value="option1">
+              <label class="form-check-label" for="' . $servico->getDescricao() . '">' . $servico->getDescricao() . '</label>
             </div>';
-            $i++;
-          }
+        $i++;
+    }
 
-         echo '
+    echo '
           </div>
             <div class="form mb-3">
               <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="5" value="' . $ordemservico->getDescricao() . '" style="height: 150px;" >' . $ordemservico->getDescricao() . '</textarea>
@@ -901,11 +910,11 @@ function imprimirEditarOrdemServico($ordemservico)
             </div>
 
              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="pgto" id="pgto" value="option1" '; 
-                if($ordemservico->isPago()){
-                echo ' checked ';
-                }
-                echo ' >
+                <input class="form-check-input" type="checkbox" name="pgto" id="pgto" value="option1" ';
+    if ($ordemservico->isPago()) {
+        echo ' checked ';
+    }
+    echo ' >
                 <label class="form-check-label" for="pgto">O pagamento foi realizado?</label>
               </div>
             
@@ -920,10 +929,8 @@ function imprimirEditarOrdemServico($ordemservico)
 }
 
 if (isset($_POST['bt_gerar_pdf_unica'])) {
-    if(isset($_GET['id_os'])){
+    if (isset($_GET['id_os'])) {
         gerarPdfOSUnica($_GET['id_os']);
     }
- 
-  }
+}
 
-?>

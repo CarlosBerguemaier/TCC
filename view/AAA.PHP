@@ -26,6 +26,11 @@
 <?php
   if (isset($_GET['msg'])) {
     $msg = $_GET['msg'];
+    if ($msg == "naoencontrado") {
+      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Não foi encontrado nenhum dado!</h6>
+    </div>';
+    }
     if ($msg == "sucesso") {
       echo '<div class="alert alert-success " style="text-align:center" role="alert">
       <h6 class="texto-alertas">Ação realizada com Sucesso!</h6>
@@ -111,28 +116,13 @@
 </div>
                     </li>
                 </ul>
-                <hr>
-            </div>
-        </div>
+                <hr></div></div>
 
-<div class="container central" style="margin-top:4%;">
-  <div class="row">
-    <div class="col">
-      
-    </div>
-    <div class="col-6" style="text-align:center; margin-left:5%;">
-   
-    </div>
-    <div class="col">
-      
-    </div>
-  </div>
 
-</div>
 
-    </div>
-  
-  </div>
+
+
+</div></div></div></div>
 
 
 <script src="../js.js"></script>
