@@ -133,27 +133,13 @@
                     <div class="col-md-auto">
                         <h1>Relatório Mensal</h1>
                         <br>
-                        <form action="../control/relatorioMensal.php" method="post">
+                        <form action="../control/relatorioAnual.php" method="post">
                             <div class="input-group mb-3">
-                                <select class="form-control" name="mes" id="plano">
-                                    <option value="jan">Janeiro</option>
-                                    <option value="fev">Fevereiro</option>
-                                    <option value="mar">Março</option>
-                                    <option value="abr">Abril</option>
-                                    <option value="mai">Maio</option>
-                                    <option value="jun">Junho</option>
-                                    <option value="jul">Julho</option>
-                                    <option value="ago">Agosto</option>
-                                    <option value="set">Setembro</option>
-                                    <option value="out">Outubro</option>
-                                    <option value="nov">Novembro</option>
-                                    <option value="dez">Dezembro</option>
-                                </select>
-                                <span class="input-group-text">De</span>
+                                <span class="input-group-text">Digite o ano:</span>
                                 <input type="text" class="form-control" name="ano" placeholder="2025" aria-label="2025">
                             </div>
 
-                            <button class="btn btn-success" type="submit" name="bt_relatorio_mensal">Buscar</button>
+                            <button class="btn btn-success" type="submit" name="bt_relatorio_anual">Buscar</button>
                         </form>
                     </div>
                     <div class="col">

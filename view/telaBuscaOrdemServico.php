@@ -153,7 +153,7 @@
    <br>
    <a href="../view/telaMeses.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Mensal</button></a>
    <br>
-   <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
+   <a href="../view/telaAnual.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
   </ul>
 </div></li>
                 </ul>
@@ -163,9 +163,7 @@
 
 <div class="container central" style="margin-top:4%;">
   <div class="row">
-  <div class="col-md-auto">
-    <div style="margin-right: 200px"></div>
-
+  <div class="col">
   <div class="container text-center central" <?php if (!isset($_GET['sv_busca']) and isset($_GET['coluna'])) {
                                                 echo " hidden ";
                                               } ?> style="margin-top: 2%;">
@@ -214,11 +212,8 @@
         </div>
   </div>
   </div>
-    <div class="col-md-auto">
-    <div style="padding-left: 1000px"></div>
+    <div class="col">
     <div class="container " style="text-align:center;">
-
-
     <?php
 
 if (isset($_GET["sv_busca"])) {
@@ -289,7 +284,7 @@ echo '  <button class="btn btn-success botao-enviar" type="submit" id="bt_busca_
 }
 ?>
 </div>
-<div class="col m-3">
+<div class="col">
 <?php         if (isset($_GET["sv_busca"])) {
 echo '<ul class="confirmacoes">
                 <li>

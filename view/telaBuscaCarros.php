@@ -113,7 +113,7 @@
    <br>
    <a href="../view/telaMeses.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Mensal</button></a>
    <br>
-   <a href="../view/telaBuscaFuncionarios.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
+   <a href="../view/telaAnual.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
   </ul>
 </div> </li>
                 </ul>
@@ -129,7 +129,7 @@
 
     <div class="row central">
 
-      <div class="col-3">
+      <div class="col">
         <div class="menulateral" id="">
           <h3>Selecione:</h3>
           <div class="card-body">
@@ -160,7 +160,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6" style="margin-left:14%;">
+      <div class="col">
 
 <?php if (isset($_GET["c_busca"])) {
   echo "<br>";
@@ -202,14 +202,14 @@
 ?>
 
 </div>
-
+<div class="col"></div>
     </div>
   </div>
   <div class="container text-center w-100" >
-    <div class="row w-auto">
+    <div id="row_resultados" class="row">
       <div class="col"></div>
       <div class="col-md-auto w-100">
-        <div class="div-resultados text-center" style="align-self :center; margin-left:20%;">
+        <div class="div-resultados text-center" style="align-self :center;">
 
           <?php
           include_once '../control/gerarPdf.php';

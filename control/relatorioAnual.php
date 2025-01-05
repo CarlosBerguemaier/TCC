@@ -1,22 +1,67 @@
+<?php 
+include_once '../model/Carro.php';
+include_once '../model/OrdemServico.php';
+include_once '../model/Cliente.php';
+include_once '../model/Funcionario.php';
+
+include_once '../database/Conexao.php';
+
+include_once '../control/CarroControle.php';
+include_once '../control/OrdemServicoControle.php';
+include_once '../control/ClienteControle.php';
+include_once '../control/FuncionarioControle.php';
+include_once '../control/ServicoControle.php';
+
+
+
+
+function relatorioAnual($ano)
+{
+    $data = $ano . "-01-01";
+    $dataf = $ano ."-12-31";
+    $conn = new Conexao();
+    $conn = $conn->conexao();
+    $stmt = $conn->prepare('SELECT * FROM `ordem_servico` WHERE data BETWEEN :datai and :dataf;');
+    $stmt->bindParam(":datai",$data);
+    $stmt->bindParam(":dataf",$dataf);
+    $stmt->execute();
+    $resultado = $stmt->fetchAll();
+    $vetor_servicos = [];
+    foreach ($resultado as $ordem) {
+        $ordemservico = new OrdemServico;
+        $ordemservico->setId($ordem['id']);
+        $ordemservico->setId_carro($ordem['id_carro']);
+        $ordemservico->setId_cliente($ordem['id_cliente']);
+        $ordemservico->setId_funcionario($ordem['id_funcionario']);
+        $ordemservico->setValor($ordem['valor']);
+        $ordemservico->setDescricao($ordem['descricao']);
+        $ordemservico->setKminicial($ordem['kminicial']);
+        $ordemservico->setKmfinal($ordem['kmfinal']);
+        $ordemservico->setData($ordem['data']);
+        $ordemservico->setPagamento($ordem['pagamento']);
+        array_push($vetor_servicos, $ordemservico);
+    }
+    return $vetor_servicos;
+}?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro de Cliente</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <link rel="stylesheet" href="../estilo.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+ 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="../estilo.css">
 </head>
-
 <body>
+
 
 <nav class="navbar navbar-light bg-light nav_bar">
   <div class="container-fluid justify-content-around">
-  <a href="index.php"><h1><img src="../images/logo.webp" alt="" style="width:50px;"></h1></a>
-  <form class="d-flex" method="post" action="../control/pesquisaControle.php">
+    <a href="../view/index.php"><h1><img src="../images/logo.webp" alt="" style="width:50px;"></h1></a>
+    <form class="d-flex" method="post" action="../control/pesquisaControle.php">
       <input name="pesquisar" class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">
       <button class="btn btn-outline-dark" name="bt_pesquisar" type="submit"><i class="material-icons">search</i></button>
     </form>
@@ -24,18 +69,17 @@
   </div>
 </nav>
 
-
-  <?php
+<?php
   if (isset($_GET['msg'])) {
     $msg = $_GET['msg'];
-    if ($msg == "sucesso") {
-      echo '<div class="alert alert-success " style="text-align:center" role="alert">
-      <h6 class="texto-alertas">Cadastro realizado com Sucesso!</h6>
+    if ($msg == "naoencontrado") {
+      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Não foi encontrado nenhum dado!</h6>
     </div>';
     }
-    if ($msg == "dadosduplicadoscpf") {
-      echo '<div class="alert alert-danger " style="text-align:center" role="alert">
-      <h6 class="texto-alertas">Este CPF já foi cadastrado!</h6>
+    if ($msg == "sucesso") {
+      echo '<div class="alert alert-success " style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Ação realizada com Sucesso!</h6>
     </div>';
     }
     if ($msg == "dadosinvalidos") {
@@ -44,8 +88,6 @@
     </div>';
     }
   }
-  date_default_timezone_set('UTC');
-  $data = date("d.m.y");
   ?>
 
 <div class="container-fluid">
@@ -117,68 +159,41 @@
    <br>
    <a href="../view/telaAnual.php"><button class="btn btn-outline-dark m-1 sub_bt_opcoes"><i class="material-icons">list</i> Anual</button></a>
   </ul>
-</div> </li>
+</div>
+                    </li>
                 </ul>
-                <hr>
-            </div>
-        </div>
+                <hr></div></div>
 
-<div class="container central" style="margin-top:4%;">
+                <div class="container central" style="margin-top:4%;">
   <div class="row">
-  <div class="col">
+    <div class="col">
+      
+    </div>
+    <div class="col-md-auto" style="text-align:center; margin-left:5%;">
+    <?php if (isset($_POST['bt_relatorio_anual'])) {
+    $ano = $_POST['ano'];
+    $os_vetor = relatorioAnual($ano);
+    $tabela = imprimirResultadosOrdemServicos($os_vetor);
+    echo $tabela; 
+}?>
+    </div>
+    <div class="col">
+      
+    </div>
   </div>
-    <div class="col-md-auto">
-    <div class="container " style="text-align:center;">
+
+</div>
 
 
 
+</div></div></div></div>
 
 
-<div class="tab-pane m-3">
-<div class="container " style="text-align:center;">
-          <form action="../control/ClienteControle.php" method="post">
-          <h1 class="">Cadastro de Cliente</h1>
-            <div class="form-floating mb-3">
-              <input type="text" name="nome" class="form-control" id="exampleFormControlInput1" placeholder="16000">
-              <label for="exampleFormControlInput1" class="form-label">Nome</label>
-            </div>
-
-            <div class="form-floating mb-3">
-              <input type="text" name="cpf" class="form-control" id="exampleFormControlInput1" placeholder="16000">
-              <label for="exampleFormControlInput1" class="form-label">CPF</label>
-            </div>
-
-            <div class="form-floating mb-3">
-              <input type="text" name="telefone" class="form-control" id="exampleFormControlInput1" placeholder="16000">
-              <label for="exampleFormControlInput1" class="form-label">Telefone</label>
-            </div>
-
-            <div class="container">
-              <div class="row">
-                <div class="col">
-     
-                </div>
-                <div class="col-6">
-                <button type="submit" class="btn btn-success" name="bt_cadastro_cliente">
-              <h2>Cadastrar</h2>
-            </button>
-                </div>
-                <div class="col">
-                </div>
-              </div>
-            </div>
-            
-          
-
-          </form>
-        </div>
-      </div>
-      </div></div><div class="col"></div></div></div></div></div>
-
-    <script src="../ajax/ajaxCadastro.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="../js.js"></script>
-    <script src="../cadastros.js"></script>
+<script src="../js.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+   
 </body>
 
 </html>
+
+?>
