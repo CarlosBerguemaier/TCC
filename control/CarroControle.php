@@ -141,6 +141,10 @@ function bt_buscar_carros($busca,$coluna){
 }
 
 
+function imprimirErro(){
+    ob_start();
+   # header('Location: telaBuscaCarros.php?msg=naoencontrado');
+}
 
 function imprimirResultadosCarros($vetor_carros){
     if (empty($vetor_carros)) {

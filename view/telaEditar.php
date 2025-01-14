@@ -95,6 +95,11 @@
       <h6 class="texto-alertas">Existe algum dado inválido e/ou faltando!</h6>
     </div>';
     }
+    if ($msg == "naoencontrado") {
+      echo '<div class="alert alert-danger" style="text-align:center" role="alert">
+      <h6 class="texto-alertas">Essa infromação não foi encontrada na base de dados!</h6>
+    </div>';
+    }
   }
   ?>
 <div class="container-fluid">
@@ -133,7 +138,7 @@
                     <li>
                     <div class="btn-group dropend m-1">
   <button type="button" class="btn btn-dark dropdown-toggle  bt_opcoes" data-bs-toggle="dropdown" aria-expanded="false">
-  Carro
+  Veículos
   </button>
   <ul class="dropdown-menu ">
   <a href="../view/telaCadastroCarro.php">   <button class="btn btn-outline-dark m-1 sub_bt_opcoes" ><i class="material-icons">add</i> Cadastrar</button></a>

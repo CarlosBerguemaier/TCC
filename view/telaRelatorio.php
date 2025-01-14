@@ -14,7 +14,7 @@
 <body>
 
   <nav class="navbar navbar-light bg-light nav_bar">
-    <div class="container-fluid justify-content-around">
+    <div class="container-fluid justify-content-around""  >
       <a href="index.php">
         <h1><img src="../images/logo.webp" alt="" style="width:50px;"></h1>
       </a>

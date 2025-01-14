@@ -645,10 +645,18 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
     }
     $ordemservico = $vetor_servicos[0];
     if (empty($ordemservico)) {
-        header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
+        echo "<h2>Bem vindo!</h2>";
+       # header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
     } else {
+        echo "<h1>Últimas ordens de serviço</h1>";
+        $tabela = " 
+         <div class=\"row\">
+          <div class=\"col\">
 
-        $tabela = "  <link rel=\"stylesheet\" href=\"../tabelas.css\">
+          </div>
+          <div class=\"col-md-auto\" style=\"text-align:center;\">
+
+        <link rel=\"stylesheet\" href=\"../tabelas.css\">
     <table class=\"table_inicio\" border=\"1\">
             <thead>
                 <tr>
@@ -682,7 +690,12 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
             </td>"
                 . "</tr>";
         }
-        $tabela = $tabela . "</tbody> </table>";
+        $tabela = $tabela . "</tbody> </table>
+                  </div>
+          <div class=\"col-3\">
+          <h1></h1>
+          </div>
+        </div>";
 
         return $tabela;
     }

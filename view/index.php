@@ -130,7 +130,6 @@
 
           </div>
           <div class="col-6" style="text-align:center; margin-left:5%;">
-            <h1>Últimas Ordens de serviço</h1>
           </div>
           <div class="col">
 
@@ -138,7 +137,7 @@
         </div>
 
         <div class="col" style="text-align:center; margin-left:5%;">
-          <div class="central" style="margin-left:15%">
+          <div class="central">
             <?php
             include_once '../control/OrdemServicoControle.php';
 

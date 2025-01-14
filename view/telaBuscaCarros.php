@@ -46,6 +46,7 @@
     }
   }
   ?>
+
   <div class="container-fluid">
     <div class="row flex-nowrap">
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 nav-lateral bg-light">
@@ -121,8 +122,8 @@
             </div>
         </div>
 
-<div class="col" style="text-align:center;">
-      <div class="central">
+
+
   <div class="container text-center central" <?php if (!isset($_GET['sv_busca']) and isset($_GET['coluna'])) {
                                                 echo " hidden ";
                                               } ?> style="margin-top: 2%;">
@@ -209,7 +210,7 @@
     <div id="row_resultados" class="row">
       <div class="col"></div>
       <div class="col-md-auto w-100">
-        <div class="div-resultados text-center" style="align-self :center;">
+        <div class="div-resultados text-center" style="align-self :center;margin-left:10%;">
 
           <?php
           include_once '../control/gerarPdf.php';
@@ -230,13 +231,9 @@
    
  </div>
 </div>
-</div>
-<br>";
+</div><br>";
             if (!empty($_GET['valor']) and !empty($_GET['coluna'])) {
               $html = bt_buscar_carros($_GET['valor'], $_GET['coluna']);
-            }
-            if (empty($html[0])) {
-              header('Location: telaBuscaCarros.php?msg=naoencontrado');
             }
 
             $resultado = imprimirResultadosCarros($html);
@@ -245,8 +242,10 @@
 
           ?>
         </div></div>
+        <div class="col"></div>
+        </div>
 </div>
-</div></div></div>
+</div>
   
   </div>
         <script src="../ajax/ajaxCadastro.js"></script>
