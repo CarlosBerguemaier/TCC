@@ -11,7 +11,9 @@ include_once '../control/OrdemServicoControle.php';
 include_once '../control/ClienteControle.php';
 include_once '../control/FuncionarioControle.php';
 include_once '../control/ServicoControle.php';
+include_once '../control/gerarPdf.php';
 
+ob_start();
 
 
 
@@ -217,13 +219,20 @@ function relatorioMensal($mes, $ano)
       
     </div>
     <div class="col-md-auto" style="text-align:center; margin-left:5%;">
+      
     <?php if (isset($_POST['bt_relatorio_mensal'])) {
     $mes = $_POST['mes'];
     $ano = $_POST['ano'];
     $os_vetor = relatorioMensal($mes, $ano);
-    $tabela = imprimirResultadosOrdemServicos($os_vetor);
-    echo $tabela; 
-}?>
+    $tabela = imprimirResultadosOrdemServicosParaOS($os_vetor);
+if(isset($_POST['pdf'])){
+    gerarPdf($tabela);
+    }else{
+        $tabela = imprimirResultadosOrdemServicos($os_vetor);
+        echo $tabela;
+    }
+}
+?>
     </div>
     <div class="col">
       

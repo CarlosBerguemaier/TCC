@@ -11,7 +11,9 @@ include_once '../control/OrdemServicoControle.php';
 include_once '../control/ClienteControle.php';
 include_once '../control/FuncionarioControle.php';
 include_once '../control/ServicoControle.php';
+include_once '../control/gerarPdf.php';
 
+ob_start();
 
 
 
@@ -173,8 +175,13 @@ function relatorioAnual($ano)
     <?php if (isset($_POST['bt_relatorio_anual'])) {
     $ano = $_POST['ano'];
     $os_vetor = relatorioAnual($ano);
-    $tabela = imprimirResultadosOrdemServicos($os_vetor);
-    echo $tabela; 
+    $tabela = imprimirResultadosOrdemServicosParaOS($os_vetor);
+if(isset($_POST['pdf'])){
+    gerarPdf($tabela);
+    }else{
+        $tabela = imprimirResultadosOrdemServicos($os_vetor);
+        echo $tabela;
+    }
 }?>
     </div>
     <div class="col">

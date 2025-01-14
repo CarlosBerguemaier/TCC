@@ -700,6 +700,54 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
         return $tabela;
     }
 }
+function imprimirResultadosOrdemServicosParaOS($vetor_servicos)
+{
+    if (empty($vetor_servicos)) {
+        echo "Não há dados para exibir";
+        return;
+    }
+
+    $ordemservico1 = $vetor_servicos[0];
+    if (empty($ordemservico1)) {
+        header('Location: ../view/telaRelatorio.php?msg=naoencontrado');
+    } else {
+        $data_atual = date("d/m/Y");
+        $tabela = "
+        
+        <link rel=\"stylesheet\" href=\"../tabelas.css\">
+        <h1>Relatório personalizado</h1>
+        <h2>Oficina do evandro - $data_atual</h2>
+    <table id=\"tabelabusca\" border=\"1\" >
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Cliente</th>
+                    <th>Funcionário</th>
+                    <th>Serviço</th>
+                    <th class=\"nao_quebrar_linha\">Data</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>";
+        foreach ($vetor_servicos as $ordemservico) {
+            $cliente = buscarClientePorId($ordemservico->getId_cliente());
+            $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
+            $carro = buscarCarroPorId($ordemservico->getId_carro());
+
+
+            $tabela = $tabela . "<tr><td>" . $carro->getPlaca() . "</td>" .
+                "<td>" . $cliente->getNome() . "</td>" .
+                "<td>" . $funcionario->getNome() . "</td>"
+                . "<td>" . $ordemservico->getDescricao() . "</td>"
+                . "<td>" . $ordemservico->getData() . "</td>"
+                . "<td>R$ " . number_format($ordemservico->getValor(), 2, ',', '.') . "</td>"
+                . "</tr>";
+        }
+        $tabela = $tabela . "</tbody> </table>";
+
+        return $tabela;
+    }
+}
 
 function imprimirResultadosOrdemServicos($vetor_servicos)
 {
@@ -712,7 +760,10 @@ function imprimirResultadosOrdemServicos($vetor_servicos)
     if (empty($ordemservico1)) {
         header('Location: ../view/telaBuscaOrdemServico.php?msg=naoencontrado');
     } else {
-        $tabela = "  <link rel=\"stylesheet\" href=\"../tabelas.css\">
+       
+        $tabela = "
+        
+        <link rel=\"stylesheet\" href=\"../tabelas.css\">
     <table id=\"tabelabusca\" border=\"1\" >
             <thead>
                 <tr>
@@ -731,8 +782,7 @@ function imprimirResultadosOrdemServicos($vetor_servicos)
             $cliente = buscarClientePorId($ordemservico->getId_cliente());
             $funcionario = buscarFuncionarioPorId($ordemservico->getId_funcionario());
             $carro = buscarCarroPorId($ordemservico->getId_carro());
-
-
+           
             $tabela = $tabela . "<tr><td>" . $carro->getPlaca() . "</td>" .
                 "<td>" . $cliente->getNome() . "</td>" .
                 "<td>" . $funcionario->getNome() . "</td>"
@@ -743,16 +793,35 @@ function imprimirResultadosOrdemServicos($vetor_servicos)
                <a href=\"../view/telaEditar.php?id=" . $ordemservico->getId() . "&tipo=ordemservico\">
                <button class=\"btn btn-primary\"><i class=\"material-icons\">edit</i></button></a></td>
 
-               <td><form method=\"post\" action=\"../view/telaExcluir.php\">
-
-                <input type=\"hidden\" name=\"id_apagar\" value=\" " . $ordemservico->getId() . "\">
-
-                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\"><i class=\"material-icons\">delete</i></button>
-
-                </form>
+               <td><input type=\"hidden\" name=\"id_apagar\" value=\" " . $ordemservico->getId() . "\">
+                <button class=\"btn btn-danger\" name\"bt_apagar\" id=\"bt_apagar\" data-bs-toggle=\"modal\" data-bs-target=\"#modalFuncionarios\"><i class=\"material-icons\">delete</i></button>
                 
             </td>"
                 . "</tr>";
+                $tabela .= '  <div class="modal fade" id="modalFuncionarios" tabindex="-1" aria-lablledby="exemploModalFuncionarios" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exemploModalFuncionarios">Confirmar</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="resultado_ajax_funcionarios">
+                      <div id="Pesquisar">
+                        <div class="input-group mb-3">
+                        <h3>Deseja excluir está ordem de serviço?</h3> 
+                        </div>
+                      </div>
+                      
+                    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <form action="../view/telaExcluir.php" method="post">
+        <input hidden name="id" value="'. $ordemservico->getId() . '">
+        <button type="submit" class="btn btn-danger" name="bt_excluir">Excluir</button>
+      </div>
+                  </div>
+                </div>
+              </div>';
+    
         }
         $tabela = $tabela . "</tbody> </table>";
 

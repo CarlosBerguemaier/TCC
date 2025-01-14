@@ -169,7 +169,7 @@
   </div>
     <div class="col-md-auto">
     <div class="container " style="text-align:center;">
-    <form action="../control/RelatorioControle.php" method="post">
+    <form action="../control/RelatorioControle.php?pdf=sim" method="post">
             <h1 class="">Relatório personalizado</h1>
             <div class="form-floating mb-3 ">
               <input type="text" name="placa" class="form-control" id="exampleFormControlInput1" placeholder="ABC1D23">
@@ -257,8 +257,13 @@
                   <button type="submit" class="btn btn-success" name="bt_relatorio_ordemservico">
                     <h2>Buscar</h2>
                   </button>
+                  <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="pdf" id="pdf" value="option1">
+                <label class="form-check-label" for="pdf">Gerar em PDF</label>
+              </div>
                 </div>
                 <div class="col">
+            
                 </div>
               </div>
             </div>

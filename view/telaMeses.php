@@ -154,12 +154,16 @@
                             </div>
 
                             <button class="btn btn-success" type="submit" name="bt_relatorio_mensal">Buscar</button>
-                        </form>
+                      
                     </div>
                     <div class="col">
+                            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="pdf" id="pdf" value="option1">
+                <label class="form-check-label" for="pdf">Gerar em PDF</label>
+              </div>
                     </div>
                 </div>
-            </div>
+            </div>  </form>
 
 
 

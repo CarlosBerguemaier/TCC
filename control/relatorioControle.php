@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include_once '../model/Carro.php';
 include_once '../model/OrdemServico.php';
 include_once '../model/Cliente.php';
@@ -11,6 +12,7 @@ include_once '../control/OrdemServicoControle.php';
 include_once '../control/ClienteControle.php';
 include_once '../control/FuncionarioControle.php';
 include_once '../control/ServicoControle.php';
+include_once '../control/gerarPdf.php';
 
 
 
@@ -161,10 +163,16 @@ include_once '../control/ServicoControle.php';
         array_push($vetor_os,$ordemservico);
     }
 }
-$tabela = imprimirResultadosOrdemServicos($vetor_os);
-echo $tabela;
-}
 
+
+$tabela = imprimirResultadosOrdemServicosParaOS($vetor_os);
+if(isset($_POST['pdf'])){
+    gerarPdf($tabela);
+    }else{
+        $tabela = imprimirResultadosOrdemServicos($vetor_os);
+        echo $tabela;
+    }
+}
 
  ?>
 
