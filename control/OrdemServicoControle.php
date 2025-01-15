@@ -703,7 +703,6 @@ function imprimirResultadosOrdemServicosTelaInicial($vetor_servicos)
 function imprimirResultadosOrdemServicosParaOS($vetor_servicos)
 {
     if (empty($vetor_servicos)) {
-        echo "Não há dados para exibir";
         return;
     }
 
